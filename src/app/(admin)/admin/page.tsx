@@ -75,31 +75,31 @@ export default function AdminPanel() {
                             </thead>
                             <tbody className="divide-y divide-white/5">
                                 {users.map(u => (
-                        <tr key={u.id} className="hover:bg-white/[0.02] transition-colors">
-                           <td className="p-4 text-white font-medium">{u.name}</td>
-                           <td className="p-4 text-slate-400 text-sm">{u.email}</td>
-                           <td className="p-4">
-                              <span className={\`inline-flex px-2 py-1 rounded-md text-xs font-bold \${u.status === 'Published' ? 'bg-emerald-500/10 text-emerald-400' : 'bg-slate-800 text-slate-400'}\`}>
-                                 {u.status}
-                              </span>
-                           </td>
-                           <td className="p-4 text-slate-400 text-sm">{u.joined}</td>
-                           <td className="p-4 flex gap-2 justify-end">
-                              <button className="p-2 bg-slate-800 hover:bg-slate-700 rounded-lg text-slate-300 transition-colors" title="Toggle Publish Status">
-                                 <ToggleRight className="w-4 h-4" />
-                              </button>
-                              <button className="p-2 bg-red-500/10 hover:bg-red-500/20 rounded-lg text-red-400 transition-colors" title="Remove Abuse">
-                                 <Trash2 className="w-4 h-4" />
-                              </button>
-                           </td>
-                        </tr>
-                     ))}
-                        </tbody>
-                    </table>
+                                    <tr key={u.id} className="hover:bg-white/[0.02] transition-colors">
+                                        <td className="p-4 text-white font-medium">{u.name}</td>
+                                        <td className="p-4 text-slate-400 text-sm">{u.email}</td>
+                                        <td className="p-4">
+                                            <span className={`inline-flex px-2 py-1 rounded-md text-xs font-bold ${u.status === 'Published' ? 'bg-emerald-500/10 text-emerald-400' : 'bg-slate-800 text-slate-400'}`}>
+                                                {u.status}
+                                            </span>
+                                        </td>
+                                        <td className="p-4 text-slate-400 text-sm">{u.joined}</td>
+                                        <td className="p-4 flex gap-2 justify-end">
+                                            <button className="p-2 bg-slate-800 hover:bg-slate-700 rounded-lg text-slate-300 transition-colors" title="Toggle Publish Status">
+                                                <ToggleRight className="w-4 h-4" />
+                                            </button>
+                                            <button className="p-2 bg-red-500/10 hover:bg-red-500/20 rounded-lg text-red-400 transition-colors" title="Remove Abuse">
+                                                <Trash2 className="w-4 h-4" />
+                                            </button>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
-            </div>
 
-        </div>
-    </div >
-  );
+            </div>
+        </div >
+    );
 }
