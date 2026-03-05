@@ -103,7 +103,7 @@ export default function EPKContent({ profile, isDraftMode = false }: { profile: 
             )}
 
             {/* 1. Hero Section */}
-            <section className="relative w-full h-[60vh] md:h-[70vh] flex items-end pb-12 overflow-hidden border-b border-white/10">
+            <section className="relative w-full h-[500px] md:h-[600px] flex items-end pb-12 overflow-hidden border-b border-white/10">
                 {/* Background Image (Press Asset or Avatar) */}
                 <div className="absolute inset-0 bg-[#020617] z-0 overflow-hidden">
                     <div
@@ -185,30 +185,9 @@ export default function EPKContent({ profile, isDraftMode = false }: { profile: 
                         </div>
                     </section>
 
-                    {/* Featured Mixes */}
-                    {profile.mixes && profile.mixes.length > 0 && (
-                        <section className="animate-fade-in" style={{ animationDelay: '200ms' }}>
-                            <div className="flex items-center justify-between mb-6">
-                                <h2 className="text-2xl font-bold text-white">
-                                    {profile.mixes.length > 1 ? 'Featured Mixes' : 'Featured Mix'}
-                                </h2>
-                            </div>
-                            <div className="grid gap-6">
-                                {profile.mixes.map((mix, idx) => mix.url && (
-                                    <div key={idx} className="w-full glass-panel rounded-3xl p-6 border-white/10 relative overflow-hidden">
-                                        <div className="absolute -top-32 -right-32 w-64 h-64 bg-purple-600/20 blur-[100px] pointer-events-none"></div>
-                                        <div className="relative z-10 shadow-2xl rounded-2xl overflow-hidden ring-1 ring-white/10">
-                                            <MixEmbed url={mix.url} />
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
-                        </section>
-                    )}
-
                     {/* Bio */}
                     {(profile.shortBio || profile.longBio) && (
-                        <section className="animate-fade-in" style={{ animationDelay: '300ms' }}>
+                        <section className="animate-fade-in" style={{ animationDelay: '200ms' }}>
                             <h2 className="text-2xl font-bold text-white mb-6">Biography</h2>
                             <div className="glass-panel p-8 md:p-10 rounded-3xl border-white/5 space-y-6">
                                 {profile.shortBio && (
@@ -224,6 +203,27 @@ export default function EPKContent({ profile, isDraftMode = false }: { profile: 
                                         {profile.longBio}
                                     </p>
                                 )}
+                            </div>
+                        </section>
+                    )}
+
+                    {/* Featured Mixes */}
+                    {profile.mixes && profile.mixes.length > 0 && (
+                        <section className="animate-fade-in" style={{ animationDelay: '300ms' }}>
+                            <div className="flex items-center justify-between mb-6">
+                                <h2 className="text-2xl font-bold text-white">
+                                    {profile.mixes.length > 1 ? 'Featured Mixes' : 'Featured Mix'}
+                                </h2>
+                            </div>
+                            <div className="grid gap-6">
+                                {profile.mixes.map((mix, idx) => mix.url && (
+                                    <div key={idx} className="w-full glass-panel rounded-3xl p-6 border-white/10 relative overflow-hidden">
+                                        <div className="absolute -top-32 -right-32 w-64 h-64 bg-purple-600/20 blur-[100px] pointer-events-none"></div>
+                                        <div className="relative z-10 shadow-2xl rounded-2xl overflow-hidden ring-1 ring-white/10">
+                                            <MixEmbed url={mix.url} />
+                                        </div>
+                                    </div>
+                                ))}
                             </div>
                         </section>
                     )}
