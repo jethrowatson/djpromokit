@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Disc3, Mail, Lock, ArrowRight } from "lucide-react";
+import { AudioWaveform, Mail, Lock, ArrowRight } from "lucide-react";
 import { login } from "./actions";
 
 export default async function Login(props: { searchParams: Promise<{ error?: string }> }) {
@@ -12,8 +12,8 @@ export default async function Login(props: { searchParams: Promise<{ error?: str
 
             <div className="sm:mx-auto sm:w-full sm:max-w-md relative z-10">
                 <Link href="/" className="flex justify-center items-center gap-2 mb-8 group">
-                    <Disc3 className="w-10 h-10 text-purple-500 group-hover:text-cyan-400 transition-colors duration-300" />
-                    <span className="font-bold text-2xl tracking-tight text-white">DJpromokit<span className="text-purple-500">.com</span></span>
+                    <AudioWaveform className="w-10 h-10 text-purple-500 group-hover:text-cyan-400 transition-colors duration-300" />
+                    <span className="font-bold text-2xl tracking-tight text-white">DJ Promo Kit</span>
                 </Link>
                 <h2 className="mt-6 text-center text-3xl font-extrabold text-white">
                     Welcome back

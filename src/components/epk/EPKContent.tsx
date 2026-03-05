@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Disc3, MapPin, Music, Mail, Download, Instagram, Youtube, ExternalLink, CalendarDays, Zap, Radio, Headphones, Users, Play } from "lucide-react";
+import { AudioWaveform, MapPin, Music, Mail, Download, Instagram, Youtube, ExternalLink, CalendarDays, Zap, Radio, Headphones, Users, Play } from "lucide-react";
 import MixEmbed from "@/components/ui/MixEmbed";
 
 export interface EPKProfileData {
@@ -44,7 +44,7 @@ function getDynamicHighlights(profile: EPKProfileData) {
     if (foundVenues.length > 0) {
         const topVenue = foundVenues.sort((a, b) => b.length - a.length)[0];
         const displayVenue = topVenue.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
-        highlights.push({ icon: Disc3, value: displayVenue, label: "Past Support", color: "cyan" });
+        highlights.push({ icon: AudioWaveform, value: displayVenue, label: "Past Support", color: "cyan" });
     }
 
     // 3. International / Labels / Radio
@@ -335,11 +335,11 @@ export default function EPKContent({ profile, isDraftMode = false }: { profile: 
             </main>
 
             {/* Footer / Branding */}
-            <footer className="w-full py-8 border-t border-white/5 bg-slate-950 mt-16 text-center">
-                <Link href="/" className="inline-flex items-center gap-2 text-slate-500 hover:text-white transition-colors z-20 relative">
-                    Built with <Disc3 className="w-4 h-4 text-purple-500" /> DJpromokit
-                </Link>
-            </footer>
+            <div className="flex items-center justify-center pt-8 border-t border-white/5 pb-8 relative z-10 w-full animate-fade-in" style={{ animationDelay: '500ms' }}>
+                <a href="/" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-sm font-medium text-slate-400 hover:text-white transition-colors bg-slate-900/50 px-4 py-2 rounded-full border border-white/5 hover:border-white/10">
+                    Built with <AudioWaveform className="w-4 h-4 text-purple-500" /> DJ Promo Kit
+                </a>
+            </div>
 
         </div>
     );

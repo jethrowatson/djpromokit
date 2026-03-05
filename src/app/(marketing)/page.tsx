@@ -77,7 +77,7 @@ export default function Home() {
                                 <Send className="w-8 h-8 text-cyan-400" />
                             </div>
                             <h3 className="text-xl font-bold text-white mb-2">2. Share your link</h3>
-                            <p className="text-slate-400">Copy your unique DJpromokit link. Paste it into your Instagram bio, or send it directly to venues.</p>
+                            <p className="text-slate-400">Copy your unique DJ Promo Kit link. Paste it into your Instagram bio, or send it directly to venues.</p>
                         </div>
 
                         <div className="relative z-10 glass-panel rounded-2xl p-8 flex flex-col items-center text-center hover:border-purple-500/30 transition-colors">
@@ -98,7 +98,7 @@ export default function Home() {
                         <div>
                             <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">One link for everywhere.</h2>
                             <p className="text-lg text-slate-400 mb-8">
-                                Your DJpromokit link is the only link you'll ever need. It works perfectly on every platform.
+                                Your DJ Promo Kit link is the only link you'll ever need. It works perfectly on every platform.
                             </p>
                             <ul className="space-y-4">
                                 {[
@@ -134,7 +134,7 @@ export default function Home() {
             <section className="w-full py-24 bg-gradient-to-b from-transparent to-purple-900/20 relative z-10 border-t border-white/5">
                 <div className="max-w-4xl mx-auto px-4 text-center">
                     <h2 className="text-4xl font-bold text-white mb-6">Stop sending messy links.</h2>
-                    <p className="text-xl text-slate-300 mb-10">Join thousands of DJs using DJpromokit to look professional and get more gigs.</p>
+                    <p className="text-xl text-slate-300 mb-10">Join thousands of DJs using DJ Promo Kit to look professional and get more gigs.</p>
                     <Link href="/signup" className="inline-flex items-center justify-center rounded-xl bg-purple-600 px-8 py-4 text-lg font-bold text-white shadow-[0_0_30px_-5px_#8b5cf6] hover:bg-purple-500 hover:shadow-[0_0_40px_-5px_#8b5cf6] transition-all hover:-translate-y-1">
                         Build your EPK for free
                     </Link>

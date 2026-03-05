@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Disc3 } from "lucide-react";
+import { AudioWaveform } from "lucide-react";
 
 export function Footer() {
     return (
@@ -7,9 +7,9 @@ export function Footer() {
             <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:py-16 lg:px-8">
                 <div className="xl:grid xl:grid-cols-3 xl:gap-8">
                     <div className="space-y-8 xl:col-span-1">
-                        <Link href="/" className="flex items-center gap-2">
-                            <Disc3 className="w-6 h-6 text-purple-500" />
-                            <span className="font-bold text-lg text-white">DJpromokit<span className="text-purple-500">.com</span></span>
+                        <Link href="/" className="flex items-center gap-2 group mb-6">
+                            <AudioWaveform className="w-6 h-6 text-purple-500" />
+                            <span className="font-bold text-lg text-white">DJ Promo Kit</span>
                         </Link>
                         <p className="text-sm text-slate-400 max-w-xs">
                             Give DJs a single link that gets them booked faster. Build your pro EPK in under 10 minutes.
@@ -55,7 +55,7 @@ export function Footer() {
                     </div>
                 </div>
                 <div className="mt-12 border-t border-white/5 pt-8">
-                    <p className="text-base text-slate-400 xl:text-center">&copy; {new Date().getFullYear()} DJpromokit.com. All rights reserved.</p>
+                    <p className="text-base text-slate-400 xl:text-center">&copy; {new Date().getFullYear()} DJ Promo Kit. All rights reserved.</p>
                 </div>
             </div>
         </footer>

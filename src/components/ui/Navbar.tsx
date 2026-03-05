@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Disc3, Menu, X } from "lucide-react";
+import { AudioWaveform, Menu, X } from "lucide-react";
 
 export function Navbar() {
     return (
@@ -8,8 +8,8 @@ export function Navbar() {
                 <div className="flex justify-between items-center h-16">
                     <div className="flex-shrink-0 flex items-center">
                         <Link href="/" className="flex items-center gap-2 group">
-                            <Disc3 className="w-8 h-8 text-purple-500 group-hover:text-cyan-400 transition-colors duration-300" />
-                            <span className="font-bold text-xl tracking-tight text-white">DJpromokit<span className="text-purple-500">.com</span></span>
+                            <AudioWaveform className="w-8 h-8 text-purple-500 group-hover:text-cyan-400 transition-colors duration-300" />
+                            <span className="font-bold text-xl tracking-tight text-white">DJ Promo Kit</span>
                         </Link>
                     </div>
 

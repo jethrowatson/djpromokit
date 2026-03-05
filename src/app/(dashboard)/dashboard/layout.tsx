@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Disc3, Copy, Eye, FileText, BarChart3, Settings, Play, Inbox } from "lucide-react";
+import { AudioWaveform, Copy, Eye, FileText, BarChart3, Settings, Play, Inbox } from "lucide-react";
 
 import { createClient } from "@/lib/supabase/server";
 
@@ -24,8 +24,8 @@ export default async function DashboardLayout({
             <aside className="w-full md:w-64 bg-slate-900 border-r border-white/5 flex-shrink-0 relative z-20">
                 <div className="p-6 border-b border-white/5">
                     <Link href="/" className="flex items-center gap-2 group">
-                        <Disc3 className="w-8 h-8 text-cyan-500 group-hover:text-purple-400 transition-colors" />
-                        <span className="font-bold text-xl text-white">DJpromokit</span>
+                        <AudioWaveform className="w-8 h-8 text-cyan-500 group-hover:text-purple-400 transition-colors" />
+                        <span className="font-bold text-xl text-white">DJ Promo Kit</span>
                     </Link>
                 </div>
 

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Disc3, CheckCircle2 } from "lucide-react";
+import { AudioWaveform, CheckCircle2 } from "lucide-react";
 
 export function ProgressBar({ currentStep }: { currentStep: number }) {
   const steps = [
@@ -22,8 +22,8 @@ export function ProgressBar({ currentStep }: { currentStep: number }) {
       <div className="max-w-4xl mx-auto">
         <div className="flex items-center justify-between mb-2">
           <Link href="/" className="flex items-center gap-2 group">
-            <Disc3 className="w-6 h-6 text-cyan-500 group-hover:text-purple-400 transition-colors" />
-            <span className="font-bold text-white hidden sm:block">DJpromokit<span className="text-cyan-500">.com</span></span>
+            <AudioWaveform className="w-6 h-6 text-cyan-500 group-hover:text-purple-400 transition-colors" />
+            <span className="font-bold text-white hidden sm:block">DJ Promo Kit</span>
           </Link>
           <div className="text-sm font-bold text-cyan-400">{totalProgress}% Complete</div>
         </div>
@@ -41,10 +41,10 @@ export function ProgressBar({ currentStep }: { currentStep: number }) {
           {steps.map((step) => (
             <div key={step.num} className="flex flex-col items-center">
               <div className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold mb-1 ${step.num < currentStep
-                  ? "bg-cyan-500 text-white"
-                  : step.num === currentStep
-                    ? "bg-purple-600 text-white ring-2 ring-purple-500 ring-offset-2 ring-offset-slate-900"
-                    : "bg-slate-800 text-slate-500"
+                ? "bg-cyan-500 text-white"
+                : step.num === currentStep
+                  ? "bg-purple-600 text-white ring-2 ring-purple-500 ring-offset-2 ring-offset-slate-900"
+                  : "bg-slate-800 text-slate-500"
                 }`}>
                 {step.num < currentStep ? <CheckCircle2 className="w-4 h-4" /> : step.num}
               </div>
