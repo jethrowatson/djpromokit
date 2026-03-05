@@ -46,10 +46,14 @@ export default function EPKContent({ profile, isDraftMode = false }: { profile: 
 
             {/* 1. Hero Section */}
             <section className="relative w-full h-[60vh] md:h-[70vh] flex items-end pb-12 overflow-hidden border-b border-white/10">
-                {/* Background Image (Mocked with gradient+blur) */}
-                <div className="absolute inset-0 bg-slate-900 z-0">
-                    <div className="absolute top-1/2 left-1/4 w-[800px] h-[800px] bg-purple-600/20 rounded-full blur-[120px] mix-blend-screen -translate-y-1/2"></div>
-                    <div className="absolute bottom-0 right-1/4 w-[600px] h-[600px] bg-cyan-500/10 rounded-full blur-[100px] mix-blend-screen"></div>
+                {/* Background Image (Blurred Avatar) */}
+                <div className="absolute inset-0 bg-slate-900 z-0 overflow-hidden">
+                    <div
+                        className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-40 blur-3xl scale-110"
+                        style={{ backgroundImage: `url(${avatarUrl})` }}
+                    ></div>
+                    <div className="absolute top-1/2 left-1/4 w-[800px] h-[800px] bg-purple-600/30 rounded-full blur-[120px] mix-blend-screen -translate-y-1/2"></div>
+                    <div className="absolute bottom-0 right-1/4 w-[600px] h-[600px] bg-cyan-500/20 rounded-full blur-[100px] mix-blend-screen"></div>
                     <div className="absolute inset-0 bg-[#020617]/50 mix-blend-overlay"></div>
                     <div className="absolute inset-0 bg-gradient-to-t from-[#020617] via-[#020617]/80 to-transparent"></div>
                 </div>

@@ -2,9 +2,13 @@ export default function MixEmbed({ url }: { url: string }) {
     if (!url) return null;
 
     try {
+        const normalizedUrl = url.startsWith('http') ? url : `https://${url}`;
+        const parsedUrl = new URL(normalizedUrl);
+        const urlString = parsedUrl.toString();
+
         // SoundCloud
-        if (url.includes('soundcloud.com')) {
-            const embedUrl = `https://w.soundcloud.com/player/?url=${encodeURIComponent(url)}&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true`;
+        if (urlString.includes('soundcloud.com')) {
+            const embedUrl = `https://w.soundcloud.com/player/?url=${encodeURIComponent(urlString)}&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true`;
             return (
                 <iframe
                     width="100%"
@@ -19,13 +23,12 @@ export default function MixEmbed({ url }: { url: string }) {
         }
 
         // YouTube
-        if (url.includes('youtube.com') || url.includes('youtu.be')) {
+        if (urlString.includes('youtube.com') || urlString.includes('youtu.be')) {
             let videoId = '';
-            if (url.includes('youtube.com')) {
-                const urlParams = new URL(url).searchParams;
-                videoId = urlParams.get('v') || '';
-            } else if (url.includes('youtu.be')) {
-                videoId = url.split('/').pop()?.split('?')[0] || '';
+            if (urlString.includes('youtube.com')) {
+                videoId = parsedUrl.searchParams.get('v') || '';
+            } else if (urlString.includes('youtu.be')) {
+                videoId = parsedUrl.pathname.slice(1) || '';
             }
 
             if (videoId) {
@@ -45,8 +48,8 @@ export default function MixEmbed({ url }: { url: string }) {
         }
 
         // Mixcloud
-        if (url.includes('mixcloud.com')) {
-            const mxPath = new URL(url).pathname;
+        if (urlString.includes('mixcloud.com')) {
+            const mxPath = parsedUrl.pathname;
             const embedUrl = `https://www.mixcloud.com/widget/iframe/?hide_cover=1&light=0&feed=${encodeURIComponent(mxPath)}`;
             return (
                 <iframe
