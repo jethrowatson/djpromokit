@@ -39,13 +39,24 @@ export async function saveFullProfile(formData: FormData) {
     if (profileError) return { success: false, error: profileError.message };
 
     // Mixes
-    const mixUrl = formData.get('mixUrl') as string;
+    const mixUrls = [
+        formData.get('mixUrl1') as string,
+        formData.get('mixUrl2') as string,
+        formData.get('mixUrl3') as string
+    ].filter(Boolean); // Only keep non-empty strings
+
     await supabase.from('media').delete().match({ profile_id: user.id, type: 'featured_mix' });
 
-    if (mixUrl) {
+    if (mixUrls.length > 0) {
+        const mixInserts = mixUrls.map(url => ({
+            profile_id: user.id,
+            type: 'featured_mix',
+            url: url
+        }));
+
         const { error: mixError } = await supabase
             .from('media')
-            .insert({ profile_id: user.id, type: 'featured_mix', url: mixUrl });
+            .insert(mixInserts);
 
         if (mixError) console.error('Mix Save Error:', mixError);
     }

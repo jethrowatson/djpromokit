@@ -35,7 +35,7 @@ export default function EditProfileForm({ profile, media, socials }: EditProfile
     };
 
     const pressShots = media.filter(m => m.type === 'press_shot');
-    const featuredMix = media.find(m => m.type === 'featured_mix')?.url || '';
+    const featuredMixes = media.filter(m => m.type === 'featured_mix').map(m => m.url);
 
     return (
         <form onSubmit={handleSubmit} className="max-w-4xl mx-auto pb-24 animate-fade-in relative">
@@ -122,9 +122,13 @@ export default function EditProfileForm({ profile, media, socials }: EditProfile
                         </div>
                     </div>
 
-                    <div className="pt-4 mt-6 border-t border-white/5">
-                        <label className="block text-sm font-medium text-slate-300 mb-2">Featured Mix URL (Soundcloud/YouTube)</label>
-                        <input type="url" name="mixUrl" defaultValue={featuredMix} className="w-full bg-slate-900 border border-slate-700 rounded-lg p-3 text-white focus:border-purple-500 outline-none" placeholder="https://soundcloud.com/..." />
+                    <div className="pt-4 mt-6 border-t border-white/5 space-y-4">
+                        <label className="block text-sm font-medium text-slate-300">Featured Mix URLs (Soundcloud/YouTube/Mixcloud)</label>
+                        <p className="text-xs text-slate-500 mb-2">Add up to 3 featured mixes to showcase on your EPK.</p>
+
+                        <input type="url" name="mixUrl1" defaultValue={featuredMixes[0] || ''} className="w-full bg-slate-900 border border-slate-700 rounded-lg p-3 text-white focus:border-purple-500 outline-none" placeholder="Mix 1 URL" />
+                        <input type="url" name="mixUrl2" defaultValue={featuredMixes[1] || ''} className="w-full bg-slate-900 border border-slate-700 rounded-lg p-3 text-white focus:border-purple-500 outline-none" placeholder="Mix 2 URL (Optional)" />
+                        <input type="url" name="mixUrl3" defaultValue={featuredMixes[2] || ''} className="w-full bg-slate-900 border border-slate-700 rounded-lg p-3 text-white focus:border-purple-500 outline-none" placeholder="Mix 3 URL (Optional)" />
                     </div>
                 </section>
 
