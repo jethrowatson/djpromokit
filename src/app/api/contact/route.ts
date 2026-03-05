@@ -10,9 +10,9 @@ const contactSchema = z.object({
     senderEmail: z.string().email(),
     date: z.string(),
     location: z.string(),
-    eventType: z.string(),
-    offer: z.string().optional(),
-    message: z.string().min(10)
+    eventType: z.string().nullable().optional().or(z.literal('')),
+    offer: z.string().nullable().optional(),
+    message: z.string().min(2)
 });
 
 export async function POST(req: Request) {
@@ -59,7 +59,7 @@ export async function POST(req: Request) {
                 sender_email: data.senderEmail,
                 event_date: data.date,
                 location: data.location,
-                event_type: data.eventType,
+                event_type: data.eventType || 'Other',
                 offer: data.offer || null,
                 message: data.message
             });
@@ -75,7 +75,12 @@ export async function POST(req: Request) {
         }
 
         // 2. Send email via Resend
-        const result = await sendBookingInquiryEmail({ ...data, to: targetEmail, offer: data.offer || '' });
+        const result = await sendBookingInquiryEmail({
+            ...data,
+            to: targetEmail,
+            eventType: data.eventType || 'Other',
+            offer: data.offer || ''
+        });
 
         if (!result.success) {
             console.warn('Booking saved to DB, but failed to send email notification:', result.error);
