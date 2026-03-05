@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { Save, Loader2, CreditCard } from 'lucide-react';
 import { updateAccountSettings } from './actions';
+import CheckoutButton from '@/components/ui/CheckoutButton';
 
 export default function AccountSettingsForm({ user, profile }: { user: any, profile: any }) {
     const [isSaving, setIsSaving] = useState(false);
@@ -118,9 +119,10 @@ export default function AccountSettingsForm({ user, profile }: { user: any, prof
                     </div>
 
                     {!profile.is_published && (
-                        <button className="whitespace-nowrap flex items-center justify-center px-6 py-3 rounded-lg bg-purple-600 text-white font-bold hover:bg-purple-500 transition-colors shadow-lg shadow-purple-900/50">
-                            Upgrade Now
-                        </button>
+                        <CheckoutButton
+                            text="Upgrade Now"
+                            className="whitespace-nowrap flex items-center justify-center px-6 py-3 rounded-lg bg-purple-600 text-white font-bold hover:bg-purple-500 transition-colors shadow-lg shadow-purple-900/50 disabled:opacity-50"
+                        />
                     )}
                 </div>
             </div>

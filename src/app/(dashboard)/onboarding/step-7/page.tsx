@@ -3,7 +3,7 @@ import { ArrowLeft, Lock, Eye, CreditCard } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import EPKContent, { EPKProfileData } from "@/components/epk/EPKContent";
-import CheckoutButton from "./CheckoutButton";
+import CheckoutButton from "@/components/ui/CheckoutButton";
 
 export default async function Step7Preview() {
     const supabase = await createClient();

@@ -6,6 +6,7 @@ import { Copy, Eye, Download, DownloadCloud, Sparkles, CheckCircle2, TrendingUp,
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import PaymentStatusToast from "./PaymentStatusToast";
+import CheckoutButton from "@/components/ui/CheckoutButton";
 
 export default async function DashboardHome() {
     const supabase = await createClient();
@@ -37,9 +38,15 @@ export default async function DashboardHome() {
                             <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span> Published
                         </span>
                     ) : (
-                        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-800 border border-white/10 text-xs font-bold text-slate-400">
-                            Draft Mode
-                        </span>
+                        <>
+                            <span className="hidden sm:inline-flex items-center gap-1.5 px-3 py-2 rounded-full bg-slate-800 border border-white/10 text-xs font-bold text-slate-400">
+                                Draft Mode
+                            </span>
+                            <CheckoutButton
+                                text="Publish EPK"
+                                className="inline-flex items-center justify-center px-4 py-2 rounded-full bg-purple-600 text-white text-xs font-bold hover:bg-purple-500 transition-colors shadow-lg shadow-purple-900/50 disabled:opacity-50"
+                            />
+                        </>
                     )}
                 </div>
             </div>

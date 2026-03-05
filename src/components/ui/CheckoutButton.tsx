@@ -3,7 +3,13 @@
 import { useState } from 'react';
 import { CreditCard, Loader2 } from 'lucide-react';
 
-export default function CheckoutButton() {
+export default function CheckoutButton({
+    className = "w-full flex items-center justify-center rounded-xl bg-purple-600 px-8 py-4 text-lg font-bold text-white shadow-[0_0_30px_-5px_#8b5cf6] hover:bg-purple-500 transition-all hover:-translate-y-1 disabled:opacity-50 disabled:hover:translate-y-0",
+    text = "Pay & Publish Now"
+}: {
+    className?: string,
+    text?: string
+}) {
     const [isLoading, setIsLoading] = useState(false);
 
     const handleCheckout = async () => {
@@ -30,14 +36,14 @@ export default function CheckoutButton() {
         <button
             onClick={handleCheckout}
             disabled={isLoading}
-            className="w-full flex items-center justify-center rounded-xl bg-purple-600 px-8 py-4 text-lg font-bold text-white shadow-[0_0_30px_-5px_#8b5cf6] hover:bg-purple-500 transition-all hover:-translate-y-1 disabled:opacity-50 disabled:hover:translate-y-0"
+            className={className}
         >
             {isLoading ? (
                 <Loader2 className="mr-2 w-5 h-5 animate-spin" />
             ) : (
                 <CreditCard className="mr-2 w-5 h-5" />
             )}
-            {isLoading ? 'Redirecting to Stripe...' : 'Pay & Publish Now'}
+            {isLoading ? 'Redirecting...' : text}
         </button>
     );
 }
