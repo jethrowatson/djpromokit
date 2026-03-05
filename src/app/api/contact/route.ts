@@ -29,17 +29,28 @@ export async function POST(req: Request) {
         // We need to look up the DJ's profile ID and email based on their username.
         const { data: profileData, error: profileError } = await supabaseAdmin
             .from('profiles')
-            .select('id, public_email, users!inner(email)')
+            .select('id, public_email')
             .eq('username', data.djUsername)
             .single();
 
         if (!profileData) {
+            console.error('DJ Profile not found for username:', data.djUsername);
             return NextResponse.json({ error: 'DJ Profile not found' }, { status: 404 });
         }
 
         const profileId = profileData.id;
-        const usersData = profileData.users as any;
-        const targetEmail = profileData.public_email || (Array.isArray(usersData) ? usersData[0]?.email : usersData?.email);
+        let targetEmail = profileData.public_email;
+
+        // If they don't have a public email set, look up their login email securely via the admin auth client
+        if (!targetEmail) {
+            const { data: { user }, error: authError } = await supabaseAdmin.auth.admin.getUserById(profileId);
+            if (user?.email) {
+                targetEmail = user.email;
+            } else {
+                console.error("Could not find a valid email for DJ id:", profileId);
+            }
+        }
+
         const { error: insertError } = await supabaseAdmin
             .from('booking_requests')
             .insert({
