@@ -51,20 +51,29 @@ export async function saveFullProfile(formData: FormData) {
     }
 
     // Socials
-    const platforms = ['instagram', 'soundcloud', 'mixcloud', 'youtube', 'spotify', 'ra'];
-    const socialsToInsert = platforms.map(platform => {
-        const url = formData.get(platform) as string;
-        if (url) return { profile_id: user.id, platform, url };
-        return null;
-    }).filter(Boolean);
+    const instagram = formData.get('instagram') as string;
+    const soundcloud = formData.get('soundcloud') as string;
+    const mixcloud = formData.get('mixcloud') as string;
+    const youtube = formData.get('youtube') as string;
+    const spotify = formData.get('spotify') as string;
+    const resident_advisor = formData.get('ra') as string;
+
+    const socialData = {
+        profile_id: user.id,
+        instagram: instagram || null,
+        soundcloud: soundcloud || null,
+        mixcloud: mixcloud || null,
+        youtube: youtube || null,
+        spotify: spotify || null,
+        resident_advisor: resident_advisor || null,
+    };
 
     // Delete old
     await supabase.from('social_links').delete().eq('profile_id', user.id);
 
-    // Insert new
-    if (socialsToInsert.length > 0) {
-        // @ts-ignore
-        const { error: socialError } = await supabase.from('social_links').insert(socialsToInsert);
+    // Insert new single row
+    if (instagram || soundcloud || mixcloud || youtube || spotify || resident_advisor) {
+        const { error: socialError } = await supabase.from('social_links').insert(socialData);
         if (socialError) console.error('Socials Save Error:', socialError);
     }
 

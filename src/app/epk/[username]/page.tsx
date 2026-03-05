@@ -27,10 +27,11 @@ export default async function EPKProfilePage(props: { params: Promise<{ username
         .select('*')
         .eq('profile_id', profile.id);
 
-    const { data: socialLinks } = await supabase
+    const { data: socialLink } = await supabase
         .from('social_links')
         .select('*')
-        .eq('profile_id', profile.id);
+        .eq('profile_id', profile.id)
+        .maybeSingle();
 
     let pressShots: string[] = [];
     let mixes: { title: string; url: string }[] = [];
@@ -48,10 +49,13 @@ export default async function EPKProfilePage(props: { params: Promise<{ username
 
     // Map social links array to object
     const socials: Record<string, string> = {};
-    if (socialLinks) {
-        socialLinks.forEach(link => {
-            if (link.url) socials[link.platform] = link.url;
-        });
+    if (socialLink) {
+        if (socialLink.instagram) socials.instagram = socialLink.instagram;
+        if (socialLink.soundcloud) socials.soundcloud = socialLink.soundcloud;
+        if (socialLink.mixcloud) socials.mixcloud = socialLink.mixcloud;
+        if (socialLink.youtube) socials.youtube = socialLink.youtube;
+        if (socialLink.spotify) socials.spotify = socialLink.spotify;
+        if (socialLink.resident_advisor) socials.ra = socialLink.resident_advisor;
     }
 
     const profileData: EPKProfileData = {

@@ -15,26 +15,29 @@ export async function saveStep5Socials(formData: FormData) {
     const { data: profile } = await supabase.from('profiles').select('id').eq('id', user.id).single();
     if (!profile) throw new Error('Profile not found');
 
-    const platforms = ['instagram', 'soundcloud', 'mixcloud', 'youtube', 'spotify', 'ra'];
-    const socialLinksToInsert = [];
+    const instagram = formData.get('instagram') as string;
+    const soundcloud = formData.get('soundcloud') as string;
+    const mixcloud = formData.get('mixcloud') as string;
+    const youtube = formData.get('youtube') as string;
+    const spotify = formData.get('spotify') as string;
+    const resident_advisor = formData.get('ra') as string;
 
-    for (const platform of platforms) {
-        const url = formData.get(platform) as string;
-        if (url) {
-            socialLinksToInsert.push({
-                profile_id: profile.id,
-                platform,
-                url
-            });
-        }
-    }
+    const socialData = {
+        profile_id: profile.id,
+        instagram: instagram || null,
+        soundcloud: soundcloud || null,
+        mixcloud: mixcloud || null,
+        youtube: youtube || null,
+        spotify: spotify || null,
+        resident_advisor: resident_advisor || null,
+    };
 
     // First delete existing socials
     await supabase.from('social_links').delete().eq('profile_id', profile.id);
 
-    // Then insert new ones if any exist
-    if (socialLinksToInsert.length > 0) {
-        const { error } = await supabase.from('social_links').insert(socialLinksToInsert);
+    // Insert new single row
+    if (instagram || soundcloud || mixcloud || youtube || spotify || resident_advisor) {
+        const { error } = await supabase.from('social_links').insert(socialData);
         if (error) {
             console.error('Failed to save Step 5 data:', error);
             throw new Error('Failed to save data. Please try again.');
