@@ -68,7 +68,7 @@ export default function Examples() {
                                     <span className="text-sm font-medium px-2 py-1 rounded bg-slate-800 text-slate-300">{ex.genre}</span>
                                     <span className="text-sm text-slate-500">{ex.location}</span>
                                 </div>
-                                <Link href={`/epk/${ex.name.toLowerCase().replace(" ", "")}`} className="flex items-center gap-2 text-sm font-bold text-cyan-400 hover:text-cyan-300 transition-colors mt-6">
+                                <Link href={`/${ex.name.toLowerCase().replace(" ", "")}`} className="flex items-center gap-2 text-sm font-bold text-cyan-400 hover:text-cyan-300 transition-colors mt-6">
                                     View Demo EPK <ArrowRight className="w-4 h-4" />
                                 </Link>
                             </div>

@@ -61,7 +61,7 @@ export default function AccountSettingsForm({ user, profile }: { user: any, prof
                         <label className="block text-sm font-medium text-slate-300 mb-2">Username (Public URL)</label>
                         <div className="flex rounded-md shadow-sm">
                             <span className="inline-flex items-center px-4 rounded-l-lg border border-r-0 border-slate-700 bg-slate-800 text-slate-400 sm:text-sm">
-                                djpromokit.com/epk/
+                                djpromokit.com/
                             </span>
                             <input type="text" name="username" defaultValue={profile.username} required className="flex-1 min-w-0 block w-full px-4 py-3 rounded-none rounded-r-lg bg-slate-900 border border-slate-700 text-white focus:border-purple-500 outline-none sm:text-sm" />
                         </div>

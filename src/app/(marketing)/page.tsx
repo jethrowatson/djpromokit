@@ -45,7 +45,7 @@ export default function Home() {
                             Start free
                             <ArrowRight className="ml-2 w-5 h-5" />
                         </Link>
-                        <Link href="/epk/alexrivera" className="inline-flex items-center justify-center rounded-xl glass-panel px-8 py-4 text-base font-bold text-white hover:bg-white/10 transition-all w-full sm:w-auto">
+                        <Link href="/alexrivera" className="inline-flex items-center justify-center rounded-xl glass-panel px-8 py-4 text-base font-bold text-white hover:bg-white/10 transition-all w-full sm:w-auto">
                             See an example
                         </Link>
                     </div>

@@ -22,7 +22,7 @@ export default async function DashboardHome() {
     if (!profile) redirect('/onboarding/step-1');
 
     const isPublished = profile.is_published;
-    const link = `djpromokit.com/epk/${profile.username}`;
+    const link = `djpromokit.com/${profile.username}`;
 
     return (
         <div className="max-w-5xl mx-auto animate-fade-in">
@@ -70,7 +70,7 @@ export default async function DashboardHome() {
                     </div>
 
                     <div className="mt-8 flex gap-4 relative z-10">
-                        <Link href={`/epk/${profile.username}`} className="inline-flex items-center gap-2 text-sm font-bold text-slate-300 hover:text-white transition-colors bg-white/5 px-4 py-2 rounded-lg border border-white/5 hover:bg-white/10">
+                        <Link href={`/${profile.username}`} className="inline-flex items-center gap-2 text-sm font-bold text-slate-300 hover:text-white transition-colors bg-white/5 px-4 py-2 rounded-lg border border-white/5 hover:bg-white/10">
                             <Eye className="w-4 h-4" /> View Live Form
                         </Link>
                     </div>

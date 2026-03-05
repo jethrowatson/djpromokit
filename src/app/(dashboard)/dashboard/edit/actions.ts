@@ -90,7 +90,7 @@ export async function saveFullProfile(formData: FormData) {
 
     revalidatePath('/dashboard/edit');
     revalidatePath('/dashboard');
-    revalidatePath(`/epk/[username]`, 'page');
+    revalidatePath(`/[username]`, 'page');
 
     return { success: true };
 }

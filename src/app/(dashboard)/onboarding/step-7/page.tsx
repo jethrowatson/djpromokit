@@ -92,7 +92,7 @@ export default async function Step7Preview() {
 
                 <div className="absolute top-6 right-6 z-30">
                     <Link
-                        href={`/epk/${profile.username}?preview=true`}
+                        href={`/${profile.username}?preview=true`}
                         target="_blank"
                         className="flex items-center gap-2 px-4 py-2 rounded-lg bg-slate-900/80 backdrop-blur text-white text-sm font-bold border border-white/10 hover:bg-slate-800 transition-colors pointer-events-auto shadow-2xl"
                     >
@@ -107,7 +107,7 @@ export default async function Step7Preview() {
                         <Lock className="w-4 h-4 text-slate-400" /> Your Private Link
                     </h3>
                     <div className="flex bg-slate-900 rounded-lg p-3 border border-slate-700">
-                        <span className="text-slate-500 font-mono truncate">djpromokit.com/epk/{profile.username}</span>
+                        <span className="text-slate-500 font-mono truncate">djpromokit.com/{profile.username}</span>
                     </div>
                     <p className="text-xs text-slate-500 mt-2">This link is disabled until you publish your EPK.</p>
                 </div>
