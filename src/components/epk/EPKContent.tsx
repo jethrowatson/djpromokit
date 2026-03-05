@@ -1,6 +1,9 @@
-import Link from "next/link";
+"use client";
+
+import React, { useState } from "react";
 import { AudioWaveform, MapPin, Music, Mail, Download, Instagram, Youtube, ExternalLink, CalendarDays, Zap, Radio, Headphones, Users, Play } from "lucide-react";
 import MixEmbed from "@/components/ui/MixEmbed";
+import BookingModal from "./BookingModal";
 
 export interface EPKProfileData {
     username: string;
@@ -84,6 +87,7 @@ function getDynamicHighlights(profile: EPKProfileData) {
 
 
 export default function EPKContent({ profile, isDraftMode = false }: { profile: EPKProfileData, isDraftMode?: boolean }) {
+    const [isBookingModalOpen, setIsBookingModalOpen] = useState(false);
     // Safe fallbacks
     const avatarUrl = profile.avatar || "https://images.unsplash.com/photo-1542222851-5b2da24ca1ea?q=80&w=1000&auto=format&fit=crop";
     const name = profile.name || "Unnamed DJ";
@@ -148,7 +152,7 @@ export default function EPKContent({ profile, isDraftMode = false }: { profile: 
                                 Book {name}
                             </a>
                         ) : (
-                            <button className="inline-flex flex-shrink-0 items-center justify-center px-8 py-4 rounded-2xl bg-white text-black font-bold text-lg hover:bg-slate-200 transition-colors shadow-xl">
+                            <button onClick={() => setIsBookingModalOpen(true)} className="inline-flex flex-shrink-0 items-center justify-center px-8 py-4 rounded-2xl bg-white text-black font-bold text-lg hover:bg-slate-200 transition-colors shadow-xl">
                                 <Mail className="w-5 h-5 mr-2" />
                                 Book {name}
                             </button>
@@ -333,6 +337,13 @@ export default function EPKContent({ profile, isDraftMode = false }: { profile: 
                 </div>
 
             </main>
+
+            <BookingModal
+                isOpen={isBookingModalOpen}
+                onClose={() => setIsBookingModalOpen(false)}
+                djName={name}
+                djEmail={profile.publicEmail || ""}
+            />
 
             {/* Footer / Branding */}
             <div className="flex items-center justify-center pt-8 border-t border-white/5 pb-8 relative z-10 w-full animate-fade-in" style={{ animationDelay: '500ms' }}>
