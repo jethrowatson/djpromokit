@@ -72,7 +72,7 @@ export default async function Signup(props: { searchParams: Promise<{ error?: st
                                         placeholder="djmarcus"
                                     />
                                 </div>
-                                <p className="mt-1 text-xs text-slate-500 text-right pr-1">djpromokit.com/dj/djmarcus</p>
+                                <p className="mt-1 text-xs text-slate-500 text-right pr-1">djpromokit.com/djmarcus</p>
                             </div>
                         </div>
 

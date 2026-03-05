@@ -18,11 +18,42 @@ export async function saveStep1Basics(formData: FormData) {
     const secondaryGenre = formData.get('secondaryGenre') as string;
     const tagline = formData.get('tagline') as string;
 
+    // 1. Fetch Existing Profile (prevent overwrite)
+    const { data: existingProfile } = await supabase
+        .from('profiles')
+        .select('username')
+        .eq('id', user.id)
+        .single();
+
+    // 2. Generate slug only if there is no existing username
+    let finalUsername = existingProfile?.username;
+
+    if (!finalUsername) {
+        // Fallback to metadata username or newly generated DJ Name slug
+        const metadataUsername = user.user_metadata?.username;
+        const slugifiedDjName = djName ? djName.toLowerCase().replace(/[^a-z0-9]/g, '') : '';
+
+        let candidateUsername = metadataUsername || slugifiedDjName || `dj_${user.id.substring(0, 6)}`;
+
+        // 3. Prevent Collisions for newly generated slugs
+        const { data: collisionCheck } = await supabase
+            .from('profiles')
+            .select('username')
+            .eq('username', candidateUsername)
+            .maybeSingle();
+
+        if (collisionCheck) {
+            finalUsername = `${candidateUsername}${user.id.substring(0, 4)}`;
+        } else {
+            finalUsername = candidateUsername;
+        }
+    }
+
     const { error } = await supabase
         .from('profiles')
         .upsert({
             id: user.id,
-            username: user.user_metadata?.username || `dj_${user.id.substring(0, 6)}`,
+            username: finalUsername,
             name: djName,
             location: location,
             genres: [primaryGenre, secondaryGenre].filter(Boolean),
