@@ -96,6 +96,7 @@ export default function EditProfileForm({ profile, media, socials }: EditProfile
                                 bucket="avatars"
                                 currentImageUrl={profile.avatar_url}
                                 onUploadComplete={async (url) => { await saveProfileAvatar(url); }}
+                                onDelete={async () => { await saveProfileAvatar(''); }}
                             />
                         </div>
                         <div className="flex-1">

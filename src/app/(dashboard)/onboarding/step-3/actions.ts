@@ -16,7 +16,7 @@ export async function saveProfileAvatar(avatarUrl: string) {
     if (error) return { success: false, error: error.message };
 
     revalidatePath('/onboarding/step-3');
-    revalidatePath('/dashboard');
+    revalidatePath('/dashboard', 'layout');
     return { success: true };
 }
 
@@ -39,6 +39,7 @@ export async function addPressShot(pressShotUrl: string) {
     if (error) return { success: false, error: error.message };
 
     revalidatePath('/onboarding/step-3');
+    revalidatePath('/dashboard', 'layout');
     return { success: true };
 }
 
@@ -57,5 +58,6 @@ export async function removePressShot(mediaId: string) {
     if (error) return { success: false, error: error.message };
 
     revalidatePath('/onboarding/step-3');
+    revalidatePath('/dashboard', 'layout');
     return { success: true };
 }
