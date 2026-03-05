@@ -147,7 +147,9 @@ export default function EditProfileForm({ profile, media, socials }: EditProfile
                     <div className="grid sm:grid-cols-2 gap-4">
                         {['instagram', 'soundcloud', 'youtube', 'mixcloud', 'spotify', 'ra'].map((platform) => (
                             <div key={platform}>
-                                <label className="block text-sm font-medium text-slate-300 mb-1 capitalize">{platform.replace('ra', 'Resident Advisor')}</label>
+                                <label className="block text-sm font-medium text-slate-300 mb-1 capitalize">
+                                    {platform === 'ra' ? 'Resident Advisor' : platform}
+                                </label>
                                 <input type="url" name={platform} defaultValue={socials[platform] || ''} className="w-full bg-slate-900 border border-slate-700 rounded-lg p-3 text-white focus:border-purple-500 outline-none" />
                             </div>
                         ))}

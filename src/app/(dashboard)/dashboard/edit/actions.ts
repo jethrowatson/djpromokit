@@ -13,8 +13,6 @@ export async function saveFullProfile(formData: FormData) {
     const tagline = formData.get('tagline') as string;
     const short_bio = formData.get('shortBio') as string;
     const long_bio = formData.get('longBio') as string;
-    const primaryGenre = formData.get('primaryGenre') as string;
-    const secondaryGenre = formData.get('secondaryGenre') as string;
 
     const booking_type = formData.get('bookingType') as 'form' | 'email';
     const public_email = formData.get('publicEmail') as string;
@@ -30,7 +28,6 @@ export async function saveFullProfile(formData: FormData) {
             tagline: tagline || null,
             short_bio: short_bio || null,
             long_bio: long_bio || null,
-            genres: [primaryGenre, secondaryGenre].filter(Boolean),
             booking_type,
             public_email: public_email || null,
             agent_name: agent_name || null,
@@ -43,10 +40,14 @@ export async function saveFullProfile(formData: FormData) {
 
     // Mixes
     const mixUrl = formData.get('mixUrl') as string;
+    await supabase.from('media').delete().match({ profile_id: user.id, type: 'featured_mix' });
+
     if (mixUrl) {
-        await supabase
+        const { error: mixError } = await supabase
             .from('media')
-            .upsert({ profile_id: user.id, type: 'featured_mix', url: mixUrl }, { onConflict: 'profile_id,type' });
+            .insert({ profile_id: user.id, type: 'featured_mix', url: mixUrl });
+
+        if (mixError) console.error('Mix Save Error:', mixError);
     }
 
     // Socials
@@ -63,7 +64,8 @@ export async function saveFullProfile(formData: FormData) {
     // Insert new
     if (socialsToInsert.length > 0) {
         // @ts-ignore
-        await supabase.from('social_links').insert(socialsToInsert);
+        const { error: socialError } = await supabase.from('social_links').insert(socialsToInsert);
+        if (socialError) console.error('Socials Save Error:', socialError);
     }
 
     revalidatePath('/dashboard/edit');
