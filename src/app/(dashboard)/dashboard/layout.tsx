@@ -1,11 +1,22 @@
 import Link from "next/link";
 import { Disc3, Copy, Eye, FileText, BarChart3, Settings, Play, Inbox } from "lucide-react";
 
-export default function DashboardLayout({
+import { createClient } from "@/lib/supabase/server";
+
+export default async function DashboardLayout({
     children,
 }: {
     children: React.ReactNode;
 }) {
+    const supabase = await createClient();
+    const { data: { user } } = await supabase.auth.getUser();
+    let username = '';
+
+    if (user) {
+        const { data } = await supabase.from('profiles').select('username').eq('id', user.id).single();
+        if (data) username = data.username;
+    }
+
     return (
         <div className="min-h-screen bg-slate-950 flex flex-col md:flex-row">
 
@@ -28,16 +39,16 @@ export default function DashboardLayout({
                     <Link href="/dashboard/requests" className="flex items-center justify-between gap-3 px-4 py-3 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 transition-colors font-medium">
                         <span className="flex items-center gap-3"><Inbox className="w-5 h-5" /> Booking Requests</span>
                     </Link>
-                    <Link href="/onboarding/step-1" className="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 transition-colors font-medium">
+                    <Link href="/dashboard/edit" className="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 transition-colors font-medium">
                         <FileText className="w-5 h-5" /> Edit Profile
                     </Link>
-                    <Link href="/epk/djmarcus" className="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 transition-colors font-medium">
+                    <Link href={username ? `/epk/${username}` : "#"} className="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 transition-colors font-medium">
                         <Eye className="w-5 h-5" /> View Live EPK
                     </Link>
                 </nav>
 
                 <div className="absolute bottom-0 w-full p-4 border-t border-white/5">
-                    <Link href="#" className="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 transition-colors font-medium">
+                    <Link href="/dashboard/settings" className="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 transition-colors font-medium">
                         <Settings className="w-5 h-5" /> Account Settings
                     </Link>
                 </div>
