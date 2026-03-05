@@ -15,7 +15,7 @@ export default async function Step4Bio() {
     const { data: profile } = await supabase
         .from('profiles')
         .select('short_bio, long_bio')
-        .eq('user_id', user.id)
+        .eq('id', user.id)
         .single();
     return (
         <div className="animate-fade-in">

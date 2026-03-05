@@ -12,7 +12,7 @@ export async function saveStep5Socials(formData: FormData) {
         redirect('/login');
     }
 
-    const { data: profile } = await supabase.from('profiles').select('id').eq('user_id', user.id).single();
+    const { data: profile } = await supabase.from('profiles').select('id').eq('id', user.id).single();
     if (!profile) throw new Error('Profile not found');
 
     const platforms = ['instagram', 'soundcloud', 'mixcloud', 'youtube', 'spotify', 'ra'];

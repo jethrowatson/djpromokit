@@ -11,7 +11,7 @@ export default async function Step6Booking() {
   const { data: profile } = await supabase
     .from('profiles')
     .select('booking_type, public_email, agent_name, fee_range, availability_notes')
-    .eq('user_id', user.id)
+    .eq('id', user.id)
     .single();
 
   const defaults = {

@@ -19,7 +19,7 @@ export async function saveStep2Mix(formData: FormData) {
         const { data: profile } = await supabase
             .from('profiles')
             .select('id')
-            .eq('user_id', user.id)
+            .eq('id', user.id)
             .single();
 
         if (profile) {

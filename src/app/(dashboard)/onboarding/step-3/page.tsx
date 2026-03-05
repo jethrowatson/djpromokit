@@ -14,7 +14,7 @@ export default async function Step3Photos() {
     const { data: profile } = await supabase
         .from('profiles')
         .select('id, avatar_url')
-        .eq('user_id', user.id)
+        .eq('id', user.id)
         .single();
 
     let pressShots: any[] = [];

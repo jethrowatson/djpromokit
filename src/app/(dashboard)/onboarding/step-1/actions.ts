@@ -26,7 +26,7 @@ export async function saveStep1Basics(formData: FormData) {
             genres: [primaryGenre, secondaryGenre].filter(Boolean),
             tagline: tagline || null,
         })
-        .eq('user_id', user.id);
+        .eq('id', user.id);
 
     if (error) {
         console.error('Failed to save Step 1 data:', error);

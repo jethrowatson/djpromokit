@@ -16,7 +16,7 @@ export default async function Step2Mix() {
     const { data: profile } = await supabase
         .from('profiles')
         .select('id')
-        .eq('user_id', user.id)
+        .eq('id', user.id)
         .single();
 
     let existingMixUrl = '';

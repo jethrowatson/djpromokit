@@ -11,7 +11,7 @@ export async function saveProfileAvatar(avatarUrl: string) {
     const { error } = await supabase
         .from('profiles')
         .update({ avatar_url: avatarUrl })
-        .eq('user_id', user.id);
+        .eq('id', user.id);
 
     if (error) return { success: false, error: error.message };
 
@@ -25,7 +25,7 @@ export async function addPressShot(pressShotUrl: string) {
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) return { success: false, error: 'Unauthorized' };
 
-    const { data: profile } = await supabase.from('profiles').select('id').eq('user_id', user.id).single();
+    const { data: profile } = await supabase.from('profiles').select('id').eq('id', user.id).single();
     if (!profile) return { success: false, error: 'Profile not found' };
 
     const { error } = await supabase

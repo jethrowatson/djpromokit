@@ -21,7 +21,7 @@ export async function saveStep4Bio(formData: FormData) {
             short_bio: shortBio || null,
             long_bio: longBio || null,
         })
-        .eq('user_id', user.id);
+        .eq('id', user.id);
 
     if (error) {
         console.error('Failed to save Step 4 data:', error);

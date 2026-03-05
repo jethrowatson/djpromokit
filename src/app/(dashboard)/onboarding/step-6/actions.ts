@@ -27,7 +27,7 @@ export async function saveStep6Booking(formData: FormData) {
             fee_range: feeRange || null,
             availability_notes: availNotes || null,
         })
-        .eq('user_id', user.id);
+        .eq('id', user.id);
 
     if (error) {
         console.error('Failed to save Step 6 data:', error);
