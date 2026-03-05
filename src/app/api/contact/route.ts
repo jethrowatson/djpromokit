@@ -5,7 +5,7 @@ import { z } from 'zod';
 
 const contactSchema = z.object({
     djName: z.string(),
-    to: z.string().email(),
+    djUsername: z.string(),
     senderName: z.string().min(2),
     senderEmail: z.string().email(),
     date: z.string(),
@@ -26,52 +26,45 @@ export async function POST(req: Request) {
         const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
         const supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey);
 
-        // We need to look up the DJ's profile ID based on the email we are sending to or their username
-        // Since the contact form currently just has the target email (`to`), we'll use that
+        // We need to look up the DJ's profile ID and email based on their username.
         const { data: profileData, error: profileError } = await supabaseAdmin
             .from('profiles')
-            .select('id')
-            .eq('public_email', data.to)
+            .select('id, public_email, users!inner(email)')
+            .eq('username', data.djUsername)
             .single();
 
-        let profileId = null;
-        if (profileData) {
-            profileId = profileData.id;
-        } else {
-            // Fallback: search by user email if public_email isn't set
-            const { data: fallbackData } = await supabaseAdmin
-                .from('profiles')
-                .select('id, users!inner(email)')
-                .eq('users.email', data.to)
-                .single();
-
-            if (fallbackData) profileId = fallbackData.id;
+        if (!profileData) {
+            return NextResponse.json({ error: 'DJ Profile not found' }, { status: 404 });
         }
 
-        if (profileId) {
-            const { error: insertError } = await supabaseAdmin
-                .from('booking_requests')
-                .insert({
-                    profile_id: profileId,
-                    sender_name: data.senderName,
-                    sender_email: data.senderEmail,
-                    event_date: data.date,
-                    location: data.location,
-                    event_type: data.eventType,
-                    offer: data.offer || null,
-                    message: data.message
-                });
+        const profileId = profileData.id;
+        const usersData = profileData.users as any;
+        const targetEmail = profileData.public_email || (Array.isArray(usersData) ? usersData[0]?.email : usersData?.email);
+        const { error: insertError } = await supabaseAdmin
+            .from('booking_requests')
+            .insert({
+                profile_id: profileId,
+                sender_name: data.senderName,
+                sender_email: data.senderEmail,
+                event_date: data.date,
+                location: data.location,
+                event_type: data.eventType,
+                offer: data.offer || null,
+                message: data.message
+            });
 
-            if (insertError) {
-                console.error('Failed to insert booking request to DB:', insertError);
-                // We log the error but still attempt to send the email so the DJ doesn't miss the lead completely
-            }
-        } else {
-            console.error('Could not find a profile ID for the target email:', data.to);
+        if (insertError) {
+            console.error('Failed to insert booking request to DB:', insertError);
+            // We log the error but still attempt to send the email so the DJ doesn't miss the lead completely
+        }
+
+        if (!targetEmail) {
+            // If the DJ has no email on file, return success because we saved it to the DB at least.
+            return NextResponse.json({ success: true, message: 'Message saved to dashboard only.' });
         }
 
         // 2. Send email via Resend
-        const result = await sendBookingInquiryEmail({ ...data, offer: data.offer || '' });
+        const result = await sendBookingInquiryEmail({ ...data, to: targetEmail, offer: data.offer || '' });
 
         if (!result.success) {
             return NextResponse.json({ error: 'Failed to send message' }, { status: 500 });

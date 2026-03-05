@@ -342,7 +342,7 @@ export default function EPKContent({ profile, isDraftMode = false }: { profile: 
                 isOpen={isBookingModalOpen}
                 onClose={() => setIsBookingModalOpen(false)}
                 djName={name}
-                djEmail={profile.publicEmail || ""}
+                djUsername={profile.username}
             />
 
             {/* Footer / Branding */}

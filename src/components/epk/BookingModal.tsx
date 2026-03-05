@@ -7,10 +7,10 @@ interface BookingModalProps {
     isOpen: boolean;
     onClose: () => void;
     djName: string;
-    djEmail: string;
+    djUsername: string;
 }
 
-export default function BookingModal({ isOpen, onClose, djName, djEmail }: BookingModalProps) {
+export default function BookingModal({ isOpen, onClose, djName, djUsername }: BookingModalProps) {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [status, setStatus] = useState<'idle' | 'success' | 'error'>('idle');
     const [errorMessage, setErrorMessage] = useState('');
@@ -26,7 +26,7 @@ export default function BookingModal({ isOpen, onClose, djName, djEmail }: Booki
         const formData = new FormData(e.currentTarget);
         const data = {
             djName,
-            to: djEmail,
+            djUsername,
             senderName: formData.get('senderName'),
             senderEmail: formData.get('senderEmail'),
             date: formData.get('date'),
