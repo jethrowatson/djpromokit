@@ -3,15 +3,30 @@
 import Link from "next/link";
 import { Copy, Eye, Download, DownloadCloud, Sparkles, CheckCircle2, TrendingUp, FileText } from "lucide-react";
 
-export default function DashboardHome() {
-    const isPublished = true;
-    const link = "djpromokit.com/dj/djmarcus";
+import { createClient } from "@/lib/supabase/server";
+import { redirect } from "next/navigation";
+
+export default async function DashboardHome() {
+    const supabase = await createClient();
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) redirect('/login');
+
+    const { data: profile } = await supabase
+        .from('profiles')
+        .select('name, username, is_published')
+        .eq('id', user.id)
+        .single();
+
+    if (!profile) redirect('/onboarding/step-1');
+
+    const isPublished = profile.is_published;
+    const link = `djpromokit.com/epk/${profile.username}`;
 
     return (
         <div className="max-w-5xl mx-auto animate-fade-in">
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-10">
                 <div>
-                    <h1 className="text-3xl font-extrabold text-white mb-1">Welcome back, Marcus</h1>
+                    <h1 className="text-3xl font-extrabold text-white mb-1">Welcome back, {profile.name}</h1>
                     <p className="text-slate-400">Your EPK is looking great.</p>
                 </div>
                 <div className="flex items-center gap-3">
@@ -46,7 +61,7 @@ export default function DashboardHome() {
                     </div>
 
                     <div className="mt-8 flex gap-4 relative z-10">
-                        <Link href="/epk/djmarcus" className="inline-flex items-center gap-2 text-sm font-bold text-slate-300 hover:text-white transition-colors bg-white/5 px-4 py-2 rounded-lg border border-white/5 hover:bg-white/10">
+                        <Link href={`/epk/${profile.username}`} className="inline-flex items-center gap-2 text-sm font-bold text-slate-300 hover:text-white transition-colors bg-white/5 px-4 py-2 rounded-lg border border-white/5 hover:bg-white/10">
                             <Eye className="w-4 h-4" /> View Live Form
                         </Link>
                     </div>
@@ -82,8 +97,9 @@ export default function DashboardHome() {
                     <div className="w-12 h-12 rounded-xl bg-slate-800 flex items-center justify-center mb-4 group-hover:bg-purple-600/20 transition-colors">
                         <FileText className="w-6 h-6 text-purple-400" />
                     </div>
-                    <h3 className="text-lg font-bold text-white mb-1">Generate PDF Press Kit</h3>
-                    <p className="text-sm text-slate-400">Download a beautifully formatted A4 PDF with clickable links to send as attachments.</p>
+                    <h3 className="text-lg font-bold text-white mb-1">Edit Profile</h3>
+                    <p className="text-sm text-slate-400">Update your bio, swap out press shots, add a new featured mix, and manage links.</p>
+                    <Link href="/dashboard/edit" className="absolute inset-0 z-10"><span className="sr-only">Edit Profile</span></Link>
                 </div>
 
                 <div className="glass-panel p-6 rounded-2xl border-white/5 hover:border-cyan-500/30 transition-colors group cursor-pointer relative overflow-hidden">
@@ -100,8 +116,9 @@ export default function DashboardHome() {
                     <div className="w-12 h-12 rounded-xl bg-slate-800 flex items-center justify-center mb-4">
                         <DownloadCloud className="w-6 h-6 text-slate-300" />
                     </div>
-                    <h3 className="text-lg font-bold text-white mb-1">Download Press Assets</h3>
-                    <p className="text-sm text-slate-400">Get a ZIP file containing all your uploaded high-res press shots and logos.</p>
+                    <h3 className="text-lg font-bold text-white mb-1">Generate PDF Press Kit</h3>
+                    <p className="text-sm text-slate-400">Download a beautifully formatted A4 PDF with clickable links to send as attachments.</p>
+                    <Link href="/dashboard" className="absolute inset-0 z-10"><span className="sr-only">Generate PDF</span></Link>
                 </div>
 
             </div>
