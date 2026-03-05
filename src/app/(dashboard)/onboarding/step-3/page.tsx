@@ -1,9 +1,31 @@
-"use client";
-
 import Link from "next/link";
-import { ArrowLeft, ArrowRight, Image as ImageIcon, UploadCloud } from "lucide-react";
+import { ArrowLeft, ArrowRight } from "lucide-react";
+import { createClient } from "@/lib/supabase/server";
+import { redirect } from "next/navigation";
+import ImageUpload from "@/components/ui/ImageUpload";
+import { saveProfileAvatar, addPressShot, removePressShot } from "./actions";
 
-export default function Step3Photos() {
+export default async function Step3Photos() {
+    const supabase = await createClient();
+
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) redirect('/login');
+
+    const { data: profile } = await supabase
+        .from('profiles')
+        .select('id, avatar_url')
+        .eq('user_id', user.id)
+        .single();
+
+    let pressShots: any[] = [];
+    if (profile) {
+        const { data } = await supabase
+            .from('media')
+            .select('*')
+            .eq('profile_id', profile.id)
+            .eq('type', 'press_shot');
+        if (data) pressShots = data;
+    }
     return (
         <div className="animate-fade-in">
             <div className="mb-8">
@@ -18,15 +40,14 @@ export default function Step3Photos() {
                     <p className="text-sm text-slate-400 mb-4">This will be the main image on your EPK.</p>
 
                     <div className="flex items-center gap-6">
-                        <div className="w-24 h-24 rounded-full bg-slate-800 border-2 border-dashed border-slate-600 flex items-center justify-center shrink-0">
-                            <UserAvatarPlaceholder />
-                        </div>
+                        <ImageUpload
+                            type="avatar"
+                            bucket="avatars"
+                            currentImageUrl={profile?.avatar_url}
+                            onUploadComplete={saveProfileAvatar}
+                        />
                         <div className="flex-1">
-                            <button className="inline-flex items-center justify-center rounded-lg glass-panel border-white/10 px-4 py-2 text-sm font-medium text-white hover:bg-white/5 transition-colors w-full sm:w-auto">
-                                <UploadCloud className="w-4 h-4 mr-2 text-purple-400" />
-                                Upload Image
-                            </button>
-                            <p className="text-xs text-slate-500 mt-2">Square, max 5MB. JPG or PNG.</p>
+                            <p className="text-xs text-slate-500 mt-2">Square, max 5MB. JPG or PNG. The image is saved automatically upon selection.</p>
                         </div>
                     </div>
                 </div>
@@ -39,21 +60,32 @@ export default function Step3Photos() {
                     <p className="text-sm text-slate-400 mb-4">Promoters will be able to download these in high-res for their flyers.</p>
 
                     <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
-                        {/* Add button */}
-                        <div className="aspect-[4/3] rounded-xl border-2 border-dashed border-slate-700 bg-slate-900/50 hover:bg-slate-800 transition-colors flex flex-col items-center justify-center cursor-pointer group">
-                            <div className="w-10 h-10 rounded-full bg-slate-800 group-hover:bg-purple-600 transition-colors flex items-center justify-center mb-2">
-                                <span className="text-xl text-white font-light">+</span>
-                            </div>
-                            <span className="text-xs text-slate-400 group-hover:text-white transition-colors">Add Photo</span>
-                        </div>
+                        {pressShots.map((shot) => (
+                            <ImageUpload
+                                key={shot.id}
+                                type="press_shot"
+                                bucket="press_shots"
+                                currentImageUrl={shot.url}
+                                onUploadComplete={async () => { }} // No-op as it's already uploaded
+                                onDelete={async () => {
+                                    await removePressShot(shot.id);
+                                }}
+                            />
+                        ))}
 
-                        {/* Placeholders for visuals */}
-                        <div className="aspect-[4/3] rounded-xl bg-slate-800 flex items-center justify-center opacity-50">
-                            <ImageIcon className="w-6 h-6 text-slate-600" />
-                        </div>
-                        <div className="aspect-[4/3] rounded-xl bg-slate-800 flex items-center justify-center opacity-50">
-                            <ImageIcon className="w-6 h-6 text-slate-600" />
-                        </div>
+                        {/* Add button placeholder - Only show if less than 5 */}
+                        {pressShots.length < 5 && (
+                            <ImageUpload
+                                type="press_shot"
+                                bucket="press_shots"
+                                onUploadComplete={addPressShot}
+                            />
+                        )}
+
+                        {/* Empty Space filler for aesthetic if no shots */}
+                        {pressShots.length === 0 && (
+                            <div className="aspect-[4/3] rounded-xl border-2 border-dashed border-slate-700/50 bg-slate-900/30 flex flex-col items-center justify-center"></div>
+                        )}
                     </div>
                     <p className="text-xs text-slate-500 mt-3">You can upload up to 5 additional images.</p>
                 </div>
@@ -84,13 +116,5 @@ export default function Step3Photos() {
                 </div>
             </div>
         </div>
-    );
-}
-
-function UserAvatarPlaceholder() {
-    return (
-        <svg className="w-10 h-10 text-slate-600" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" />
-        </svg>
     );
 }

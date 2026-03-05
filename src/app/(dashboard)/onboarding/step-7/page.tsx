@@ -1,10 +1,73 @@
-"use client";
-
 import Link from "next/link";
-import { ArrowLeft, CheckCircle2, Lock, Eye, CreditCard } from "lucide-react";
+import { ArrowLeft, Lock, Eye, CreditCard } from "lucide-react";
+import { createClient } from "@/lib/supabase/server";
+import { redirect } from "next/navigation";
+import EPKContent, { EPKProfileData } from "@/components/epk/EPKContent";
 
-export default function Step7Preview() {
-    const isComplete = true; // Mock completeness
+export default async function Step7Preview() {
+    const supabase = await createClient();
+
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) redirect('/login');
+
+    const { data: profile } = await supabase
+        .from('profiles')
+        .select('*')
+        .eq('user_id', user.id)
+        .single();
+
+    if (!profile) {
+        // Fallback to step-1 if no profile exists
+        redirect('/onboarding/step-1');
+    }
+
+    const { data: mediaItems } = await supabase
+        .from('media')
+        .select('*')
+        .eq('profile_id', profile.id);
+
+    const { data: socialLinks } = await supabase
+        .from('social_links')
+        .select('*')
+        .eq('profile_id', profile.id);
+
+    let pressShots: string[] = [];
+    let mixes: { title: string; url: string }[] = [];
+
+    if (mediaItems) {
+        mediaItems.forEach(item => {
+            if (item.type === 'press_shot' && item.url) {
+                pressShots.push(item.url);
+            }
+            if (item.type === 'featured_mix' && item.url) {
+                mixes.push({ title: item.title || 'Mix', url: item.url });
+            }
+        });
+    }
+
+    const socials: Record<string, string> = {};
+    if (socialLinks) {
+        socialLinks.forEach(link => {
+            if (link.url) socials[link.platform] = link.url;
+        });
+    }
+
+    const profileData: EPKProfileData = {
+        username: profile.username,
+        name: profile.name,
+        location: profile.location,
+        genres: profile.genres || [],
+        tagline: profile.tagline,
+        shortBio: profile.short_bio,
+        longBio: profile.long_bio,
+        bookingType: profile.booking_type || 'form',
+        publicEmail: profile.public_email,
+        avatar: profile.avatar_url,
+        pressShots,
+        mixes,
+        socials,
+        isPublished: profile.is_published
+    };
 
     return (
         <div className="animate-fade-in">
@@ -13,36 +76,23 @@ export default function Step7Preview() {
                 <p className="text-slate-400">Preview your EPK and publish it to the world.</p>
             </div>
 
-            {/* Mock EPK Preview Card */}
-            <div className="glass-panel p-2 rounded-3xl border-white/10 mb-8 relative overflow-hidden group">
-                {/* Watermark */}
-                <div className="absolute inset-0 z-20 flex items-center justify-center pointer-events-none bg-black/40 backdrop-blur-[2px]">
-                    <div className="border-4 border-white/20 rounded-xl px-6 py-3 -rotate-12">
-                        <span className="text-3xl font-black text-white/40 tracking-widest uppercase">Draft Mode</span>
+            {/* Live Rendered EPK Preview Card */}
+            <div className="glass-panel p-2 rounded-3xl border-white/10 mb-8 relative group overflow-hidden bg-slate-950">
+                <div className="w-full h-[500px] overflow-hidden rounded-2xl relative pointer-events-none">
+                    {/* Scale down the EPK content so it looks like a mini preview */}
+                    <div className="absolute top-0 left-0 w-[200%] h-[200%] origin-top-left scale-50">
+                        <EPKContent profile={profileData} isDraftMode={true} />
                     </div>
                 </div>
 
-                {/* Mini EPK visual */}
-                <div className="w-full h-[400px] bg-slate-900 rounded-2xl relative overflow-hidden pointer-events-none opacity-80">
-                    <div className="h-48 bg-gradient-to-br from-purple-600 to-cyan-600 relative">
-                        <div className="absolute -bottom-10 left-6 w-24 h-24 rounded-full border-4 border-slate-900 bg-slate-800"></div>
-                    </div>
-                    <div className="pt-14 px-6">
-                        <div className="h-6 w-1/3 bg-slate-800 rounded mb-2"></div>
-                        <div className="h-4 w-1/4 bg-slate-800 rounded mb-6"></div>
-                        <div className="h-24 w-full bg-slate-800 rounded mb-4"></div>
-                        <div className="grid grid-cols-3 gap-2">
-                            <div className="h-16 bg-slate-800 rounded"></div>
-                            <div className="h-16 bg-slate-800 rounded"></div>
-                            <div className="h-16 bg-slate-800 rounded"></div>
-                        </div>
-                    </div>
-                </div>
-
-                <div className="absolute top-4 right-4 z-30">
-                    <button className="flex items-center gap-2 px-4 py-2 rounded-lg bg-slate-900/80 backdrop-blur text-white text-sm font-bold border border-white/10 hover:bg-slate-800 transition-colors pointer-events-auto">
+                <div className="absolute top-6 right-6 z-30">
+                    <Link
+                        href={`/epk/${profile.username}?preview=true`}
+                        target="_blank"
+                        className="flex items-center gap-2 px-4 py-2 rounded-lg bg-slate-900/80 backdrop-blur text-white text-sm font-bold border border-white/10 hover:bg-slate-800 transition-colors pointer-events-auto shadow-2xl"
+                    >
                         <Eye className="w-4 h-4" /> Full Screen Preview
-                    </button>
+                    </Link>
                 </div>
             </div>
 
@@ -52,7 +102,7 @@ export default function Step7Preview() {
                         <Lock className="w-4 h-4 text-slate-400" /> Your Private Link
                     </h3>
                     <div className="flex bg-slate-900 rounded-lg p-3 border border-slate-700">
-                        <span className="text-slate-500 font-mono truncate">djpromokit.com/dj/djmarcus</span>
+                        <span className="text-slate-500 font-mono truncate">djpromokit.com/epk/{profile.username}</span>
                     </div>
                     <p className="text-xs text-slate-500 mt-2">This link is disabled until you publish your EPK.</p>
                 </div>
@@ -64,10 +114,10 @@ export default function Step7Preview() {
                     </p>
 
                     <div className="flex flex-col items-center gap-4">
-                        <button className="w-full flex items-center justify-center rounded-xl bg-purple-600 px-8 py-4 text-lg font-bold text-white shadow-[0_0_30px_-5px_#8b5cf6] hover:bg-purple-500 transition-all hover:-translate-y-1">
+                        <Link href="/dashboard" className="w-full flex items-center justify-center rounded-xl bg-purple-600 px-8 py-4 text-lg font-bold text-white shadow-[0_0_30px_-5px_#8b5cf6] hover:bg-purple-500 transition-all hover:-translate-y-1">
                             <CreditCard className="mr-2 w-5 h-5" />
                             Pay & Publish Now
-                        </button>
+                        </Link>
 
                         <Link href="/dashboard" className="text-sm font-bold text-slate-400 hover:text-white transition-colors">
                             I'll do this later, take me to dashboard

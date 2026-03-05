@@ -1,9 +1,27 @@
-"use client";
-
 import Link from "next/link";
 import { ArrowLeft, ArrowRight, Instagram, Youtube, Link as LinkIcon } from "lucide-react";
+import { createClient } from "@/lib/supabase/server";
+import { redirect } from "next/navigation";
+import { saveStep5Socials } from "./actions";
 
-export default function Step5Socials() {
+export default async function Step5Socials() {
+    const supabase = await createClient();
+
+    // Auth Check
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) redirect('/login');
+
+    const { data: profile } = await supabase.from('profiles').select('id').eq('user_id', user.id).single();
+
+    let existingSocials: Record<string, string> = {};
+    if (profile) {
+        const { data: links } = await supabase.from('social_links').select('platform, url').eq('profile_id', profile.id);
+        if (links) {
+            links.forEach(link => {
+                existingSocials[link.platform] = link.url;
+            });
+        }
+    }
     const socials = [
         { id: "instagram", label: "Instagram", placeholder: "instagram.com/djmarcus", icon: <Instagram className="h-5 w-5 text-slate-500" /> },
         { id: "soundcloud", label: "SoundCloud", placeholder: "soundcloud.com/djmarcus", icon: <LinkIcon className="h-5 w-5 text-slate-500" /> },
@@ -20,7 +38,7 @@ export default function Step5Socials() {
                 <p className="text-slate-400">Connect your fans and promoters to the rest of your presence online.</p>
             </div>
 
-            <form className="space-y-4">
+            <form action={saveStep5Socials} className="space-y-4">
                 <p className="text-sm text-slate-500 mb-6">All fields are optional, just fill in the ones you use.</p>
 
                 {socials.map((social) => (
@@ -36,6 +54,7 @@ export default function Step5Socials() {
                                 type="text"
                                 name={social.id}
                                 id={social.id}
+                                defaultValue={existingSocials[social.id] || ''}
                                 className="block w-full pl-10 bg-slate-900 border border-slate-700 text-white rounded-lg focus:ring-cyan-500 focus:border-cyan-500 sm:text-sm py-3 transition-colors"
                                 placeholder={social.placeholder}
                             />
@@ -58,13 +77,13 @@ export default function Step5Socials() {
                         >
                             Skip
                         </Link>
-                        <Link
-                            href="/onboarding/step-6"
+                        <button
+                            type="submit"
                             className="inline-flex items-center justify-center rounded-xl bg-purple-600 px-6 py-3 text-sm font-bold text-white shadow-sm hover:bg-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 focus:ring-offset-slate-900 transition-all hover-glow"
                         >
                             Save and Continue
                             <ArrowRight className="ml-2 w-4 h-4" />
-                        </Link>
+                        </button>
                     </div>
                 </div>
             </form>

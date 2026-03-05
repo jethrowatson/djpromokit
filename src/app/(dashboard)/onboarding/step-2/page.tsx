@@ -1,11 +1,37 @@
-"use client";
-
-import Link from "next/link";
+import { createClient } from "@/lib/supabase/server";
 import { ArrowLeft, ArrowRight, PlayCircle, Info } from "lucide-react";
-import { useState } from "react";
+import { redirect } from "next/navigation";
+import { saveStep2Mix } from "./actions";
+import MixEmbed from "@/components/ui/MixEmbed";
+import Link from "next/link";
 
-export default function Step2Mix() {
-    const [mixLink, setMixLink] = useState("");
+export default async function Step2Mix() {
+    const supabase = await createClient();
+
+    // Auth Check
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) redirect('/login');
+
+    // Fetch Profile Profile ID and then Featured Mix URL
+    const { data: profile } = await supabase
+        .from('profiles')
+        .select('id')
+        .eq('user_id', user.id)
+        .single();
+
+    let existingMixUrl = '';
+    if (profile) {
+        const { data: mixData } = await supabase
+            .from('media')
+            .select('url')
+            .eq('profile_id', profile.id)
+            .eq('type', 'featured_mix')
+            .single();
+
+        if (mixData) {
+            existingMixUrl = mixData.url;
+        }
+    }
 
     return (
         <div className="animate-fade-in">
@@ -21,7 +47,7 @@ export default function Step2Mix() {
                 </p>
             </div>
 
-            <form className="space-y-6">
+            <form action={saveStep2Mix} className="space-y-6">
                 <div>
                     <label htmlFor="mix-link" className="block text-sm font-medium text-slate-300">
                         Mix Link <span className="text-red-400">*</span>
@@ -32,22 +58,21 @@ export default function Step2Mix() {
                         </div>
                         <input
                             type="url"
-                            name="mix-link"
-                            id="mix-link"
-                            value={mixLink}
-                            onChange={(e) => setMixLink(e.target.value)}
+                            name="mixLink"
+                            id="mixLink"
+                            defaultValue={existingMixUrl}
                             className="block w-full pl-10 bg-slate-900 border border-slate-700 text-white rounded-lg focus:ring-purple-500 focus:border-purple-500 sm:text-sm py-3 transition-colors"
                             placeholder="https://soundcloud.com/djmarcus/summer-mix-2024"
                         />
                     </div>
                 </div>
 
-                {/* Mock Preview Area */}
-                {mixLink && (
-                    <div className="mt-6 p-4 border border-white/5 rounded-xl bg-slate-900 flex flex-col items-center justify-center min-h-[160px] animate-slide-up">
-                        <span className="text-sm text-slate-500 mb-2 font-mono">Simulated embed preview for:</span>
-                        <span className="text-cyan-400 text-xs truncate max-w-full px-4">{mixLink}</span>
-                        <div className="w-full max-w-[400px] h-1 bg-slate-800 rounded mt-4 overflow-hidden"><div className="w-1/3 h-full bg-purple-500"></div></div>
+                {existingMixUrl && (
+                    <div className="mt-6">
+                        <span className="text-sm text-slate-500 mb-4 block font-bold uppercase tracking-wider">Current Embed</span>
+                        <div className="animate-fade-in shadow-2xl rounded-2xl overflow-hidden ring-1 ring-white/10">
+                            <MixEmbed url={existingMixUrl} />
+                        </div>
                     </div>
                 )}
 
@@ -66,13 +91,13 @@ export default function Step2Mix() {
                         >
                             Skip
                         </Link>
-                        <Link
-                            href="/onboarding/step-3"
+                        <button
+                            type="submit"
                             className="inline-flex items-center justify-center rounded-xl bg-purple-600 px-6 py-3 text-sm font-bold text-white shadow-sm hover:bg-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 focus:ring-offset-slate-900 transition-all hover-glow"
                         >
                             Save and Continue
                             <ArrowRight className="ml-2 w-4 h-4" />
-                        </Link>
+                        </button>
                     </div>
                 </div>
             </form>

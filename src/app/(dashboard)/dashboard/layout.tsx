@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Disc3, Copy, Eye, FileText, BarChart3, Settings, Play } from "lucide-react";
+import { Disc3, Copy, Eye, FileText, BarChart3, Settings, Play, Inbox } from "lucide-react";
 
 export default function DashboardLayout({
     children,
@@ -24,6 +24,9 @@ export default function DashboardLayout({
                     </Link>
                     <Link href="/dashboard/stats" className="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 transition-colors font-medium">
                         <BarChart3 className="w-5 h-5" /> Statistics
+                    </Link>
+                    <Link href="/dashboard/requests" className="flex items-center justify-between gap-3 px-4 py-3 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 transition-colors font-medium">
+                        <span className="flex items-center gap-3"><Inbox className="w-5 h-5" /> Booking Requests</span>
                     </Link>
                     <Link href="/onboarding/step-1" className="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 transition-colors font-medium">
                         <FileText className="w-5 h-5" /> Edit Profile

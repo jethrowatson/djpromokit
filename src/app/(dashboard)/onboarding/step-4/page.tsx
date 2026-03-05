@@ -1,9 +1,22 @@
-"use client";
-
-import Link from "next/link";
+import { createClient } from "@/lib/supabase/server";
 import { ArrowLeft, ArrowRight, Lightbulb } from "lucide-react";
+import { redirect } from "next/navigation";
+import { saveStep4Bio } from "./actions";
+import Link from "next/link";
 
-export default function Step4Bio() {
+export default async function Step4Bio() {
+    const supabase = await createClient();
+
+    // Auth Check
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) redirect('/login');
+
+    // Fetch Profile
+    const { data: profile } = await supabase
+        .from('profiles')
+        .select('short_bio, long_bio')
+        .eq('user_id', user.id)
+        .single();
     return (
         <div className="animate-fade-in">
             <div className="mb-8">
@@ -21,15 +34,17 @@ export default function Step4Bio() {
                 </div>
             </div>
 
-            <form className="space-y-6">
+            <form action={saveStep4Bio} className="space-y-6">
                 <div>
                     <label htmlFor="short-bio" className="block text-sm font-medium text-slate-300">
                         Short Bio <span className="text-red-400">*</span>
                     </label>
                     <div className="mt-1">
                         <textarea
-                            id="short-bio"
-                            name="short-bio"
+                            id="shortBio"
+                            name="shortBio"
+                            required
+                            defaultValue={profile?.short_bio || ''}
                             rows={3}
                             className="block w-full px-4 bg-slate-900 border border-slate-700 text-white rounded-lg focus:ring-purple-500 focus:border-purple-500 sm:text-sm py-3 transition-colors"
                             placeholder="E.g. Based in London, DJ Marcus is known for high-energy tech house sets. With previous residencies at Fabric and Ministry of Sound, he brings..."
@@ -44,8 +59,9 @@ export default function Step4Bio() {
                     </label>
                     <div className="mt-1">
                         <textarea
-                            id="long-bio"
-                            name="long-bio"
+                            id="longBio"
+                            name="longBio"
+                            defaultValue={profile?.long_bio || ''}
                             rows={8}
                             className="block w-full px-4 bg-slate-900 border border-slate-700 text-white rounded-lg focus:ring-purple-500 focus:border-purple-500 sm:text-sm py-3 transition-colors"
                             placeholder="Your full background, influences, and notable gigs..."
@@ -65,11 +81,17 @@ export default function Step4Bio() {
                     <div className="flex gap-3">
                         <Link
                             href="/onboarding/step-5"
+                            className="inline-flex items-center px-4 py-2 text-sm font-medium text-slate-300 hover:text-white transition-colors"
+                        >
+                            Skip
+                        </Link>
+                        <button
+                            type="submit"
                             className="inline-flex items-center justify-center rounded-xl bg-purple-600 px-6 py-3 text-sm font-bold text-white shadow-sm hover:bg-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 focus:ring-offset-slate-900 transition-all hover-glow"
                         >
                             Save and Continue
                             <ArrowRight className="ml-2 w-4 h-4" />
-                        </Link>
+                        </button>
                     </div>
                 </div>
             </form>
