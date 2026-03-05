@@ -3,6 +3,7 @@ import { ArrowLeft, Lock, Eye, CreditCard } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import EPKContent, { EPKProfileData } from "@/components/epk/EPKContent";
+import CheckoutButton from "./CheckoutButton";
 
 export default async function Step7Preview() {
     const supabase = await createClient();
@@ -114,10 +115,7 @@ export default async function Step7Preview() {
                     </p>
 
                     <div className="flex flex-col items-center gap-4">
-                        <Link href="/dashboard" className="w-full flex items-center justify-center rounded-xl bg-purple-600 px-8 py-4 text-lg font-bold text-white shadow-[0_0_30px_-5px_#8b5cf6] hover:bg-purple-500 transition-all hover:-translate-y-1">
-                            <CreditCard className="mr-2 w-5 h-5" />
-                            Pay & Publish Now
-                        </Link>
+                        <CheckoutButton />
 
                         <Link href="/dashboard" className="text-sm font-bold text-slate-400 hover:text-white transition-colors">
                             I'll do this later, take me to dashboard

@@ -5,6 +5,7 @@ import { Copy, Eye, Download, DownloadCloud, Sparkles, CheckCircle2, TrendingUp,
 
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
+import PaymentStatusToast from "./PaymentStatusToast";
 
 export default async function DashboardHome() {
     const supabase = await createClient();
@@ -24,6 +25,7 @@ export default async function DashboardHome() {
 
     return (
         <div className="max-w-5xl mx-auto animate-fade-in">
+            <PaymentStatusToast />
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-10">
                 <div>
                     <h1 className="text-3xl font-extrabold text-white mb-1">Welcome back, {profile.name}</h1>
