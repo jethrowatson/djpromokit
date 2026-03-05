@@ -16,6 +16,7 @@ export default function ImageUpload({ type, bucket, currentImageUrl, onUploadCom
     const supabase = createClient();
     const [isUploading, setIsUploading] = useState(false);
     const [error, setError] = useState('');
+    const [localPreview, setLocalPreview] = useState<string | null>(null);
 
     const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
@@ -50,7 +51,8 @@ export default function ImageUpload({ type, bucket, currentImageUrl, onUploadCom
             // Get Public URL
             const { data } = supabase.storage.from(bucket).getPublicUrl(filePath);
 
-            onUploadComplete(data.publicUrl);
+            setLocalPreview(data.publicUrl);
+            await onUploadComplete(data.publicUrl);
         } catch (err: any) {
             console.error('Error uploading image:', err);
             setError(err.message || 'Error uploading image');
@@ -59,15 +61,20 @@ export default function ImageUpload({ type, bucket, currentImageUrl, onUploadCom
         }
     };
 
-    if (currentImageUrl) {
+    const displayUrl = localPreview || currentImageUrl;
+
+    if (displayUrl) {
         return (
             <div className={`relative group ${type === 'avatar' ? 'w-24 h-24 rounded-full' : 'aspect-[4/3] rounded-xl'} overflow-hidden bg-slate-800 border border-slate-700`}>
-                <img src={currentImageUrl} alt={type} className="w-full h-full object-cover" />
+                <img src={displayUrl} alt={type} className="w-full h-full object-cover" />
 
                 <div className="absolute inset-0 bg-slate-900/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center backdrop-blur-sm">
                     {onDelete && (
                         <button
-                            onClick={onDelete}
+                            onClick={() => {
+                                setLocalPreview(null);
+                                if (onDelete) onDelete();
+                            }}
                             type="button"
                             className="bg-red-500/20 text-red-500 hover:bg-red-500 hover:text-white p-2 rounded-full transition-colors"
                         >

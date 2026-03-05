@@ -20,13 +20,14 @@ export async function saveStep1Basics(formData: FormData) {
 
     const { error } = await supabase
         .from('profiles')
-        .update({
+        .upsert({
+            id: user.id,
+            username: user.user_metadata?.username || `dj_${user.id.substring(0, 6)}`,
             name: djName,
             location: location,
             genres: [primaryGenre, secondaryGenre].filter(Boolean),
             tagline: tagline || null,
-        })
-        .eq('id', user.id);
+        });
 
     if (error) {
         console.error('Failed to save Step 1 data:', error);
