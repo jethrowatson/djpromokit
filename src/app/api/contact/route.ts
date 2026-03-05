@@ -66,7 +66,7 @@ export async function POST(req: Request) {
 
         if (insertError) {
             console.error('Failed to insert booking request to DB:', insertError);
-            // We log the error but still attempt to send the email so the DJ doesn't miss the lead completely
+            return NextResponse.json({ error: 'Failed to save booking request.' }, { status: 500 });
         }
 
         if (!targetEmail) {
@@ -78,7 +78,8 @@ export async function POST(req: Request) {
         const result = await sendBookingInquiryEmail({ ...data, to: targetEmail, offer: data.offer || '' });
 
         if (!result.success) {
-            return NextResponse.json({ error: 'Failed to send message' }, { status: 500 });
+            console.warn('Booking saved to DB, but failed to send email notification:', result.error);
+            return NextResponse.json({ success: true, message: 'Message saved to dashboard.' });
         }
 
         return NextResponse.json({ success: true, message: 'Message sent successfully' });
