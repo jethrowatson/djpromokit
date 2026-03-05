@@ -81,24 +81,13 @@ function getDynamicHighlights(profile: EPKProfileData) {
     return highlights.slice(0, 3);
 }
 
-// Helper to generate visual mock stats based on username (stable per user)
-function getMockSocialStats(platform: string, username: string) {
-    const baseNum = (username.length * 3.7 + 12).toFixed(1);
-    const count = Math.floor(username.length * 8.4);
 
-    if (platform === 'instagram') return `${baseNum}k Followers`;
-    if (platform === 'soundcloud') return `${(Number(baseNum) * 0.8).toFixed(1)}k Followers • ${count} Tracks`;
-    if (platform === 'mixcloud') return `${count + 12} Exclusive Mixes`;
-    if (platform === 'youtube') return `${baseNum}k Subscribers • ${count + 30} Videos`;
-    if (platform === 'spotify') return `${(Number(baseNum) * 1.5).toFixed(1)}k Monthly Listeners`;
-    if (platform === 'ra') return `${count} Past Events`;
-    return 'Click to view profile';
-}
 
 export default function EPKContent({ profile, isDraftMode = false }: { profile: EPKProfileData, isDraftMode?: boolean }) {
     // Safe fallbacks
     const avatarUrl = profile.avatar || "https://images.unsplash.com/photo-1542222851-5b2da24ca1ea?q=80&w=1000&auto=format&fit=crop";
     const name = profile.name || "Unnamed DJ";
+    const heroBgUrl = profile.pressShots && profile.pressShots.length > 0 ? profile.pressShots[0] : avatarUrl;
 
     return (
         <div className="min-h-screen bg-[#020617] text-white selection:bg-purple-500/30 relative">
@@ -115,16 +104,15 @@ export default function EPKContent({ profile, isDraftMode = false }: { profile: 
 
             {/* 1. Hero Section */}
             <section className="relative w-full h-[60vh] md:h-[70vh] flex items-end pb-12 overflow-hidden border-b border-white/10">
-                {/* Background Image (Blurred Avatar) */}
-                <div className="absolute inset-0 bg-slate-900 z-0 overflow-hidden">
+                {/* Background Image (Press Asset or Avatar) */}
+                <div className="absolute inset-0 bg-[#020617] z-0 overflow-hidden">
                     <div
-                        className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-50 blur-2xl scale-110 mix-blend-overlay"
-                        style={{ backgroundImage: `url(${avatarUrl})` }}
+                        className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-30 mix-blend-luminosity scale-105 blur-[2px]"
+                        style={{ backgroundImage: `url(${heroBgUrl})` }}
                     ></div>
-                    <div className="absolute top-1/2 left-1/4 w-[800px] h-[800px] bg-purple-600/30 rounded-full blur-[120px] mix-blend-screen -translate-y-1/2"></div>
-                    <div className="absolute bottom-0 right-1/4 w-[600px] h-[600px] bg-cyan-500/20 rounded-full blur-[100px] mix-blend-screen"></div>
-                    <div className="absolute inset-0 bg-[#020617]/60 mix-blend-overlay"></div>
-                    <div className="absolute inset-0 bg-gradient-to-t from-[#020617] via-[#020617]/80 to-transparent"></div>
+                    <div className="absolute top-1/2 left-1/4 w-[800px] h-[800px] bg-purple-600/20 rounded-full blur-[120px] mix-blend-screen -translate-y-1/2"></div>
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#020617] via-[#020617]/70 to-transparent"></div>
+                    <div className="absolute inset-0 bg-gradient-to-r from-[#020617] via-transparent to-[#020617]/50 mix-blend-overlay"></div>
                 </div>
 
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full relative z-10 flex flex-col md:flex-row md:items-end md:justify-between gap-8 animate-slide-up">
@@ -272,10 +260,7 @@ export default function EPKContent({ profile, isDraftMode = false }: { profile: 
                                             <div className="w-10 h-10 rounded-full bg-pink-500/10 flex items-center justify-center group-hover:bg-pink-500/20 transition-colors">
                                                 <Instagram className="w-5 h-5 text-pink-400" />
                                             </div>
-                                            <div>
-                                                <span className="block font-bold text-slate-200 group-hover:text-white transition-colors">Instagram</span>
-                                                <span className="block text-xs text-slate-500 mt-0.5">{getMockSocialStats('instagram', profile.username)}</span>
-                                            </div>
+                                            <span className="font-bold text-slate-200 group-hover:text-white transition-colors">Instagram</span>
                                         </div>
                                         <ExternalLink className="w-4 h-4 text-slate-600 group-hover:text-slate-400" />
                                     </a>
@@ -286,10 +271,7 @@ export default function EPKContent({ profile, isDraftMode = false }: { profile: 
                                             <div className="w-10 h-10 rounded-full bg-orange-500/10 flex items-center justify-center group-hover:bg-orange-500/20 transition-colors">
                                                 <svg className="w-5 h-5 text-orange-500" fill="currentColor" viewBox="0 0 24 24"><path d="M11.536 12.89L11 9l-1-2-.536-1.11h-.032L8.9 6.89l-1 2-.536 4H7.33L8.4 17.51a.634.634 0 00.569.38h1.8a.64.64 0 00.574-.4l.794-4.6zM22.04 15.61l-1.92-3.8A3.01 3.01 0 0017.44 10H13.6L12.92 6a3.67 3.67 0 00-7.23 0L5.01 10H1.56a3.01 3.01 0 00-2.68 1.81l-1.92 3.8A3 3 0 000 18.02V20h22v-1.98a3 3 0 00-2.96-2.41z" /></svg>
                                             </div>
-                                            <div>
-                                                <span className="block font-bold text-slate-200 group-hover:text-white transition-colors">SoundCloud</span>
-                                                <span className="block text-xs text-slate-500 mt-0.5">{getMockSocialStats('soundcloud', profile.username)}</span>
-                                            </div>
+                                            <span className="font-bold text-slate-200 group-hover:text-white transition-colors">SoundCloud</span>
                                         </div>
                                         <ExternalLink className="w-4 h-4 text-slate-600 group-hover:text-slate-400" />
                                     </a>
@@ -300,10 +282,7 @@ export default function EPKContent({ profile, isDraftMode = false }: { profile: 
                                             <div className="w-10 h-10 rounded-full bg-indigo-500/10 flex items-center justify-center group-hover:bg-indigo-500/20 transition-colors">
                                                 <Headphones className="w-5 h-5 text-indigo-400" />
                                             </div>
-                                            <div>
-                                                <span className="block font-bold text-slate-200 group-hover:text-white transition-colors">Mixcloud</span>
-                                                <span className="block text-xs text-slate-500 mt-0.5">{getMockSocialStats('mixcloud', profile.username)}</span>
-                                            </div>
+                                            <span className="font-bold text-slate-200 group-hover:text-white transition-colors">Mixcloud</span>
                                         </div>
                                         <ExternalLink className="w-4 h-4 text-slate-600 group-hover:text-slate-400" />
                                     </a>
@@ -314,10 +293,7 @@ export default function EPKContent({ profile, isDraftMode = false }: { profile: 
                                             <div className="w-10 h-10 rounded-full bg-red-500/10 flex items-center justify-center group-hover:bg-red-500/20 transition-colors">
                                                 <Youtube className="w-5 h-5 text-red-500" />
                                             </div>
-                                            <div>
-                                                <span className="block font-bold text-slate-200 group-hover:text-white transition-colors">YouTube</span>
-                                                <span className="block text-xs text-slate-500 mt-0.5">{getMockSocialStats('youtube', profile.username)}</span>
-                                            </div>
+                                            <span className="font-bold text-slate-200 group-hover:text-white transition-colors">YouTube</span>
                                         </div>
                                         <ExternalLink className="w-4 h-4 text-slate-600 group-hover:text-slate-400" />
                                     </a>
@@ -328,10 +304,7 @@ export default function EPKContent({ profile, isDraftMode = false }: { profile: 
                                             <div className="w-10 h-10 rounded-full bg-green-500/10 flex items-center justify-center group-hover:bg-green-500/20 transition-colors">
                                                 <Play className="w-5 h-5 text-green-500" />
                                             </div>
-                                            <div>
-                                                <span className="block font-bold text-slate-200 group-hover:text-white transition-colors">Spotify</span>
-                                                <span className="block text-xs text-slate-500 mt-0.5">{getMockSocialStats('spotify', profile.username)}</span>
-                                            </div>
+                                            <span className="font-bold text-slate-200 group-hover:text-white transition-colors">Spotify</span>
                                         </div>
                                         <ExternalLink className="w-4 h-4 text-slate-600 group-hover:text-slate-400" />
                                     </a>
@@ -342,10 +315,7 @@ export default function EPKContent({ profile, isDraftMode = false }: { profile: 
                                             <div className="w-10 h-10 rounded-full bg-slate-500/10 flex items-center justify-center group-hover:bg-slate-500/20 transition-colors">
                                                 <Users className="w-5 h-5 text-slate-400" />
                                             </div>
-                                            <div>
-                                                <span className="block font-bold text-slate-200 group-hover:text-white transition-colors">Resident Advisor</span>
-                                                <span className="block text-xs text-slate-500 mt-0.5">{getMockSocialStats('ra', profile.username)}</span>
-                                            </div>
+                                            <span className="font-bold text-slate-200 group-hover:text-white transition-colors">Resident Advisor</span>
                                         </div>
                                         <ExternalLink className="w-4 h-4 text-slate-600 group-hover:text-slate-400" />
                                     </a>
