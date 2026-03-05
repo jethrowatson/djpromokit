@@ -1,4 +1,4 @@
-"use client";
+
 
 import { BarChart3, Users, MousePointerClick, Globe, ArrowUpRight, ArrowLeft } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";

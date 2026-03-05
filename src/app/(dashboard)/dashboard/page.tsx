@@ -1,4 +1,4 @@
-"use client";
+
 
 import Link from "next/link";
 import { Copy, Eye, Download, DownloadCloud, Sparkles, CheckCircle2, TrendingUp, FileText } from "lucide-react";
