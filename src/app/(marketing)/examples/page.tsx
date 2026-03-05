@@ -5,39 +5,45 @@ export default function Examples() {
     const examples = [
         {
             name: "Alex Rivera",
+            username: "alexrivera",
             genre: "Tech House / Techno",
             location: "London, UK",
-            image: "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?q=80&w=1000&auto=format&fit=crop",
+            image: "/examples/alex.png",
         },
         {
             name: "DJ Sarah",
+            username: "djsarah",
             genre: "Wedding & Events",
             location: "Manchester, UK",
-            image: "https://images.unsplash.com/photo-1571266028243-3716f02d2d2e?q=80&w=1000&auto=format&fit=crop",
+            image: "/examples/sarah.png",
         },
         {
             name: "DJ Marcus",
+            username: "djmarcus",
             genre: "Hip Hop / R&B",
             location: "Birmingham, UK",
-            image: "https://images.unsplash.com/photo-1605330419139-9ea266f8510a?q=80&w=1000&auto=format&fit=crop",
+            image: "/examples/marcus.png",
         },
         {
             name: "Elena Dub",
+            username: "elenadub",
             genre: "Dubstep / Bass",
             location: "Bristol, UK",
-            image: "https://images.unsplash.com/photo-1470229722913-7c090be5f524?q=80&w=1000&auto=format&fit=crop",
+            image: "/examples/elena.png",
         },
         {
             name: "DJ Flow",
+            username: "djflow",
             genre: "Deep House",
             location: "Brighton, UK",
-            image: "https://images.unsplash.com/photo-1520113885141-94947dc16d7a?q=80&w=1000&auto=format&fit=crop",
+            image: "/examples/flow.png",
         },
         {
             name: "The Twins",
+            username: "thetwins",
             genre: "EDM / Mainstage",
             location: "Leeds, UK",
-            image: "https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?q=80&w=1000&auto=format&fit=crop",
+            image: "/examples/twins.png",
         },
     ];
 
@@ -68,7 +74,7 @@ export default function Examples() {
                                     <span className="text-sm font-medium px-2 py-1 rounded bg-slate-800 text-slate-300">{ex.genre}</span>
                                     <span className="text-sm text-slate-500">{ex.location}</span>
                                 </div>
-                                <Link href={`/${ex.name.toLowerCase().replace(" ", "")}`} className="flex items-center gap-2 text-sm font-bold text-cyan-400 hover:text-cyan-300 transition-colors mt-6">
+                                <Link href={`/${ex.username}`} className="flex items-center gap-2 text-sm font-bold text-cyan-400 hover:text-cyan-300 transition-colors mt-6">
                                     View Demo EPK <ArrowRight className="w-4 h-4" />
                                 </Link>
                             </div>
