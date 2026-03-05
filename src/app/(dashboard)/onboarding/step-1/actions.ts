@@ -21,7 +21,7 @@ export async function saveStep1Basics(formData: FormData) {
     const { error } = await supabase
         .from('profiles')
         .update({
-            full_name: djName,
+            name: djName,
             location: location,
             genres: [primaryGenre, secondaryGenre].filter(Boolean),
             tagline: tagline || null,

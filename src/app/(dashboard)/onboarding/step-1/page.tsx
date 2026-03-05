@@ -13,7 +13,7 @@ export default async function Step1Basics() {
     // Fetch Profile
     const { data: profile } = await supabase
         .from('profiles')
-        .select('full_name, location, genres, tagline')
+        .select('name, location, genres, tagline')
         .eq('user_id', user.id)
         .single();
 
@@ -44,7 +44,7 @@ export default async function Step1Basics() {
                             type="text"
                             name="djName"
                             id="djName"
-                            defaultValue={profile?.full_name || ''}
+                            defaultValue={profile?.name || ''}
                             required
                             className="block w-full pl-10 bg-slate-900 border border-slate-700 text-white rounded-lg focus:ring-purple-500 focus:border-purple-500 sm:text-sm py-3 transition-colors"
                             placeholder="e.g. Calvin Harris"
