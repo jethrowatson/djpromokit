@@ -23,8 +23,8 @@ export async function GET(req: Request) {
             bio: "London-born Alex Rivera has been a staple in the underground tech house scene for over a decade. Known for his rolling basslines and hypnotic grooves, Alex has held residencies at some of Ibiza's most iconic clubs.",
             tagline: "Rolling basslines & hypnotic grooves.",
             tracks: [
-                { title: "Midnight Roller (Original Mix)", url: "https://soundcloud.com/alexrivera/midnight" },
-                { title: "Warehouse Vibes", url: "https://soundcloud.com/alexrivera/warehouse" }
+                { title: "Defected Radio Show", url: "https://soundcloud.com/defectedrecords/defected-radio-show-hosted-by-sam-divine-1724" },
+                { title: "Ibiza Closing Set", url: "https://soundcloud.com/rinsefm/rinse-fm-podcast-24" }
             ],
             gigs: [
                 { venue: "Printworks", date: "2024-11-15", details: "Main Room Closing Set", is_upcoming: true },
@@ -40,7 +40,7 @@ export async function GET(req: Request) {
             bio: "With over 500 successful weddings and corporate events under her belt, Sarah is Manchester's premier luxury event DJ. She seamlessly blends decades of hits to keep dancefloors packed from dusk till dawn.",
             tagline: "Soundtracking your perfect moments.",
             tracks: [
-                { title: "Peak Time Wedding Mix 2024", url: "https://mixcloud.com/djsarah/wedding-mix" }
+                { title: "Peak Time Wedding Mix 2024", url: "https://www.mixcloud.com/lorenzoal-dinn/wedding-dj-set-2022-dj-lorenzo-al-dinn/" }
             ],
             gigs: [
                 { venue: "The Midland Hotel", date: "2024-12-05", details: "Corporate Gala", is_upcoming: true },
@@ -56,7 +56,7 @@ export async function GET(req: Request) {
             bio: "Marcus brings authentic urban energy to every set. From classic 90s hip hop to modern drill and afrobeats, his technical scratch skills and unmatched track selection have made him a highly sought-after talent.",
             tagline: "Authentic urban energy & technical scratches.",
             tracks: [
-                { title: "Summer Vibes Mix", url: "https://soundcloud.com/djmarcus/summer" }
+                { title: "Summer Vibes Mix", url: "https://soundcloud.com/djcity/djcity-podcast-dj-santana" }
             ],
             gigs: [
                 { venue: "O2 Academy", date: "2024-11-20", details: "Supporting Act", is_upcoming: true },
@@ -72,7 +72,7 @@ export async function GET(req: Request) {
             bio: "Hailing from Bristol, the pioneer city of bass music, Elena Dub delivers face-melting, high-energy sets. Her unreleased dubplates and chaotic mixing style always leave the crowd begging for a reload.",
             tagline: "Face-melting bass & unreleased dubplates.",
             tracks: [
-                { title: "Lost In The Bass", url: "https://soundcloud.com/elenadub/lost" }
+                { title: "UKF Podcast 145", url: "https://soundcloud.com/ukf/ukf-podcast-145-koven" }
             ],
             gigs: [
                 { venue: "Motion Bristol", date: "2024-12-31", details: "NYE Bass Fest", is_upcoming: true },
@@ -88,7 +88,7 @@ export async function GET(req: Request) {
             bio: "The king of the sunset session. DJ Flow specializes in organic, melodic deep house. His sets are designed to take listeners on an emotional journey, perfect for beach clubs and open-air lounges.",
             tagline: "Organic, melodic sunset sessions.",
             tracks: [
-                { title: "Sunset Sessions Vol. 1", url: "https://soundcloud.com/djflow/sunset" }
+                { title: "The Anjunadeep Edition", url: "https://soundcloud.com/anjunadeep/the-anjunadeep-edition-442-with-james-grant-jody-wisternoff" }
             ],
             gigs: [
                 { venue: "Shooshh Brighton", date: "2024-11-01", details: "Terrace Party", is_upcoming: true },
@@ -104,7 +104,7 @@ export async function GET(req: Request) {
             bio: "Mainstage energy. Identical twin brothers who have taken the festival scene by storm. Their explosive big-room sound and syncopated jumping routines make every set an unforgettable stadium experience.",
             tagline: "Explosive mainstage big-room energy.",
             tracks: [
-                { title: "Festival Anthem Live", url: "https://soundcloud.com/thetwins/anthem" }
+                { title: "Hardwell On Air 500", url: "https://soundcloud.com/hardwell/hardwell-on-air-500" }
             ],
             gigs: [
                 { venue: "Creamfields", date: "2025-08-25", details: "Mainstage", is_upcoming: true },
