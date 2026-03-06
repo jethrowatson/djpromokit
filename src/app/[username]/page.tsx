@@ -1,6 +1,50 @@
 import { createClient } from "@/lib/supabase/server";
 import { notFound } from "next/navigation";
 import EPKContent, { EPKProfileData } from "@/components/epk/EPKContent";
+import { Metadata, ResolvingMetadata } from "next";
+
+export async function generateMetadata(
+    props: { params: Promise<{ username: string }> },
+    parent: ResolvingMetadata
+): Promise<Metadata> {
+    const params = await props.params;
+    const supabase = await createClient();
+
+    const { data: profile } = await supabase
+        .from('profiles')
+        .select('name, tagline, short_bio, avatar_url, location')
+        .eq('username', params.username)
+        .single();
+
+    if (!profile) {
+        return {
+            title: 'Profile Not Found | DJ Promo Kit',
+        };
+    }
+
+    const title = `${profile.name} | DJ Promo Kit`;
+    const description = profile.short_bio || profile.tagline || `Check out ${profile.name}'s official DJ Promo Kit from ${profile.location || 'their location'}.`;
+    const images = profile.avatar_url ? [{ url: profile.avatar_url, width: 800, height: 600, alt: profile.name }] : [];
+
+    return {
+        title,
+        description,
+        openGraph: {
+            title,
+            description,
+            url: `https://djpromokit.com/${params.username}`,
+            type: 'profile',
+            images,
+        },
+        twitter: {
+            card: 'summary_large_image',
+            title,
+            description,
+            images: profile.avatar_url ? [profile.avatar_url] : [],
+        }
+    };
+}
+
 
 export default async function EPKProfilePage(props: { params: Promise<{ username: string }>, searchParams: Promise<{ preview?: string }> }) {
     const params = await props.params;
