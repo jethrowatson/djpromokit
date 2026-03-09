@@ -92,7 +92,7 @@ export default async function DashboardHome() {
 
                     <div className="mt-8 flex gap-4 relative z-10">
                         <Link href={`/${profile.username}?preview=true`} className="inline-flex items-center gap-2 text-sm font-bold text-slate-300 hover:text-white transition-colors bg-white/5 px-4 py-2 rounded-lg border border-white/5 hover:bg-white/10">
-                            <Eye className="w-4 h-4" /> View Live Form
+                            <Eye className="w-4 h-4" /> View Live Profile
                         </Link>
                     </div>
                 </div>

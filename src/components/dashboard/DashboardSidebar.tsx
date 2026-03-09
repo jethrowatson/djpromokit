@@ -24,7 +24,7 @@ export const DashboardSidebar = ({ username, logoutAction }: DashboardSidebarPro
         { name: 'Statistics', href: '/dashboard/stats', icon: BarChart3 },
         { name: 'Booking Requests', href: '/dashboard/requests', icon: Inbox },
         { name: 'Edit Profile', href: '/dashboard/edit', icon: FileText },
-        { name: 'View Live EPK', href: username ? `/${username}?preview=true` : "#", icon: Eye },
+        { name: 'View Live Profile', href: username ? `/${username}?preview=true` : "#", icon: Eye },
     ];
 
     const LinkItem = ({ href, icon: Icon, children }: any) => {
@@ -34,8 +34,8 @@ export const DashboardSidebar = ({ username, logoutAction }: DashboardSidebarPro
                 href={href}
                 onClick={closeNav}
                 className={`flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-colors ${active
-                        ? 'bg-purple-500/10 text-purple-400 border border-purple-500/20'
-                        : 'text-slate-400 hover:text-white hover:bg-slate-800 border border-transparent'
+                    ? 'bg-purple-500/10 text-purple-400 border border-purple-500/20'
+                    : 'text-slate-400 hover:text-white hover:bg-slate-800 border border-transparent'
                     }`}
             >
                 <Icon className="w-5 h-5" />
