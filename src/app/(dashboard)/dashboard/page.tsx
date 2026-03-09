@@ -61,12 +61,12 @@ export default async function DashboardHome() {
                     <h2 className="text-xl font-bold text-white mb-2 relative z-10">Your Public Link</h2>
                     <p className="text-slate-400 text-sm mb-6 relative z-10">Paste this into your Instagram bio or send it to promoters.</p>
 
-                    <div className="flex items-center gap-3 relative z-10">
-                        <div className="flex-1 bg-slate-900 border border-purple-500/30 rounded-xl px-4 py-3 flex items-center justify-between">
-                            <span className="text-cyan-400 font-mono sm:text-lg truncate">{link}</span>
+                    <div className="flex items-center gap-2 sm:gap-3 relative z-10 w-full">
+                        <div className="flex-1 min-w-0 bg-slate-900 border border-purple-500/30 rounded-xl px-3 sm:px-4 py-3 flex items-center">
+                            <span className="text-cyan-400 font-mono text-xs sm:text-sm md:text-lg truncate block w-full">{link}</span>
                         </div>
                         <button className="flex-shrink-0 bg-purple-600 hover:bg-purple-500 text-white p-3 rounded-xl shadow-lg transition-colors group relative" title="Copy Link">
-                            <Copy className="w-6 h-6 group-hover:scale-110 transition-transform" />
+                            <Copy className="w-5 h-5 sm:w-6 sm:h-6 group-hover:scale-110 transition-transform" />
                         </button>
                     </div>
 
