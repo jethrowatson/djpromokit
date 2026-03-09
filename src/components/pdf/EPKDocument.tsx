@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
         color: '#f8fafc',
     },
     hero: {
-        height: 220,
+        height: 200,
         position: 'relative',
         width: '100%',
         backgroundColor: '#0f172a',
@@ -92,14 +92,19 @@ const styles = StyleSheet.create({
     },
     mainLayout: {
         flexDirection: 'row',
-        padding: 40,
-        gap: 40,
+        paddingHorizontal: 40,
+        paddingTop: 30,
+        paddingBottom: 40,
+        gap: 30,
     },
-    leftColumn: {
-        flex: 1.5, // 60% approx
+    col1: {
+        flex: 1.3,
     },
-    rightColumn: {
-        flex: 1,   // 40% approx
+    col2: {
+        flex: 1.1,
+    },
+    col3: {
+        flex: 0.85,
     },
     section: {
         marginBottom: 16,
@@ -334,11 +339,11 @@ export const EPKDocument = ({ profile }: { profile: EPKProfileData }) => {
                     </View>
                 </View>
 
-                {/* 2 COLUMN LAYOUT MAIN CONTENT */}
+                {/* 3 COLUMN LAYOUT MAIN CONTENT */}
                 <View style={styles.mainLayout}>
 
-                    {/* LEFT COLUMN: BIO & MIXES */}
-                    <View style={styles.leftColumn}>
+                    {/* COLUMN 1: BIO & MIXES */}
+                    <View style={styles.col1}>
                         <View style={styles.section}>
                             <Text style={styles.sectionTitle}>Biography</Text>
                             {profile.shortBio && <Text style={styles.bioText}>{profile.shortBio}</Text>}
@@ -362,9 +367,24 @@ export const EPKDocument = ({ profile }: { profile: EPKProfileData }) => {
                         )}
                     </View>
 
-                    {/* RIGHT COLUMN: BOOKING, SOCIALS, PRESS CUTS */}
-                    <View style={styles.rightColumn}>
+                    {/* COLUMN 2: PRESS ASSETS */}
+                    <View style={styles.col2}>
+                        {profile.pressShots && profile.pressShots.length > 0 && (
+                            <View style={styles.section}>
+                                <Text style={styles.sectionTitle}>Press Assets (Click to HD)</Text>
+                                <View style={styles.pressShotContainer}>
+                                    {profile.pressShots.slice(0, 4).map((shot, i) => (
+                                        <Link key={i} src={shot} style={styles.pressShotLink}>
+                                            <Image src={shot} style={styles.pressShot} />
+                                        </Link>
+                                    ))}
+                                </View>
+                            </View>
+                        )}
+                    </View>
 
+                    {/* COLUMN 3: BOOKING & SOCIALS */}
+                    <View style={styles.col3}>
                         <View style={styles.section}>
                             <Text style={styles.sectionTitle}>Connect & Booking</Text>
                             <View style={styles.socialGrid}>
@@ -388,20 +408,6 @@ export const EPKDocument = ({ profile }: { profile: EPKProfileData }) => {
                                 ))}
                             </View>
                         </View>
-
-                        {profile.pressShots && profile.pressShots.length > 0 && (
-                            <View style={styles.section}>
-                                <Text style={styles.sectionTitle}>Press Assets (Click to HD)</Text>
-                                <View style={styles.pressShotContainer}>
-                                    {profile.pressShots.slice(0, 4).map((shot, i) => (
-                                        <Link key={i} src={shot} style={styles.pressShotLink}>
-                                            <Image src={shot} style={styles.pressShot} />
-                                        </Link>
-                                    ))}
-                                </View>
-                            </View>
-                        )}
-
                     </View>
                 </View>
 
