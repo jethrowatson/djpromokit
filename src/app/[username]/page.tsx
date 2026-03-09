@@ -126,7 +126,29 @@ export default async function EPKProfilePage(props: { params: Promise<{ username
 
     // Track Analytics Page View asynchronously (fire and forget)
     if (!isPreview && profile.is_published) {
-        await trackEvent(profile.id, 'page_view', searchParams.ref || 'direct');
+        let domainSource = 'direct';
+
+        // 1. Manually specified ref (e.g. ?ref=newsletter) takes absolute precedence
+        if (searchParams.ref) {
+            domainSource = searchParams.ref;
+        } else {
+            // 2. Otherwise try to pluck the exact domain they came from out of the HTTP Headers
+            const { headers } = await import('next/headers');
+            const reqHeaders = await headers();
+            const referer = reqHeaders.get('referer');
+
+            if (referer) {
+                try {
+                    const url = new URL(referer);
+                    // e.g. "l.instagram.com" -> "instagram.com"
+                    domainSource = url.hostname.replace(/^www\./, '').replace(/^l\./, '');
+                } catch (e) {
+                    console.log("[Analytics] Could not parse referer URL:", referer);
+                }
+            }
+        }
+
+        await trackEvent(profile.id, 'page_view', domainSource);
     }
 
     return (
