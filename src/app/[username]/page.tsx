@@ -8,12 +8,13 @@ export async function generateMetadata(
     parent: ResolvingMetadata
 ): Promise<Metadata> {
     const params = await props.params;
+    const decodedUsername = decodeURIComponent(params.username);
 
     const supabase = await createClient();
     const { data: profile } = await supabase
         .from('profiles')
         .select('name, tagline, short_bio, avatar_url, location')
-        .eq('username', params.username)
+        .eq('username', decodedUsername)
         .single();
 
     if (!profile) {
@@ -51,6 +52,7 @@ export default async function EPKProfilePage(props: { params: Promise<{ username
     const params = await props.params;
     const searchParams = await props.searchParams;
     const isPreview = searchParams.preview === 'true';
+    const decodedUsername = decodeURIComponent(params.username);
 
     const supabase = await createClient();
 
@@ -60,27 +62,10 @@ export default async function EPKProfilePage(props: { params: Promise<{ username
     const { data: profile, error } = await supabase
         .from('profiles')
         .select('*')
-        .eq('username', params.username)
+        .eq('username', decodedUsername)
         .single();
 
     if (error || !profile) {
-        if (isPreview) {
-            const { data: authData } = await supabase.auth.getUser();
-            return (
-                <div className="min-h-screen flex items-center justify-center bg-slate-950 text-white p-8">
-                    <div className="max-w-md w-full bg-slate-900 border border-slate-800 rounded-xl p-6 text-center">
-                        <h2 className="text-xl font-bold text-red-400 mb-4">Draft Preview Error</h2>
-                        <p className="text-slate-300 mb-4 text-sm">Could not load the draft profile. Please take a screenshot of this error:</p>
-                        <pre className="bg-black/50 p-4 rounded-lg text-left text-xs text-red-300 overflow-auto border border-red-500/20 whitespace-pre-wrap">
-                            {JSON.stringify({ error, username: params.username }, null, 2)}
-                        </pre>
-                        <div className="mt-4 p-4 bg-slate-800 rounded-lg text-left text-xs text-emerald-400">
-                            <strong>Auth Status:</strong> {authData.user ? `Logged In (${authData.user.id})` : "Not Logged In (Cookies Dropped)"}
-                        </div>
-                    </div>
-                </div>
-            );
-        }
         return notFound();
     }
 
