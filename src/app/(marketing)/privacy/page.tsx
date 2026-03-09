@@ -1,5 +1,4 @@
-import { Navbar } from "@/components/ui/Navbar";
-import { Footer } from "@/components/ui/Footer";
+
 
 export const metadata = {
     title: 'Privacy Policy | DJ Promo Kit',
@@ -8,9 +7,7 @@ export const metadata = {
 
 export default function PrivacyPolicyPage() {
     return (
-        <div className="min-h-screen bg-[#020617] text-white flex flex-col font-sans selection:bg-purple-500/30">
-            <Navbar />
-
+        <div className="text-white flex flex-col font-sans selection:bg-purple-500/30">
             <main className="flex-grow pt-32 pb-24 px-4 sm:px-6 lg:px-8">
                 <div className="max-w-3xl mx-auto glass-panel p-8 md:p-12 rounded-3xl border-white/10">
                     <h1 className="text-4xl font-black mb-8">Privacy Policy</h1>
@@ -61,8 +58,6 @@ export default function PrivacyPolicyPage() {
                     </div>
                 </div>
             </main>
-
-            <Footer />
         </div>
     );
 }
