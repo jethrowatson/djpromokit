@@ -1,4 +1,4 @@
-import { createClient, createAdminClient } from "@/lib/supabase/server";
+import { createClient } from "@/lib/supabase/server";
 import { notFound } from "next/navigation";
 import EPKContent, { EPKProfileData } from "@/components/epk/EPKContent";
 import { Metadata, ResolvingMetadata } from "next";
@@ -9,7 +9,6 @@ export async function generateMetadata(
 ): Promise<Metadata> {
     const params = await props.params;
 
-    // Metadata doesn't need admin client since we only want to index published profiles anyway
     const supabase = await createClient();
     const { data: profile } = await supabase
         .from('profiles')
@@ -55,68 +54,35 @@ export default async function EPKProfilePage(props: { params: Promise<{ username
 
     const supabase = await createClient();
 
-    let profileData: any = null;
-    let mediaData: any[] | null = null;
-    let socialData: any = null;
+    // In a production app you'd want a big consolidated query/RPC, but we can do a few fetches here.
+    // Notice that if preview is NOT true, RLS blocks us from viewing if is_published is false.
+    // If preview IS true, RLS allows the owner to view it.
+    const { data: profile, error } = await supabase
+        .from('profiles')
+        .select('*')
+        .eq('username', params.username)
+        .single();
 
-    if (isPreview) {
-        // PREVIEW MODE LOGIC:
-        // We first check who the current authenticated user is. Because Server Components
-        // sometimes lose exact cookie synchronicity on Vercel edge/serverless depending on caching headers,
-        // we use an admin client to fetch the user profile if they request preview, but ONLY serve it
-        // if they are actually the owner of that profile.
-
-        const { data: { user } } = await supabase.auth.getUser();
-        if (!user) return notFound(); // Cannot preview if not logged in
-
-        const adminDb = await createAdminClient();
-
-        const { data: profile } = await adminDb
-            .from('profiles')
-            .select('*')
-            .eq('username', params.username)
-            .single();
-
-        // If the profile doesn't exist or the logged-in user does not own it, block access.
-        if (!profile || profile.id !== user.id) {
-            return notFound();
-        }
-
-        profileData = profile;
-
-        const [{ data: mData }, { data: sData }] = await Promise.all([
-            adminDb.from('media').select('*').eq('profile_id', profile.id),
-            adminDb.from('social_links').select('*').eq('profile_id', profile.id).maybeSingle()
-        ]);
-        mediaData = mData;
-        socialData = sData;
-
-    } else {
-        // PUBLIC MODE LOGIC (Standard RLS applies):
-
-        const { data: profile, error } = await supabase
-            .from('profiles')
-            .select('*')
-            .eq('username', params.username)
-            .single();
-
-        if (error || !profile) return notFound();
-
-        profileData = profile;
-
-        const [{ data: mData }, { data: sData }] = await Promise.all([
-            supabase.from('media').select('*').eq('profile_id', profile.id),
-            supabase.from('social_links').select('*').eq('profile_id', profile.id).maybeSingle()
-        ]);
-        mediaData = mData;
-        socialData = sData;
+    if (error || !profile) {
+        return notFound();
     }
+
+    const { data: mediaItems } = await supabase
+        .from('media')
+        .select('*')
+        .eq('profile_id', profile.id);
+
+    const { data: socialLink } = await supabase
+        .from('social_links')
+        .select('*')
+        .eq('profile_id', profile.id)
+        .maybeSingle();
 
     let pressShots: string[] = [];
     let mixes: { title: string; url: string }[] = [];
 
-    if (mediaData) {
-        mediaData.forEach(item => {
+    if (mediaItems) {
+        mediaItems.forEach(item => {
             if (item.type === 'press_shot' && item.url) {
                 pressShots.push(item.url);
             }
@@ -128,33 +94,33 @@ export default async function EPKProfilePage(props: { params: Promise<{ username
 
     // Map social links array to object
     const socials: Record<string, string> = {};
-    if (socialData) {
-        if (socialData.instagram) socials.instagram = socialData.instagram;
-        if (socialData.soundcloud) socials.soundcloud = socialData.soundcloud;
-        if (socialData.mixcloud) socials.mixcloud = socialData.mixcloud;
-        if (socialData.youtube) socials.youtube = socialData.youtube;
-        if (socialData.spotify) socials.spotify = socialData.spotify;
-        if (socialData.resident_advisor) socials.ra = socialData.resident_advisor;
+    if (socialLink) {
+        if (socialLink.instagram) socials.instagram = socialLink.instagram;
+        if (socialLink.soundcloud) socials.soundcloud = socialLink.soundcloud;
+        if (socialLink.mixcloud) socials.mixcloud = socialLink.mixcloud;
+        if (socialLink.youtube) socials.youtube = socialLink.youtube;
+        if (socialLink.spotify) socials.spotify = socialLink.spotify;
+        if (socialLink.resident_advisor) socials.ra = socialLink.resident_advisor;
     }
 
-    const finalProfileData: EPKProfileData = {
-        username: profileData.username,
-        name: profileData.name,
-        location: profileData.location,
-        genres: profileData.genres || [],
-        tagline: profileData.tagline,
-        shortBio: profileData.short_bio,
-        longBio: profileData.long_bio,
-        bookingType: profileData.booking_type || 'form',
-        publicEmail: profileData.public_email,
-        avatar: profileData.avatar_url,
+    const profileData: EPKProfileData = {
+        username: profile.username,
+        name: profile.name,
+        location: profile.location,
+        genres: profile.genres || [],
+        tagline: profile.tagline,
+        shortBio: profile.short_bio,
+        longBio: profile.long_bio,
+        bookingType: profile.booking_type || 'form',
+        publicEmail: profile.public_email,
+        avatar: profile.avatar_url,
         pressShots,
         mixes,
         socials,
-        isPublished: profileData.is_published
+        isPublished: profile.is_published
     };
 
     return (
-        <EPKContent profile={finalProfileData} isDraftMode={isPreview} />
+        <EPKContent profile={profileData} isDraftMode={isPreview} />
     );
 }
