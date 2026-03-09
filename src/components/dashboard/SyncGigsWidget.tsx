@@ -61,11 +61,21 @@ export default function SyncGigsWidget({ initialState = false }: { initialState?
                     {enabled ? "Your profile is actively linked and pushing updates to SYNCgigs." : "Connect to SYNCgigs to push your EPK updates straight to bookers."}
                 </p>
 
-                <div className="relative z-10">
+                <div className="relative z-10 flex items-center justify-between mt-4">
                     {enabled ? (
-                        <span className="inline-flex items-center gap-1 text-[10px] font-bold text-emerald-400 uppercase tracking-wider">
-                            <CheckCircle2 className="w-3 h-3" /> Synced perfectly
-                        </span>
+                        <>
+                            <span className="inline-flex items-center gap-1 text-[10px] font-bold text-emerald-400 uppercase tracking-wider">
+                                <CheckCircle2 className="w-3 h-3" /> Synced perfectly
+                            </span>
+                            <a
+                                href="https://SYNCgigs.co.uk"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 text-xs font-bold transition-colors border border-emerald-500/20"
+                            >
+                                Open SYNCgigs
+                            </a>
+                        </>
                     ) : (
                         <span className="inline-flex items-center gap-1 text-[10px] font-bold text-cyan-400 uppercase tracking-wider">
                             <Zap className="w-3 h-3" /> Ready to link
