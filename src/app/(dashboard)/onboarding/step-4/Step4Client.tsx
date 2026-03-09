@@ -46,25 +46,37 @@ export default function Step4Client({ profile }: Step4ClientProps) {
 
     return (
         <div className="animate-fade-in">
-            <div className="mb-8 flex flex-col md:flex-row md:items-start justify-between gap-4">
-                <div>
-                    <h1 className="text-3xl font-extrabold text-white mb-2">Biography</h1>
-                    <p className="text-slate-400">Tell promoters who you are and where you've been.</p>
-                </div>
+            <div className="mb-6">
+                <h1 className="text-3xl font-extrabold text-white mb-2">Biography</h1>
+                <p className="text-slate-400">Tell promoters who you are and where you've been.</p>
+            </div>
 
-                <div className="bg-purple-900/20 border border-purple-500/30 p-4 rounded-xl flex items-center gap-4 animate-fade-in sm:min-w-[300px]">
-                    <div className="bg-purple-600/20 p-2 rounded-lg shrink-0">
-                        <Sparkles className="w-5 h-5 text-purple-400" />
+            {/* Prominent AI Generator Hero Banner */}
+            <div className="relative w-full overflow-hidden rounded-2xl mb-8 p-[1px] group">
+                {/* Animated gradient border */}
+                <div className="absolute inset-0 bg-gradient-to-r from-purple-500 via-pink-500 to-indigo-500 rounded-2xl opacity-50 group-hover:opacity-100 transition-opacity duration-500"></div>
+
+                {/* Card Content */}
+                <div className="relative glass-panel bg-[#020617]/90 backdrop-blur-xl w-full rounded-2xl p-6 sm:p-8 flex flex-col sm:flex-row items-center justify-between gap-6 border-none">
+                    <div className="flex gap-4 items-start">
+                        <div className="bg-purple-600/20 p-3 rounded-2xl shrink-0 mt-1 shadow-lg shadow-purple-500/10">
+                            <Sparkles className="w-8 h-8 text-purple-400" />
+                        </div>
+                        <div>
+                            <h3 className="text-xl font-black text-white mb-1">Writer's Block? Let AI Do It.</h3>
+                            <p className="text-slate-400 text-sm max-w-md">
+                                Answer 6 quick questions about your style, background, and goals. Our custom AI will instantly generate a professional DJ biography ready to publish.
+                            </p>
+                        </div>
                     </div>
-                    <div>
-                        <p className="text-sm font-bold text-white mb-0.5">Not got a bio yet?</p>
-                        <button
-                            onClick={() => setShowAIGenerator(true)}
-                            className="text-xs text-purple-400 hover:text-purple-300 font-medium underline underline-offset-2 transition-colors"
-                        >
-                            Use our AI bio creator
-                        </button>
-                    </div>
+                    <button
+                        type="button"
+                        onClick={() => setShowAIGenerator(true)}
+                        className="shrink-0 w-full sm:w-auto inline-flex items-center justify-center rounded-xl bg-purple-600 px-8 py-4 text-sm font-bold text-white shadow-lg shadow-purple-900/50 hover:bg-purple-500 transition-all hover-glow group/btn"
+                    >
+                        <Sparkles className="w-4 h-4 mr-2 text-purple-200 group-hover/btn:text-white transition-colors" />
+                        Generate with AI
+                    </button>
                 </div>
             </div>
 

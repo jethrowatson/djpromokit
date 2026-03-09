@@ -261,11 +261,10 @@ export default function AIBioGenerator({ defaultValues, onSave, onCancel }: AIBi
             <div className="pt-6 mt-6 border-t border-white/10 flex justify-between items-center relative z-10">
                 {step < 7 && (
                     <button
-                        onClick={() => setStep(step - 1)}
-                        disabled={step === 1}
-                        className="inline-flex items-center px-4 py-2 text-sm font-medium text-slate-300 hover:text-white transition-colors disabled:opacity-30"
+                        onClick={() => step === 1 ? onCancel() : setStep(step - 1)}
+                        className="inline-flex items-center px-4 py-2 text-sm font-bold text-slate-300 hover:text-white transition-colors"
                     >
-                        <ArrowLeft className="w-4 h-4 mr-2" /> Back
+                        <ArrowLeft className="w-4 h-4 mr-2" /> {step === 1 ? 'Cancel' : 'Back'}
                     </button>
                 )}
 
