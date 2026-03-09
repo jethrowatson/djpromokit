@@ -51,7 +51,7 @@ export function Navbar() {
 
             {/* Mobile menu dropdown */}
             {isOpen && (
-                <div className="md:hidden glass-panel border-t border-white/5 bg-[#020617]/95 backdrop-blur-xl animate-fade-in shadow-2xl absolute w-full left-0 top-16">
+                <div className="md:hidden border-t border-white/10 bg-[#020617] shadow-2xl absolute w-full left-0 top-16">
                     <div className="pt-2 pb-6 px-4 space-y-1">
                         <Link
                             href="/how-it-works"
