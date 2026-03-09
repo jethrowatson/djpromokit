@@ -39,7 +39,7 @@ The biographies MUST include their DJ name, music style, key influences, perform
         }
 
         const result = await generateObject({
-            model: google('gemini-1.5-flash'),
+            model: google('models/gemini-1.5-flash'), // Try explicit models/ prefix just in case the SDK is stripping it or the user's key structure requires it
             system: systemPrompt,
             schema: z.object({
                 shortBio: z.string().describe('A concise professional short biography of the DJ, roughly 50 to 120 words.'),
@@ -56,6 +56,10 @@ The biographies MUST include their DJ name, music style, key influences, perform
 
     } catch (error: any) {
         console.error('Bio Generation Error:', error);
-        return NextResponse.json({ error: error.message || 'Failed to generate bio' }, { status: 500 });
+        
+        // Return clear error message showing exactly what failed
+        return NextResponse.json({ 
+            error: error.message || 'Failed to generate bio with Google Gemini.' 
+        }, { status: 500 });
     }
 }
