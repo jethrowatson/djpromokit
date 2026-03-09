@@ -98,9 +98,12 @@ export default function EPKContent({ profile, isDraftMode = false }: { profile: 
 
             {isDraftMode && (
                 <>
-                    <div className="fixed inset-0 z-40 pointer-events-none flex items-center justify-center overflow-hidden mix-blend-overlay">
-                        <div className="absolute top-1/4 -rotate-12 opacity-10 select-none">
-                            <span className="text-8xl md:text-[12rem] font-black text-white px-8 py-4 border-8 border-white rounded-3xl tracking-widest uppercase">
+                    <div className="fixed inset-0 z-40 pointer-events-none flex items-center justify-center overflow-hidden">
+                        {/* Diagonal striped overlay for draft mode */}
+                        <div className="absolute inset-0 opacity-[0.03] select-none" style={{ backgroundImage: 'repeating-linear-gradient(45deg, #000 0, #000 2px, transparent 2px, transparent 8px)' }}></div>
+
+                        <div className="absolute top-1/3 -rotate-12 opacity-40 select-none backdrop-blur-sm">
+                            <span className="text-8xl md:text-[14rem] font-black text-white px-12 py-6 border-[12px] border-white rounded-[3rem] tracking-widest uppercase shadow-2xl">
                                 DRAFT
                             </span>
                         </div>
