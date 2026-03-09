@@ -18,11 +18,22 @@ export default async function DashboardHome() {
 
     const { data: profile } = await supabase
         .from('profiles')
-        .select('name, username, is_published, short_bio, long_bio, location, genres, sync_gigs_enabled')
+        .select('name, username, is_published, short_bio, long_bio, location, genres')
         .eq('id', user.id)
         .single();
 
     if (!profile) redirect('/onboarding/step-1');
+
+    let sync_gigs_enabled = false;
+    const { data: syncData, error: syncError } = await supabase
+        .from('profiles')
+        .select('sync_gigs_enabled')
+        .eq('id', user.id)
+        .single();
+
+    if (!syncError && syncData) {
+        sync_gigs_enabled = syncData.sync_gigs_enabled;
+    }
 
     // Fetch 30-day Analytics for Mini-Widget
     const now = new Date();
@@ -129,7 +140,7 @@ export default async function DashboardHome() {
                     <Link href="/dashboard/edit" className="absolute inset-0 z-10"><span className="sr-only">Edit Profile</span></Link>
                 </div>
 
-                <SyncGigsWidget initialState={profile.sync_gigs_enabled} />
+                <SyncGigsWidget initialState={sync_gigs_enabled} />
 
                 <div className="glass-panel p-6 rounded-2xl border-white/5 hover:border-white/20 transition-colors group cursor-pointer">
                     <div className="w-12 h-12 rounded-xl bg-slate-800 flex items-center justify-center mb-4">
