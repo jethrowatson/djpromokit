@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { AudioWaveform, MapPin, Music, Mail, Download, Instagram, Youtube, ExternalLink, CalendarDays, Zap, Radio, Headphones, Users, Play } from "lucide-react";
+import { AudioWaveform, MapPin, Music, Mail, Download, Instagram, Youtube, ExternalLink, CalendarDays, Zap, Radio, Headphones, Users, Play, Sparkles } from "lucide-react";
 import MixEmbed from "@/components/ui/MixEmbed";
 import BookingModal from "./BookingModal";
 
@@ -97,13 +97,36 @@ export default function EPKContent({ profile, isDraftMode = false }: { profile: 
         <div className="min-h-screen bg-[#020617] text-white selection:bg-purple-500/30 relative">
 
             {isDraftMode && (
-                <div className="fixed inset-0 z-50 pointer-events-none flex items-center justify-center overflow-hidden">
-                    <div className="absolute top-1/4 -rotate-12 opacity-30 select-none">
-                        <span className="text-8xl font-black text-white px-8 py-4 border-8 border-white rounded-3xl tracking-widest uppercase">
-                            DRAFT MODE
-                        </span>
+                <>
+                    <div className="fixed inset-0 z-40 pointer-events-none flex items-center justify-center overflow-hidden mix-blend-overlay">
+                        <div className="absolute top-1/4 -rotate-12 opacity-10 select-none">
+                            <span className="text-8xl md:text-[12rem] font-black text-white px-8 py-4 border-8 border-white rounded-3xl tracking-widest uppercase">
+                                DRAFT
+                            </span>
+                        </div>
                     </div>
-                </div>
+
+                    {/* Floating Publish CTA */}
+                    <div className="fixed bottom-0 left-0 right-0 p-4 md:p-6 z-50 animate-slide-up pointer-events-none">
+                        <div className="max-w-4xl mx-auto glass-panel border border-purple-500/50 bg-[#020617]/95 shadow-2xl shadow-purple-900/50 rounded-3xl p-6 md:p-8 flex flex-col md:flex-row items-center justify-between gap-6 pointer-events-auto backdrop-blur-xl relative overflow-hidden">
+                            <div className="absolute top-0 right-0 w-64 h-64 bg-purple-500/20 blur-[100px] pointer-events-none rounded-full" />
+                            <div className="flex-1 relative z-10">
+                                <h3 className="text-xl md:text-2xl font-black text-white mb-2 flex items-center gap-2">
+                                    <Sparkles className="w-6 h-6 text-purple-400" />
+                                    Your EPK is ready for the world
+                                </h3>
+                                <p className="text-slate-300 text-sm md:text-base">
+                                    Publish your profile to unlock your public link, get discovered by promoters, and start accepting direct booking requests.
+                                </p>
+                            </div>
+                            <div className="flex-shrink-0 w-full md:w-auto relative z-10">
+                                <a href="/dashboard" className="w-full md:w-auto inline-flex items-center justify-center px-8 py-4 rounded-xl bg-purple-600 text-white font-bold hover:bg-purple-500 transition-all hover-glow shadow-lg shadow-purple-900/50">
+                                    Publish Profile
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </>
             )}
 
             {/* 1. Hero Section */}

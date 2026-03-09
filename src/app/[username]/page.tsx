@@ -45,6 +45,7 @@ export async function generateMetadata(
     };
 }
 
+export const dynamic = 'force-dynamic';
 
 export default async function EPKProfilePage(props: { params: Promise<{ username: string }>, searchParams: Promise<{ preview?: string }> }) {
     const params = await props.params;
