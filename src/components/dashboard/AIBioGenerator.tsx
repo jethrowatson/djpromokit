@@ -54,15 +54,19 @@ export default function AIBioGenerator({ defaultValues, onSave, onCancel }: AIBi
             });
             const data = await res.json();
 
+            if (!res.ok) {
+                throw new Error(data.error || "Failed to generate biography. Please check your API key.");
+            }
+
             if (data.shortBio && data.longBio) {
                 setShortBio(data.shortBio);
                 setLongBio(data.longBio);
                 setFeedback(''); // clear feedback after update
                 if (!isRegenerating) setStep(7); // Move to review step if first time
             }
-        } catch (error) {
+        } catch (error: any) {
             console.error(error);
-            alert("Failed to generate biography.");
+            alert(error.message || "Failed to generate biography.");
         } finally {
             setIsGenerating(false);
         }
