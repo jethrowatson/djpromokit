@@ -12,11 +12,19 @@ export async function trackEvent(
 ) {
     try {
         const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
-        const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
-        const supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey);
+        const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
 
-        // Fire and forget insertion to the analytics table
-        const { error } = await supabaseAdmin.from('analytics').insert({
+        // Use regular supabase-js client to prevent cookies/headers errors in fire-and-forget contexts
+        const supabase = createClient(supabaseUrl, supabaseKey, {
+            auth: {
+                persistSession: false,
+                autoRefreshToken: false
+            }
+        });
+
+        console.log(`[Analytics] Tracking ${eventType} for ${profileId} via ${source}`);
+
+        const { error } = await supabase.from('analytics').insert({
             profile_id: profileId,
             event_type: eventType,
             source: source || 'direct',
@@ -24,9 +32,11 @@ export async function trackEvent(
         });
 
         if (error) {
-            console.error('[Analytics] Failed to track event:', error);
+            console.error('[Analytics] Insert Error:', JSON.stringify(error));
+        } else {
+            console.log(`[Analytics] Successfully tracked ${eventType}`);
         }
     } catch (e) {
-        console.error('[Analytics] Exception tracking event:', e);
+        console.error('[Analytics] Exception:', e);
     }
 }

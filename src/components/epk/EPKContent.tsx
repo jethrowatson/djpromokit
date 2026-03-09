@@ -4,8 +4,10 @@ import React, { useState } from "react";
 import { AudioWaveform, MapPin, Music, Mail, Download, Instagram, Youtube, ExternalLink, CalendarDays, Zap, Radio, Headphones, Users, Play, Sparkles } from "lucide-react";
 import MixEmbed from "@/components/ui/MixEmbed";
 import BookingModal from "./BookingModal";
+import { trackEvent } from "@/app/actions/analytics";
 
 export interface EPKProfileData {
+    id: string;
     username: string;
     name: string;
     location: string;
@@ -173,12 +175,22 @@ export default function EPKContent({ profile, isDraftMode = false }: { profile: 
 
                     <div className="flex flex-col gap-3 pb-2 z-20">
                         {profile.bookingType === 'email' && profile.publicEmail ? (
-                            <a href={`mailto:${profile.publicEmail}`} className="inline-flex flex-shrink-0 items-center justify-center px-8 py-4 rounded-2xl bg-white text-black font-bold text-lg hover:bg-slate-200 transition-colors shadow-xl">
+                            <a
+                                href={`mailto:${profile.publicEmail}`}
+                                onClick={() => { if (!isDraftMode) trackEvent(profile.id, 'booking_click', 'email_button') }}
+                                className="inline-flex flex-shrink-0 items-center justify-center px-8 py-4 rounded-2xl bg-white text-black font-bold text-lg hover:bg-slate-200 transition-colors shadow-xl"
+                            >
                                 <Mail className="w-5 h-5 mr-2" />
                                 Book {name}
                             </a>
                         ) : (
-                            <button onClick={() => setIsBookingModalOpen(true)} className="inline-flex flex-shrink-0 items-center justify-center px-8 py-4 rounded-2xl bg-white text-black font-bold text-lg hover:bg-slate-200 transition-colors shadow-xl">
+                            <button
+                                onClick={() => {
+                                    setIsBookingModalOpen(true);
+                                    if (!isDraftMode) trackEvent(profile.id, 'booking_click', 'form_modal_button');
+                                }}
+                                className="inline-flex flex-shrink-0 items-center justify-center px-8 py-4 rounded-2xl bg-white text-black font-bold text-lg hover:bg-slate-200 transition-colors shadow-xl"
+                            >
                                 <Mail className="w-5 h-5 mr-2" />
                                 Book {name}
                             </button>
@@ -247,9 +259,14 @@ export default function EPKContent({ profile, isDraftMode = false }: { profile: 
                             </div>
                             <div className="grid gap-6">
                                 {profile.mixes.map((mix, idx) => mix.url && (
-                                    <div key={idx} className="w-full glass-panel rounded-3xl p-6 border-white/10 relative overflow-hidden">
+                                    <div key={idx} className="w-full glass-panel rounded-3xl p-6 border-white/10 relative overflow-hidden group">
                                         <div className="absolute -top-32 -right-32 w-64 h-64 bg-purple-600/20 blur-[100px] pointer-events-none"></div>
-                                        <div className="relative z-10 shadow-2xl rounded-2xl overflow-hidden ring-1 ring-white/10">
+                                        <div
+                                            className="relative z-10 shadow-2xl rounded-2xl overflow-hidden ring-1 ring-white/10"
+                                            onClickCapture={() => {
+                                                if (!isDraftMode) trackEvent(profile.id, 'mix_play', mix.title || 'mix');
+                                            }}
+                                        >
                                             <MixEmbed url={mix.url} />
                                         </div>
                                     </div>
@@ -291,7 +308,7 @@ export default function EPKContent({ profile, isDraftMode = false }: { profile: 
                             <h3 className="text-lg font-bold text-white mb-4">Socials & Media</h3>
                             <div className="space-y-3">
                                 {profile.socials.instagram && (
-                                    <a href={profile.socials.instagram} target="_blank" rel="noopener noreferrer" className="flex items-center justify-between p-4 rounded-xl bg-slate-900/50 hover:bg-slate-800 border border-slate-800 hover:border-slate-700 transition-colors group">
+                                    <a href={profile.socials.instagram} target="_blank" rel="noopener noreferrer" onClick={() => { if (!isDraftMode) trackEvent(profile.id, 'link_click', 'instagram') }} className="flex items-center justify-between p-4 rounded-xl bg-slate-900/50 hover:bg-slate-800 border border-slate-800 hover:border-slate-700 transition-colors group">
                                         <div className="flex items-center gap-4">
                                             <div className="w-10 h-10 rounded-full bg-pink-500/10 flex items-center justify-center group-hover:bg-pink-500/20 transition-colors">
                                                 <Instagram className="w-5 h-5 text-pink-400" />
@@ -302,7 +319,7 @@ export default function EPKContent({ profile, isDraftMode = false }: { profile: 
                                     </a>
                                 )}
                                 {profile.socials.soundcloud && (
-                                    <a href={profile.socials.soundcloud} target="_blank" rel="noopener noreferrer" className="flex items-center justify-between p-4 rounded-xl bg-slate-900/50 hover:bg-slate-800 border border-slate-800 hover:border-slate-700 transition-colors group">
+                                    <a href={profile.socials.soundcloud} target="_blank" rel="noopener noreferrer" onClick={() => { if (!isDraftMode) trackEvent(profile.id, 'link_click', 'soundcloud') }} className="flex items-center justify-between p-4 rounded-xl bg-slate-900/50 hover:bg-slate-800 border border-slate-800 hover:border-slate-700 transition-colors group">
                                         <div className="flex items-center gap-4">
                                             <div className="w-10 h-10 rounded-full bg-orange-500/10 flex items-center justify-center group-hover:bg-orange-500/20 transition-colors">
                                                 <svg className="w-5 h-5 text-orange-500" fill="currentColor" viewBox="0 0 24 24"><path d="M11.536 12.89L11 9l-1-2-.536-1.11h-.032L8.9 6.89l-1 2-.536 4H7.33L8.4 17.51a.634.634 0 00.569.38h1.8a.64.64 0 00.574-.4l.794-4.6zM22.04 15.61l-1.92-3.8A3.01 3.01 0 0017.44 10H13.6L12.92 6a3.67 3.67 0 00-7.23 0L5.01 10H1.56a3.01 3.01 0 00-2.68 1.81l-1.92 3.8A3 3 0 000 18.02V20h22v-1.98a3 3 0 00-2.96-2.41z" /></svg>
@@ -313,7 +330,7 @@ export default function EPKContent({ profile, isDraftMode = false }: { profile: 
                                     </a>
                                 )}
                                 {profile.socials.mixcloud && (
-                                    <a href={profile.socials.mixcloud} target="_blank" rel="noopener noreferrer" className="flex items-center justify-between p-4 rounded-xl bg-slate-900/50 hover:bg-slate-800 border border-slate-800 hover:border-slate-700 transition-colors group">
+                                    <a href={profile.socials.mixcloud} target="_blank" rel="noopener noreferrer" onClick={() => { if (!isDraftMode) trackEvent(profile.id, 'link_click', 'mixcloud') }} className="flex items-center justify-between p-4 rounded-xl bg-slate-900/50 hover:bg-slate-800 border border-slate-800 hover:border-slate-700 transition-colors group">
                                         <div className="flex items-center gap-4">
                                             <div className="w-10 h-10 rounded-full bg-indigo-500/10 flex items-center justify-center group-hover:bg-indigo-500/20 transition-colors">
                                                 <Headphones className="w-5 h-5 text-indigo-400" />
@@ -324,7 +341,7 @@ export default function EPKContent({ profile, isDraftMode = false }: { profile: 
                                     </a>
                                 )}
                                 {profile.socials.youtube && (
-                                    <a href={profile.socials.youtube} target="_blank" rel="noopener noreferrer" className="flex items-center justify-between p-4 rounded-xl bg-slate-900/50 hover:bg-slate-800 border border-slate-800 hover:border-slate-700 transition-colors group">
+                                    <a href={profile.socials.youtube} target="_blank" rel="noopener noreferrer" onClick={() => { if (!isDraftMode) trackEvent(profile.id, 'link_click', 'youtube') }} className="flex items-center justify-between p-4 rounded-xl bg-slate-900/50 hover:bg-slate-800 border border-slate-800 hover:border-slate-700 transition-colors group">
                                         <div className="flex items-center gap-4">
                                             <div className="w-10 h-10 rounded-full bg-red-500/10 flex items-center justify-center group-hover:bg-red-500/20 transition-colors">
                                                 <Youtube className="w-5 h-5 text-red-500" />
@@ -335,7 +352,7 @@ export default function EPKContent({ profile, isDraftMode = false }: { profile: 
                                     </a>
                                 )}
                                 {profile.socials.spotify && (
-                                    <a href={profile.socials.spotify} target="_blank" rel="noopener noreferrer" className="flex items-center justify-between p-4 rounded-xl bg-slate-900/50 hover:bg-slate-800 border border-slate-800 hover:border-slate-700 transition-colors group">
+                                    <a href={profile.socials.spotify} target="_blank" rel="noopener noreferrer" onClick={() => { if (!isDraftMode) trackEvent(profile.id, 'link_click', 'spotify') }} className="flex items-center justify-between p-4 rounded-xl bg-slate-900/50 hover:bg-slate-800 border border-slate-800 hover:border-slate-700 transition-colors group">
                                         <div className="flex items-center gap-4">
                                             <div className="w-10 h-10 rounded-full bg-green-500/10 flex items-center justify-center group-hover:bg-green-500/20 transition-colors">
                                                 <Play className="w-5 h-5 text-green-500" />
@@ -346,7 +363,7 @@ export default function EPKContent({ profile, isDraftMode = false }: { profile: 
                                     </a>
                                 )}
                                 {profile.socials.ra && (
-                                    <a href={profile.socials.ra} target="_blank" rel="noopener noreferrer" className="flex items-center justify-between p-4 rounded-xl bg-slate-900/50 hover:bg-slate-800 border border-slate-800 hover:border-slate-700 transition-colors group">
+                                    <a href={profile.socials.ra} target="_blank" rel="noopener noreferrer" onClick={() => { if (!isDraftMode) trackEvent(profile.id, 'link_click', 'ra') }} className="flex items-center justify-between p-4 rounded-xl bg-slate-900/50 hover:bg-slate-800 border border-slate-800 hover:border-slate-700 transition-colors group">
                                         <div className="flex items-center gap-4">
                                             <div className="w-10 h-10 rounded-full bg-slate-500/10 flex items-center justify-center group-hover:bg-slate-500/20 transition-colors">
                                                 <Users className="w-5 h-5 text-slate-400" />

@@ -2,6 +2,7 @@ import { createClient } from "@/lib/supabase/server";
 import { notFound } from "next/navigation";
 import EPKContent, { EPKProfileData } from "@/components/epk/EPKContent";
 import { Metadata, ResolvingMetadata } from "next";
+import { trackEvent } from "@/app/actions/analytics";
 
 export async function generateMetadata(
     props: { params: Promise<{ username: string }> },
@@ -48,7 +49,7 @@ export async function generateMetadata(
 
 export const dynamic = 'force-dynamic';
 
-export default async function EPKProfilePage(props: { params: Promise<{ username: string }>, searchParams: Promise<{ preview?: string }> }) {
+export default async function EPKProfilePage(props: { params: Promise<{ username: string }>, searchParams: Promise<{ preview?: string, ref?: string }> }) {
     const params = await props.params;
     const searchParams = await props.searchParams;
     const isPreview = searchParams.preview === 'true';
@@ -106,6 +107,7 @@ export default async function EPKProfilePage(props: { params: Promise<{ username
     }
 
     const profileData: EPKProfileData = {
+        id: profile.id,
         username: profile.username,
         name: profile.name,
         location: profile.location,
@@ -121,6 +123,11 @@ export default async function EPKProfilePage(props: { params: Promise<{ username
         socials,
         isPublished: profile.is_published
     };
+
+    // Track Analytics Page View asynchronously (fire and forget)
+    if (!isPreview && profile.is_published) {
+        await trackEvent(profile.id, 'page_view', searchParams.ref || 'direct');
+    }
 
     return (
         <EPKContent profile={profileData} isDraftMode={isPreview} />

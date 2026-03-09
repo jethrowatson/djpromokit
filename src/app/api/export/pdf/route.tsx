@@ -57,6 +57,7 @@ export async function GET(req: Request) {
         }
 
         const profileData: EPKProfileData = {
+            id: profile.id,
             username: profile.username,
             name: profile.name,
             location: profile.location,

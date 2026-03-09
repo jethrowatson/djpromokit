@@ -58,6 +58,7 @@ export default async function Step7Preview() {
     }
 
     const profileData: EPKProfileData = {
+        id: profile.id,
         username: profile.username,
         name: profile.name,
         location: profile.location,

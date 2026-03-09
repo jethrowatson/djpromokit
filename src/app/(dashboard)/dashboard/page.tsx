@@ -22,6 +22,26 @@ export default async function DashboardHome() {
 
     if (!profile) redirect('/onboarding/step-1');
 
+    // Fetch 30-day Analytics for Mini-Widget
+    const now = new Date();
+    const thirtyDaysAgo = new Date(now.setDate(now.getDate() - 30)).toISOString();
+
+    const { data: analytics } = await supabase
+        .from('analytics')
+        .select('event_type')
+        .eq('profile_id', user.id)
+        .gte('created_at', thirtyDaysAgo);
+
+    let totalViews = 0;
+    let bookingClicks = 0;
+
+    if (analytics) {
+        analytics.forEach(event => {
+            if (event.event_type === 'page_view') totalViews++;
+            if (event.event_type === 'booking_click') bookingClicks++;
+        });
+    }
+
     const isPublished = profile.is_published;
     const link = `djpromokit.com/${profile.username}`;
 
@@ -87,12 +107,12 @@ export default async function DashboardHome() {
                             <Link href="/dashboard/stats" className="text-xs font-bold text-cyan-400 hover:text-cyan-300 uppercase tracking-wider">Full Stats</Link>
                         </div>
                         <h3 className="text-slate-400 text-sm font-medium">Views (Last 30 Days)</h3>
-                        <p className="text-4xl font-black text-white mt-1">142</p>
+                        <p className="text-4xl font-black text-white mt-1">{totalViews}</p>
                     </div>
                     <div className="mt-6 pt-4 border-t border-white/5">
                         <div className="flex justify-between items-center text-sm">
                             <span className="text-slate-400">Booking Clicks</span>
-                            <span className="text-white font-bold">12</span>
+                            <span className="text-white font-bold">{bookingClicks}</span>
                         </div>
                     </div>
                 </div>
