@@ -54,9 +54,9 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     location: {
-        fontSize: 10,
+        fontSize: 9,
         color: '#38bdf8',
-        marginBottom: 6,
+        marginBottom: 4,
         textTransform: 'uppercase',
         letterSpacing: 1,
         fontWeight: 900,
@@ -69,9 +69,9 @@ const styles = StyleSheet.create({
         letterSpacing: -1,
     },
     tagline: {
-        fontSize: 14,
+        fontSize: 12,
         color: '#e2e8f0',
-        marginBottom: 10,
+        marginBottom: 6,
         fontWeight: 400,
     },
     genres: {
@@ -102,17 +102,17 @@ const styles = StyleSheet.create({
         flex: 1,   // 40% approx
     },
     section: {
-        marginBottom: 24,
+        marginBottom: 16,
     },
     sectionTitle: {
-        fontSize: 14,
+        fontSize: 12,
         fontWeight: 900,
         color: '#ffffff',
         textTransform: 'uppercase',
         letterSpacing: 1,
-        marginBottom: 12,
+        marginBottom: 8,
         borderBottom: '1pt solid #1e293b',
-        paddingBottom: 6,
+        paddingBottom: 4,
     },
     bioText: {
         fontSize: 10,
@@ -124,10 +124,11 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         backgroundColor: '#0f172a',
-        padding: 10,
+        paddingHorizontal: 10,
+        paddingVertical: 8,
         borderRadius: 8,
         border: '1pt solid #1e293b',
-        marginBottom: 8,
+        marginBottom: 6,
     },
     mixTitle: {
         flex: 1,
@@ -149,22 +150,22 @@ const styles = StyleSheet.create({
     socialGrid: {
         flexDirection: 'row',
         flexWrap: 'wrap',
-        gap: 10,
+        gap: 6,
     },
     socialLinkWrapper: {
         flexDirection: 'row',
         alignItems: 'center',
-        gap: 10,
+        gap: 12,
         backgroundColor: '#0f172a',
-        paddingVertical: 10,
+        paddingVertical: 8,
         paddingHorizontal: 16,
         borderRadius: 8,
         border: '1pt solid #1e293b',
-        width: '48%',
+        width: '100%',
     },
     socialIconContainer: {
-        width: 18,
-        height: 18,
+        width: 24,
+        height: 24,
         justifyContent: 'center',
         alignItems: 'center',
     },
@@ -177,11 +178,11 @@ const styles = StyleSheet.create({
     pressShotContainer: {
         flexDirection: 'row',
         flexWrap: 'wrap',
-        gap: 10,
+        gap: 8,
     },
     pressShotLink: {
         width: '48%',
-        height: 110,
+        height: 90,
         textDecoration: 'none',
     },
     pressShot: {
@@ -368,7 +369,7 @@ export const EPKDocument = ({ profile }: { profile: EPKProfileData }) => {
                             <Text style={styles.sectionTitle}>Connect & Booking</Text>
                             <View style={styles.socialGrid}>
                                 {profile.publicEmail && (
-                                    <Link src={`mailto:${profile.publicEmail}`} style={{ textDecoration: 'none', width: '48%' }}>
+                                    <Link src={`mailto:${profile.publicEmail}`} style={{ textDecoration: 'none', width: '100%' }}>
                                         <View style={styles.socialLinkWrapper}>
                                             <View style={styles.socialIconContainer}>{renderSocialIcon('email')}</View>
                                             <Text style={styles.socialText}>Email Booking</Text>
@@ -376,7 +377,7 @@ export const EPKDocument = ({ profile }: { profile: EPKProfileData }) => {
                                     </Link>
                                 )}
                                 {profile.socials && Object.entries(profile.socials).map(([platform, url]) => (
-                                    <Link key={platform} src={url as string} style={{ textDecoration: 'none', width: '48%' }}>
+                                    <Link key={platform} src={url as string} style={{ textDecoration: 'none', width: '100%' }}>
                                         <View style={styles.socialLinkWrapper}>
                                             <View style={styles.socialIconContainer}>{renderSocialIcon(platform)}</View>
                                             <Text style={styles.socialText}>
