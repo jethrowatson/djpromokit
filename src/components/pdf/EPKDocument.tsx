@@ -2,7 +2,7 @@ import React from 'react';
 import { Document, Page, Text, View, StyleSheet, Image, Link, Font, Svg, Path, Defs, LinearGradient, Stop, Rect } from '@react-pdf/renderer';
 import { EPKProfileData } from '../epk/EPKContent';
 
-// Register a Google Font (Inter) for clean, professional PDF text
+// Register Google Fonts
 Font.register({
     family: 'Inter',
     fonts: [
@@ -12,48 +12,46 @@ Font.register({
     ]
 });
 
-// Create styles for the PDF
-// We use a dark theme aesthetic to match the website
+// Create styles for A4 Landscape
 const styles = StyleSheet.create({
     page: {
         backgroundColor: '#020617', // Match Site Very Dark BG
         fontFamily: 'Inter',
         color: '#f8fafc',
     },
-    pageContent: {
-        paddingTop: 50,
-        paddingBottom: 60,
-        paddingHorizontal: 50,
-        zIndex: 10,
+    hero: {
+        height: 220,
+        position: 'relative',
+        width: '100%',
+        backgroundColor: '#0f172a',
     },
-    header: {
+    heroBg: {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        width: '100%',
+        height: '100%',
+        objectFit: 'cover',
+        opacity: 0.6,
+    },
+    heroOverlayTextContainer: {
+        position: 'absolute',
+        bottom: 25,
+        left: 40,
+        right: 40,
         flexDirection: 'row',
-        marginBottom: 30,
+        alignItems: 'flex-end',
         gap: 24,
-        alignItems: 'center',
     },
     avatar: {
-        width: 130,
-        height: 130,
-        borderRadius: 65,
+        width: 140,
+        height: 140,
+        borderRadius: 70,
         objectFit: 'cover',
-        border: '3pt solid #1e293b',
+        border: '3pt solid #020617',
     },
-    headerText: {
+    heroTextFlex: {
         flex: 1,
-    },
-    name: {
-        fontSize: 36,
-        fontWeight: 900,
-        color: '#ffffff',
-        marginBottom: 6,
-        letterSpacing: -1,
-    },
-    tagline: {
-        fontSize: 14,
-        color: '#94a3b8',
-        marginBottom: 10,
-        fontWeight: 400,
     },
     location: {
         fontSize: 10,
@@ -61,6 +59,20 @@ const styles = StyleSheet.create({
         marginBottom: 6,
         textTransform: 'uppercase',
         letterSpacing: 1,
+        fontWeight: 900,
+    },
+    name: {
+        fontSize: 42,
+        fontWeight: 900,
+        color: '#ffffff',
+        marginBottom: 8,
+        letterSpacing: -1,
+    },
+    tagline: {
+        fontSize: 14,
+        color: '#e2e8f0',
+        marginBottom: 10,
+        fontWeight: 400,
     },
     genres: {
         flexDirection: 'row',
@@ -68,7 +80,8 @@ const styles = StyleSheet.create({
         flexWrap: 'wrap',
     },
     genreTag: {
-        backgroundColor: '#1e293b',
+        backgroundColor: 'rgba(30, 41, 59, 0.8)', // slate-800 translucent
+        border: '1pt solid rgba(148, 163, 184, 0.2)',
         paddingVertical: 5,
         paddingHorizontal: 10,
         borderRadius: 20,
@@ -77,8 +90,19 @@ const styles = StyleSheet.create({
         color: '#cbd5e1',
         textTransform: 'uppercase',
     },
+    mainLayout: {
+        flexDirection: 'row',
+        padding: 40,
+        gap: 40,
+    },
+    leftColumn: {
+        flex: 1.5, // 60% approx
+    },
+    rightColumn: {
+        flex: 1,   // 40% approx
+    },
     section: {
-        marginBottom: 30,
+        marginBottom: 24,
     },
     sectionTitle: {
         fontSize: 14,
@@ -91,82 +115,80 @@ const styles = StyleSheet.create({
         paddingBottom: 6,
     },
     bioText: {
-        fontSize: 11,
+        fontSize: 10,
         lineHeight: 1.6,
         color: '#cbd5e1',
-        marginBottom: 12,
-    },
-    grid: {
-        flexDirection: 'row',
-        flexWrap: 'wrap',
-        gap: 16,
-    },
-    card: {
-        width: '47%',
-        backgroundColor: '#0f172a',
-        padding: 16,
-        borderRadius: 12,
-        border: '1pt solid #1e293b',
-    },
-    cardTitle: {
-        fontSize: 11,
-        fontWeight: 900,
-        color: '#ffffff',
         marginBottom: 10,
-        lineHeight: 1.4,
     },
-    linkButton: {
-        backgroundColor: '#7c3aed', // Purple to match site CTA
+    mixRow: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        backgroundColor: '#0f172a',
+        padding: 10,
+        borderRadius: 8,
+        border: '1pt solid #1e293b',
+        marginBottom: 8,
+    },
+    mixTitle: {
+        flex: 1,
+        fontSize: 11,
+        fontWeight: 600,
         color: '#ffffff',
-        paddingVertical: 8,
+    },
+    mixLinkButton: {
+        backgroundColor: '#7c3aed',
+        color: '#ffffff',
+        paddingVertical: 6,
         paddingHorizontal: 12,
-        borderRadius: 6,
+        borderRadius: 4,
         fontSize: 9,
         fontWeight: 600,
-        textAlign: 'center',
         textDecoration: 'none',
         textTransform: 'uppercase',
-        letterSpacing: 0.5,
     },
     socialGrid: {
         flexDirection: 'row',
         flexWrap: 'wrap',
-        gap: 12,
+        gap: 10,
     },
     socialLinkWrapper: {
         flexDirection: 'row',
         alignItems: 'center',
-        gap: 8,
+        gap: 10,
         backgroundColor: '#0f172a',
-        paddingVertical: 8,
-        paddingHorizontal: 12,
+        paddingVertical: 10,
+        paddingHorizontal: 16,
         borderRadius: 8,
         border: '1pt solid #1e293b',
-        width: '31%',
+        width: '48%',
     },
     socialIconContainer: {
-        width: 14,
-        height: 14,
+        width: 18,
+        height: 18,
         justifyContent: 'center',
         alignItems: 'center',
     },
     socialText: {
-        fontSize: 9,
+        fontSize: 10,
         fontWeight: 600,
-        color: '#cbd5e1',
+        color: '#f8fafc',
         textDecoration: 'none',
     },
     pressShotContainer: {
         flexDirection: 'row',
         flexWrap: 'wrap',
-        gap: 12,
-        marginBottom: 40,
+        gap: 10,
+    },
+    pressShotLink: {
+        width: '48%',
+        height: 110,
+        textDecoration: 'none',
     },
     pressShot: {
-        width: '48%',
-        height: 160,
+        width: '100%',
+        height: '100%',
         objectFit: 'cover',
-        borderRadius: 12,
+        borderRadius: 8,
         border: '1pt solid #1e293b',
     },
     footerContainer: {
@@ -174,13 +196,13 @@ const styles = StyleSheet.create({
         bottom: 0,
         left: 0,
         right: 0,
-        height: 50,
+        height: 40,
         backgroundColor: '#0f172a',
         borderTop: '1pt solid #1e293b',
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        paddingHorizontal: 50,
+        paddingHorizontal: 40,
     },
     footerText: {
         fontSize: 9,
@@ -248,7 +270,12 @@ const Icons = {
 
 // The Component
 export const EPKDocument = ({ profile }: { profile: EPKProfileData }) => {
-    // Helper to format social link labels
+
+    // Choose hero background: either first press shot, or avatar.
+    const heroBgUrl = (profile.pressShots && profile.pressShots.length > 0)
+        ? profile.pressShots[0]
+        : (profile.avatar || undefined);
+
     const renderSocialIcon = (platform: string) => {
         switch (platform.toLowerCase()) {
             case 'instagram': return <Icons.Instagram />;
@@ -263,26 +290,32 @@ export const EPKDocument = ({ profile }: { profile: EPKProfileData }) => {
 
     return (
         <Document title={`${profile.name} - Electronic Press Kit`} author={profile.name}>
-            <Page size="A4" style={styles.page}>
-                {/* Background Gradient */}
-                <Svg style={{ position: 'absolute', top: 0, left: 0, width: '100vw', height: '100vh', zIndex: -1 }}>
-                    <Defs>
-                        <LinearGradient id="bgGrad" x1="0" y1="0" x2="1" y2="1">
-                            <Stop offset="0" stopColor="#0f172a" />
-                            <Stop offset="0.5" stopColor="#020617" />
-                            <Stop offset="1" stopColor="#1e1b4b" />
-                        </LinearGradient>
-                    </Defs>
-                    <Rect width="100%" height="100%" fill="url('#bgGrad')" opacity={0.5} />
-                </Svg>
+            <Page size="A4" orientation="landscape" style={styles.page}>
 
-                <View style={styles.pageContent}>
-                    {/* HEAD */}
-                    <View style={styles.header}>
+                {/* HERO BLOCK WITH PRESS IMAGE BACKGROUND */}
+                <View style={styles.hero}>
+                    {heroBgUrl && (
+                        <Image src={heroBgUrl} style={styles.heroBg} />
+                    )}
+
+                    {/* Gradient Overlay moving up from bottom */}
+                    <Svg style={{ position: 'absolute', bottom: 0, left: 0, width: '100vw', height: '100%' }}>
+                        <Defs>
+                            <LinearGradient id="heroGrad" x1="0" y1="1" x2="0" y2="0">
+                                <Stop offset="0" stopColor="#020617" stopOpacity={1} />
+                                <Stop offset="0.6" stopColor="#020617" stopOpacity={0.4} />
+                                <Stop offset="1" stopColor="#020617" stopOpacity={0} />
+                            </LinearGradient>
+                        </Defs>
+                        <Rect width="100%" height="100%" fill="url('#heroGrad')" />
+                    </Svg>
+
+                    {/* HERO FOREGROUND TEXT */}
+                    <View style={styles.heroOverlayTextContainer}>
                         {profile.avatar && (
                             <Image src={profile.avatar} style={styles.avatar} />
                         )}
-                        <View style={styles.headerText}>
+                        <View style={styles.heroTextFlex}>
                             {profile.location && <Text style={styles.location}>{profile.location}</Text>}
                             <Text style={styles.name}>{profile.name}</Text>
                             {profile.tagline && <Text style={styles.tagline}>{profile.tagline}</Text>}
@@ -298,67 +331,77 @@ export const EPKDocument = ({ profile }: { profile: EPKProfileData }) => {
                             )}
                         </View>
                     </View>
+                </View>
 
-                    {/* BIOGRAPHY */}
-                    <View style={styles.section}>
-                        <Text style={styles.sectionTitle}>Biography</Text>
-                        <Text style={styles.bioText}>{profile.shortBio}</Text>
-                        {profile.longBio && (
-                            <Text style={styles.bioText}>{profile.longBio}</Text>
+                {/* 2 COLUMN LAYOUT MAIN CONTENT */}
+                <View style={styles.mainLayout}>
+
+                    {/* LEFT COLUMN: BIO & MIXES */}
+                    <View style={styles.leftColumn}>
+                        <View style={styles.section}>
+                            <Text style={styles.sectionTitle}>Biography</Text>
+                            {profile.shortBio && <Text style={styles.bioText}>{profile.shortBio}</Text>}
+                            {profile.longBio && <Text style={styles.bioText}>{profile.longBio}</Text>}
+                        </View>
+
+                        {profile.mixes && profile.mixes.length > 0 && (
+                            <View style={styles.section}>
+                                <Text style={styles.sectionTitle}>Featured Media</Text>
+                                <View style={{ flexDirection: 'column' }}>
+                                    {profile.mixes.map((mix, i) => (
+                                        <View key={i} style={styles.mixRow}>
+                                            <Text style={styles.mixTitle}>{mix.title}</Text>
+                                            <Link src={mix.url} style={styles.mixLinkButton}>
+                                                Listen
+                                            </Link>
+                                        </View>
+                                    ))}
+                                </View>
+                            </View>
                         )}
                     </View>
 
-                    {/* FEATURED MIXES */}
-                    {profile.mixes && profile.mixes.length > 0 && (
+                    {/* RIGHT COLUMN: BOOKING, SOCIALS, PRESS CUTS */}
+                    <View style={styles.rightColumn}>
+
                         <View style={styles.section}>
-                            <Text style={styles.sectionTitle}>Featured Media</Text>
-                            <View style={styles.grid}>
-                                {profile.mixes.map((mix, i) => (
-                                    <View key={i} style={styles.card}>
-                                        <Text style={styles.cardTitle}>{mix.title}</Text>
-                                        <Link src={mix.url} style={styles.linkButton}>
-                                            Listen / Watch
+                            <Text style={styles.sectionTitle}>Connect & Booking</Text>
+                            <View style={styles.socialGrid}>
+                                {profile.publicEmail && (
+                                    <Link src={`mailto:${profile.publicEmail}`} style={{ textDecoration: 'none', width: '48%' }}>
+                                        <View style={styles.socialLinkWrapper}>
+                                            <View style={styles.socialIconContainer}>{renderSocialIcon('email')}</View>
+                                            <Text style={styles.socialText}>Email Booking</Text>
+                                        </View>
+                                    </Link>
+                                )}
+                                {profile.socials && Object.entries(profile.socials).map(([platform, url]) => (
+                                    <Link key={platform} src={url as string} style={{ textDecoration: 'none', width: '48%' }}>
+                                        <View style={styles.socialLinkWrapper}>
+                                            <View style={styles.socialIconContainer}>{renderSocialIcon(platform)}</View>
+                                            <Text style={styles.socialText}>
+                                                {platform === 'ra' ? 'Resident Advisor' : platform.charAt(0).toUpperCase() + platform.slice(1)}
+                                            </Text>
+                                        </View>
+                                    </Link>
+                                ))}
+                            </View>
+                        </View>
+
+                        {profile.pressShots && profile.pressShots.length > 0 && (
+                            <View style={styles.section}>
+                                <Text style={styles.sectionTitle}>Press Assets (Click to HD)</Text>
+                                <View style={styles.pressShotContainer}>
+                                    {profile.pressShots.slice(0, 4).map((shot, i) => (
+                                        <Link key={i} src={shot} style={styles.pressShotLink}>
+                                            <Image src={shot} style={styles.pressShot} />
                                         </Link>
-                                    </View>
-                                ))}
+                                    ))}
+                                </View>
                             </View>
-                        </View>
-                    )}
+                        )}
 
-                    {/* SOCIAL LINKS & CONTACT */}
-                    <View style={styles.section}>
-                        <Text style={styles.sectionTitle}>Connect & Booking</Text>
-                        <View style={styles.socialGrid}>
-                            {profile.publicEmail && (
-                                <Link src={`mailto:${profile.publicEmail}`} style={{ textDecoration: 'none', width: '31%' }}>
-                                    <View style={styles.socialLinkWrapper}>
-                                        <View style={styles.socialIconContainer}>{renderSocialIcon('email')}</View>
-                                        <Text style={styles.socialText}>Email Bookings</Text>
-                                    </View>
-                                </Link>
-                            )}
-                            {Object.entries(profile.socials).map(([platform, url]) => (
-                                <Link key={platform} src={url as string} style={{ textDecoration: 'none', width: '31%' }}>
-                                    <View style={styles.socialLinkWrapper}>
-                                        <View style={styles.socialIconContainer}>{renderSocialIcon(platform)}</View>
-                                        <Text style={styles.socialText}>{platform === 'ra' ? 'Resident Advisor' : platform.charAt(0).toUpperCase() + platform.slice(1)}</Text>
-                                    </View>
-                                </Link>
-                            ))}
-                        </View>
                     </View>
-
-                    {/* PRESS SHOTS */}
-                    {profile.pressShots && profile.pressShots.length > 0 && (
-                        <View style={styles.section}>
-                            <Text style={styles.sectionTitle}>Press Assets</Text>
-                            <View style={styles.pressShotContainer}>
-                                {profile.pressShots.slice(0, 4).map((shot, i) => (
-                                    <Image key={i} src={shot} style={styles.pressShot} />
-                                ))}
-                            </View>
-                        </View>
-                    )}
                 </View>
 
                 {/* FOOTER */}
