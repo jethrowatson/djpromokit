@@ -10,7 +10,7 @@ export default function HowItWorks() {
             features: [
                 "Upload your best press shots",
                 "Embed mixes from Soundcloud, Mixcloud, or YouTube",
-                "Write a short and long bio",
+                "Generate a built-in AI biography instantly",
                 "Add links to all your social platforms",
                 "Include your tech rider and booking info"
             ],

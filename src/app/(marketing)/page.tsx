@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowRight, CheckCircle2, Play, LayoutTemplate, Send, CalendarCheck } from "lucide-react";
+import { ArrowRight, CheckCircle2, Play, LayoutTemplate, Send, CalendarCheck, Sparkles } from "lucide-react";
 import EPKMockup from "@/components/ui/EPKMockup";
 
 export default function Home() {
@@ -86,6 +86,51 @@ export default function Home() {
                             </div>
                             <h3 className="text-xl font-bold text-white mb-2">3. Get booked</h3>
                             <p className="text-slate-400">Promoters can hear your mix, download your photos, and contact you in seconds. Zero friction.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            {/* AI Bio Feature Section */}
+            <section className="w-full py-24 relative z-10 bg-[#020617]">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div className="glass-panel p-8 md:p-12 rounded-3xl border-purple-500/30 bg-purple-900/10 relative overflow-hidden flex flex-col md:flex-row items-center gap-12">
+                        <div className="absolute top-0 right-0 w-64 h-64 bg-purple-500/10 blur-[50px] pointer-events-none"></div>
+                        <div className="flex-1 relative z-10">
+                            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-500/20 border border-purple-500/30 text-xs font-bold text-purple-300 mb-6">
+                                <Sparkles className="w-4 h-4" /> AI Powered
+                            </div>
+                            <h2 className="text-3xl md:text-5xl font-bold text-white mb-6">Create your DJ biography with AI</h2>
+                            <p className="text-lg text-slate-300 mb-8 leading-relaxed">
+                                Many DJs struggle to write a professional biography. DJ Promo Kit includes an AI-powered tool that helps you create a compelling DJ profile in minutes. Simply answer a few questions about your music, influences, and performance history and the system will generate a professional short and long biography ready for your press kit.
+                            </p>
+                            <ul className="space-y-4">
+                                {[
+                                    "Answer a few simple questions about your DJ journey.",
+                                    "Generate a professional short bio and long press kit biography.",
+                                    "Edit and refine the text until you are happy.",
+                                    "Publish instantly to your DJ press kit page."
+                                ].map((item, i) => (
+                                    <li key={i} className="flex items-start gap-3 text-slate-300">
+                                        <CheckCircle2 className="w-6 h-6 text-purple-400 shrink-0" />
+                                        <span>{item}</span>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                        <div className="flex-1 w-full max-w-md relative z-10">
+                            <div className="bg-slate-900 border border-slate-700 rounded-2xl p-6 shadow-2xl">
+                                <div className="space-y-4">
+                                    <div className="h-4 bg-slate-800 rounded w-3/4 animate-pulse"></div>
+                                    <div className="h-4 bg-slate-800 rounded w-full animate-pulse"></div>
+                                    <div className="h-4 bg-slate-800 rounded w-5/6 animate-pulse"></div>
+                                    <div className="mt-8 pt-6 border-t border-slate-800 flex flex-col gap-3">
+                                        <div className="h-4 bg-slate-800 rounded w-1/4 animate-pulse"></div>
+                                        <div className="h-10 bg-slate-800 rounded-lg w-full animate-pulse"></div>
+                                        <div className="h-10 bg-purple-600/50 rounded-lg w-full animate-pulse mt-2"></div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

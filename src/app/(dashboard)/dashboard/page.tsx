@@ -7,6 +7,7 @@ import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import PaymentStatusToast from "./PaymentStatusToast";
 import CheckoutButton from "@/components/ui/CheckoutButton";
+import BioDashboardSection from "./BioDashboardSection";
 
 export default async function DashboardHome() {
     const supabase = await createClient();
@@ -15,7 +16,7 @@ export default async function DashboardHome() {
 
     const { data: profile } = await supabase
         .from('profiles')
-        .select('name, username, is_published')
+        .select('name, username, is_published, short_bio, long_bio, location, genres')
         .eq('id', user.id)
         .single();
 
@@ -96,6 +97,8 @@ export default async function DashboardHome() {
                     </div>
                 </div>
             </div>
+
+            <BioDashboardSection profile={profile} />
 
             {/* Action Grid */}
             <h2 className="text-xl font-bold text-white mb-4 mt-12">Tools & Actions</h2>
