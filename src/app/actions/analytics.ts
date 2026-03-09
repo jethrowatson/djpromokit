@@ -1,9 +1,7 @@
 "use server";
 
 import { createClient } from '@supabase/supabase-js';
-
-export type AnalyticsEventType = 'page_view' | 'booking_click' | 'link_click' | 'mix_play';
-
+export type AnalyticsEventType = 'page_view' | 'booking_click' | 'link_click' | 'mix_play' | 'download_asset';
 export async function trackEvent(
     profileId: string,
     eventType: AnalyticsEventType,

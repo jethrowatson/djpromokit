@@ -90,6 +90,30 @@ function getDynamicHighlights(profile: EPKProfileData) {
 
 export default function EPKContent({ profile, isDraftMode = false }: { profile: EPKProfileData, isDraftMode?: boolean }) {
     const [isBookingModalOpen, setIsBookingModalOpen] = useState(false);
+    const [downloadingIndex, setDownloadingIndex] = useState<number | null>(null);
+
+    const handleDownload = async (url: string, index: number) => {
+        if (downloadingIndex !== null) return; // Prevent concurrent spam
+        setDownloadingIndex(index);
+        try {
+            const response = await fetch(url);
+            const blob = await response.blob();
+            const blobUrl = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = blobUrl;
+            a.download = `${profile.username}-press-shot-${index + 1}.jpg`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(blobUrl);
+            if (!isDraftMode) trackEvent(profile.id, 'download_asset', `press_shot_${index + 1}`);
+        } catch (error) {
+            console.error("Failed to download image", error);
+        } finally {
+            setDownloadingIndex(null);
+        }
+    };
+
     // Safe fallbacks
     const avatarUrl = profile.avatar || "https://images.unsplash.com/photo-1542222851-5b2da24ca1ea?q=80&w=1000&auto=format&fit=crop";
     const name = profile.name || "Unnamed DJ";
@@ -286,16 +310,23 @@ export default function EPKContent({ profile, isDraftMode = false }: { profile: 
                             <h3 className="text-lg font-bold text-white mb-4">Press Assets</h3>
                             <div className="grid grid-cols-2 gap-3 mb-4">
                                 {profile.pressShots.slice(0, 3).map((url, i) => (
-                                    <div key={i} className={`bg-slate-800 rounded-xl overflow-hidden relative ${i === 2 && profile.pressShots.length === 3 ? 'col-span-2 aspect-[16/9]' : 'aspect-[4/3]'} ${i === 2 ? 'flex flex-col justify-end group cursor-pointer hover:border hover:border-white/20' : ''}`}>
-                                        <img src={url} className={`w-full h-full object-cover ${i === 2 ? 'absolute inset-0 opacity-60 group-hover:opacity-40 transition-opacity' : ''}`} alt={`Press Shot ${i + 1}`} />
-                                        {i === 2 && (
-                                            <>
-                                                <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center backdrop-blur-sm z-10">
-                                                    <Download className="w-8 h-8 text-white" />
-                                                </div>
-                                                <span className="p-4 text-sm font-bold text-white relative z-20 bg-gradient-to-t from-black/80 to-transparent">Download All <span className="text-slate-400 font-normal ml-1">(.zip, 32MB)</span></span>
-                                            </>
-                                        )}
+                                    <div
+                                        key={i}
+                                        className={`bg-slate-800 rounded-xl overflow-hidden relative group cursor-pointer border border-transparent hover:border-white/20 transition-all ${i === 2 && profile.pressShots.length === 3 ? 'col-span-2 aspect-[16/9]' : 'aspect-[4/3]'}`}
+                                        onClick={() => handleDownload(url, i)}
+                                    >
+                                        <img src={url} className="w-full h-full object-cover opacity-80 group-hover:opacity-40 transition-opacity duration-300" alt={`Press Shot ${i + 1}`} />
+
+                                        <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col items-center justify-center backdrop-blur-sm z-10">
+                                            {downloadingIndex === i ? (
+                                                <div className="w-8 h-8 rounded-full border-2 border-t-purple-500 border-white/20 animate-spin mb-2"></div>
+                                            ) : (
+                                                <Download className="w-8 h-8 text-white mb-2 transform group-hover:-translate-y-1 transition-transform" />
+                                            )}
+                                            <span className="text-sm font-bold text-white">
+                                                {downloadingIndex === i ? 'Downloading...' : 'Click to Download'}
+                                            </span>
+                                        </div>
                                     </div>
                                 ))}
                             </div>
