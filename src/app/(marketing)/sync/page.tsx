@@ -13,7 +13,7 @@ export default function SyncPage() {
                         Two platforms. <span className="text-cyan-400">One profile.</span>
                     </h1>
                     <p className="text-xl text-slate-400">
-                        DJpromokit is officially integrated with SYNCdj.co.uk. Build your EPK here, and your SYNC profile updates automatically.
+                        DJpromokit is officially integrated with SYNCgigs.co.uk. Build your EPK here, and your SYNC profile updates automatically.
                     </p>
                 </div>
 
@@ -42,7 +42,7 @@ export default function SyncPage() {
                                 <div className="w-12 h-12 bg-cyan-600 rounded-lg flex items-center justify-center mb-3 text-white font-bold text-xl">
                                     SYNC
                                 </div>
-                                <span className="text-white font-bold">SYNCdj.co.uk</span>
+                                <span className="text-white font-bold">SYNCgigs.co.uk</span>
                                 <span className="text-xs text-slate-400 mt-1">Booking Platform</span>
                             </div>
                         </div>
@@ -55,7 +55,7 @@ export default function SyncPage() {
                                 <div className="w-8 h-8 rounded-full bg-purple-500/20 flex items-center justify-center"><Zap className="w-4 h-4 text-purple-400" /></div>
                                 Zero Duplicate Admin
                             </h3>
-                            <p className="text-slate-400">You already have enough admin. With our integration, when you upload a new press photo or embed a new mix on DJpromokit, it is immediately pushed to your SYNCdj profile.</p>
+                            <p className="text-slate-400">You already have enough admin. With our integration, when you upload a new press photo or embed a new mix on DJpromokit, it is immediately pushed to your SYNCgigs profile.</p>
                         </div>
 
                         <div>

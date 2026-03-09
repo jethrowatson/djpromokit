@@ -116,7 +116,7 @@ export default async function Step7Preview() {
                 <div className="bg-purple-900/10 rounded-xl p-6 border border-purple-500/20 text-center">
                     <h3 className="text-xl font-bold text-white mb-2">Publish for £10.99</h3>
                     <p className="text-slate-300 text-sm mb-6">
-                        Pay once. Keep it live forever. Unlock the PDF export and auto-sync with SYNCdj.co.uk.
+                        Pay once. Keep it live forever. Unlock the PDF export and auto-sync with SYNCgigs.co.uk.
                     </p>
 
                     <div className="flex flex-col items-center gap-4">

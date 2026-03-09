@@ -23,7 +23,7 @@ export function Navbar() {
                         <Link href="/pricing" className="text-sm font-medium text-slate-300 hover:text-white transition-colors">Pricing</Link>
                         <Link href="/examples" className="text-sm font-medium text-slate-300 hover:text-white transition-colors">Examples</Link>
                         <Link href="/sync" className="text-sm font-medium text-slate-300 hover:text-white transition-colors flex items-center gap-1">
-                            SYNCdj <span className="inline-flex items-center px-1.5 py-0.5 rounded-full text-[10px] font-bold bg-cyan-500/10 text-cyan-400 ring-1 ring-inset ring-cyan-500/20">NEW</span>
+                            SYNCgigs <span className="inline-flex items-center px-1.5 py-0.5 rounded-full text-[10px] font-bold bg-cyan-500/10 text-cyan-400 ring-1 ring-inset ring-cyan-500/20">NEW</span>
                         </Link>
                     </div>
 
@@ -79,7 +79,7 @@ export function Navbar() {
                             onClick={() => setIsOpen(false)}
                             className="flex items-center justify-between px-3 py-4 text-base font-bold text-white hover:bg-white/5 rounded-xl transition-colors group"
                         >
-                            SYNCdj
+                            SYNCgigs
                             <span className="inline-flex items-center px-2 py-1 rounded-full text-[10px] font-bold bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 group-hover:bg-cyan-500/20">NEW</span>
                         </Link>
 

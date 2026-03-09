@@ -9,6 +9,7 @@ import PaymentStatusToast from "./PaymentStatusToast";
 import CheckoutButton from "@/components/ui/CheckoutButton";
 import BioDashboardSection from "./BioDashboardSection";
 import CopyLinkWidget from "@/components/dashboard/CopyLinkWidget";
+import SyncGigsWidget from "@/components/dashboard/SyncGigsWidget";
 
 export default async function DashboardHome() {
     const supabase = await createClient();
@@ -17,7 +18,7 @@ export default async function DashboardHome() {
 
     const { data: profile } = await supabase
         .from('profiles')
-        .select('name, username, is_published, short_bio, long_bio, location, genres')
+        .select('name, username, is_published, short_bio, long_bio, location, genres, sync_gigs_enabled')
         .eq('id', user.id)
         .single();
 
@@ -128,15 +129,7 @@ export default async function DashboardHome() {
                     <Link href="/dashboard/edit" className="absolute inset-0 z-10"><span className="sr-only">Edit Profile</span></Link>
                 </div>
 
-                <div className="glass-panel p-6 rounded-2xl border-white/5 hover:border-cyan-500/30 transition-colors group cursor-pointer relative overflow-hidden">
-                    <div className="absolute inset-0 bg-gradient-to-br from-cyan-600/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                    <div className="w-12 h-12 rounded-xl bg-slate-800 flex items-center justify-center mb-4 group-hover:bg-cyan-600/20 transition-colors">
-                        <Sparkles className="w-6 h-6 text-cyan-400" />
-                    </div>
-                    <h3 className="text-lg font-bold text-white mb-1">SYNCdj Status</h3>
-                    <p className="text-sm text-slate-400 mb-2">Your profile is actively linked and pushing updates to SYNCdj.co.uk.</p>
-                    <span className="inline-flex items-center gap-1 text-[10px] font-bold text-emerald-400 uppercase tracking-wider"><CheckCircle2 className="w-3 h-3" /> Synced perfectly</span>
-                </div>
+                <SyncGigsWidget initialState={profile.sync_gigs_enabled} />
 
                 <div className="glass-panel p-6 rounded-2xl border-white/5 hover:border-white/20 transition-colors group cursor-pointer">
                     <div className="w-12 h-12 rounded-xl bg-slate-800 flex items-center justify-center mb-4">

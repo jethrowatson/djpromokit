@@ -1,16 +1,16 @@
 import { NextResponse } from 'next/server';
 
 // POST /api/webhooks/sync
-// Stub endpoint that would exist on SYNCdj.co.uk to receive DJpromokit updates.
-export async function POST(req: Request) {
+// Stub endpoint that would exist on SYNCgigs.co.uk to receive DJpromokit updates.
+export async function POST(request: Request) {
     try {
-        const body = await req.json();
+        const body = await request.json();
 
-        // In real implementation:
-        // SYNCdj verifies the signature
-        // SYNCdj updates its internal DJ profile database with the payload
+        // In reality:
+        // SYNCgigs verifies the signature
+        // SYNCgigs updates its internal DJ profile database with the payload
 
-        console.log("SYNCdj Webhook received profile update:", body?.username);
+        console.log("SYNCgigs Webhook received profile update:", body?.username);
 
         return NextResponse.json({ success: true, syncedAt: new Date().toISOString() });
     } catch (error) {

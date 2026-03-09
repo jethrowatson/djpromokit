@@ -104,7 +104,7 @@ export default function BookingForm({ defaults }: { defaults: ProfileDefaults })
                                 <option value="4">£1000+</option>
                             </select>
                         </div>
-                        <p className="mt-1 text-xs text-slate-500">Only shared with SYNCdj platform later.</p>
+                        <p className="mt-1 text-xs text-slate-500">Only shared with SYNCgigs platform later.</p>
                     </div>
                 </div>
 

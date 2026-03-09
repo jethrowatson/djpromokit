@@ -28,7 +28,7 @@ export default function Home() {
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center animate-slide-up">
                     <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full glass-panel mb-8 border-purple-500/30 text-sm animate-fade-in">
                         <span className="flex h-2 w-2 rounded-full bg-cyan-400 animate-pulse"></span>
-                        <span className="text-slate-300">New: Auto-sync your profile with SYNCdj.co.uk</span>
+                        <span className="text-slate-300">New: Auto-sync your profile with SYNCgigs.co.uk</span>
                     </div>
 
                     <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight text-white mb-6 max-w-4xl mx-auto drop-shadow-lg">

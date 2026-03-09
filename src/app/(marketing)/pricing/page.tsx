@@ -64,7 +64,7 @@ export default function Pricing() {
                                 "Public EPK URL (e.g., /dj/yourname)",
                                 "PDF Press Kit download generator",
                                 "Removal of preview watermark",
-                                "Automatic SYNCdj.co.uk integration",
+                                "Automatic SYNCgigs.co.uk integration",
                                 "Basic analytics & stats"
                             ].map((feature, i) => (
                                 <li key={i} className="flex items-start gap-3 text-left w-full">
@@ -94,7 +94,7 @@ export default function Pricing() {
                         <div className="glass-panel p-6 rounded-2xl">
                             <h4 className="text-lg font-bold text-white mb-2">Can I edit my profile after publishing?</h4>
                             <p className="text-slate-300">
-                                Yes! You can log in and update your photos, mixes, and bio at any time. Changes are reflected on your live DJpromokit page instantly, and will also sync to your SYNCdj.co.uk profile.
+                                Yes! You can log in and update your photos, mixes, and bio at any time. Changes are reflected on your live DJpromokit page instantly, and will also sync to your SYNCgigs.co.uk profile.
                             </p>
                         </div>
 

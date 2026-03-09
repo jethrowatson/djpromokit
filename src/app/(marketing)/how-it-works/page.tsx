@@ -25,7 +25,7 @@ export default function HowItWorks() {
                 "Get a clean djpromokit.com/dj/yourname URL",
                 "The preview watermark is removed",
                 "Unlock the PDF export generator",
-                "Your profile syncs to SYNCdj.co.uk automatically"
+                "Your profile syncs to SYNCgigs.co.uk automatically"
             ],
             color: "from-cyan-600/20 to-cyan-900/5",
             borderColor: "border-cyan-500/30"
