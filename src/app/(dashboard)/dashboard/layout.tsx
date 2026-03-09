@@ -1,7 +1,8 @@
 import Link from "next/link";
-import { AudioWaveform, Copy, Eye, FileText, BarChart3, Settings, Play, Inbox } from "lucide-react";
+import { AudioWaveform, Copy, Eye, FileText, BarChart3, Settings, Play, Inbox, LogOut } from "lucide-react";
 
 import { createClient } from "@/lib/supabase/server";
+import { logout } from "@/app/(marketing)/login/actions";
 
 export default async function DashboardLayout({
     children,
@@ -47,10 +48,15 @@ export default async function DashboardLayout({
                     </Link>
                 </nav>
 
-                <div className="absolute bottom-0 w-full p-4 border-t border-white/5">
+                <div className="absolute bottom-0 w-full p-4 border-t border-white/5 space-y-2">
                     <Link href="/dashboard/settings" className="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 transition-colors font-medium">
                         <Settings className="w-5 h-5" /> Account Settings
                     </Link>
+                    <form action={logout}>
+                        <button type="submit" className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-red-400 hover:text-red-300 hover:bg-red-500/10 transition-colors font-medium">
+                            <LogOut className="w-5 h-5" /> Log Out
+                        </button>
+                    </form>
                 </div>
             </aside>
 
