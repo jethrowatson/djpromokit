@@ -8,7 +8,8 @@ export async function updateAccountSettings(formData: FormData) {
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) return { success: false, error: 'Unauthorized' };
 
-    const username = formData.get('username') as string;
+    const rawUsername = formData.get('username') as string || '';
+    const username = rawUsername ? rawUsername.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '').replace(/-+/g, '-') : '';
     const email = formData.get('email') as string;
     const newPassword = formData.get('newPassword') as string;
 

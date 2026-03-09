@@ -31,9 +31,10 @@ export async function saveStep1Basics(formData: FormData) {
     if (!finalUsername) {
         // Fallback to metadata username or newly generated DJ Name slug
         const metadataUsername = user.user_metadata?.username;
-        const slugifiedDjName = djName ? djName.toLowerCase().replace(/[^a-z0-9]/g, '') : '';
+        const slugifiedDjName = djName ? djName.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '').replace(/-+/g, '-') : '';
 
-        let candidateUsername = metadataUsername || slugifiedDjName || `dj_${user.id.substring(0, 6)}`;
+        let rawCandidate = metadataUsername || slugifiedDjName || `dj_${user.id.substring(0, 6)}`;
+        let candidateUsername = rawCandidate.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '').replace(/-+/g, '-');
 
         // 3. Prevent Collisions for newly generated slugs
         const { data: collisionCheck } = await supabase

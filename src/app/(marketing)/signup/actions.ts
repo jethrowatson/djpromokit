@@ -10,7 +10,8 @@ export async function signup(formData: FormData) {
 
     const email = formData.get('email') as string
     const password = formData.get('password') as string
-    const username = formData.get('username') as string
+    const rawUsername = formData.get('username') as string || ''
+    const username = rawUsername.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '').replace(/-+/g, '-')
     const djName = formData.get('djName') as string
 
     const { data, error } = await supabase.auth.signUp({
