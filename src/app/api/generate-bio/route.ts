@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { generateObject } from 'ai';
-import { openai } from '@ai-sdk/openai';
+import { google } from '@ai-sdk/google';
 import { z } from 'zod';
 import { createClient } from '@/lib/supabase/server';
 
@@ -39,7 +39,7 @@ The biographies MUST include their DJ name, music style, key influences, perform
         }
 
         const result = await generateObject({
-            model: openai('gpt-4o-mini'),
+            model: google('gemini-1.5-pro'),
             system: systemPrompt,
             schema: z.object({
                 shortBio: z.string().describe('A concise professional short biography of the DJ, roughly 50 to 120 words.'),
