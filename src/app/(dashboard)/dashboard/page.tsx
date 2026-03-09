@@ -130,7 +130,7 @@ export default async function DashboardHome() {
                     </div>
                     <h3 className="text-lg font-bold text-white mb-1">Generate PDF Press Kit</h3>
                     <p className="text-sm text-slate-400">Download a beautifully formatted A4 PDF with clickable links to send as attachments.</p>
-                    <Link href="/dashboard" className="absolute inset-0 z-10"><span className="sr-only">Generate PDF</span></Link>
+                    <a href="/api/export/pdf" download target="_blank" rel="noopener noreferrer" className="absolute inset-0 z-10"><span className="sr-only">Generate PDF</span></a>
                 </div>
 
                 <div className="glass-panel p-6 rounded-2xl border-white/5 hover:border-slate-500/30 transition-colors group cursor-pointer relative overflow-hidden">
