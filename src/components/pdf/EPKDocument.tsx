@@ -342,13 +342,29 @@ export const EPKDocument = ({ profile }: { profile: EPKProfileData }) => {
                 {/* 3 COLUMN LAYOUT MAIN CONTENT */}
                 <View style={styles.mainLayout}>
 
-                    {/* COLUMN 1: BIO & MIXES */}
+                    {/* COLUMN 1: BIO */}
                     <View style={styles.col1}>
                         <View style={styles.section}>
                             <Text style={styles.sectionTitle}>Biography</Text>
                             {profile.shortBio && <Text style={styles.bioText}>{profile.shortBio}</Text>}
                             {profile.longBio && <Text style={styles.bioText}>{profile.longBio}</Text>}
                         </View>
+                    </View>
+
+                    {/* COLUMN 2: PRESS ASSETS & MIXES */}
+                    <View style={styles.col2}>
+                        {profile.pressShots && profile.pressShots.length > 0 && (
+                            <View style={styles.section}>
+                                <Text style={styles.sectionTitle}>Press Assets (Click to HD)</Text>
+                                <View style={styles.pressShotContainer}>
+                                    {profile.pressShots.slice(0, 4).map((shot, i) => (
+                                        <Link key={i} src={shot} style={styles.pressShotLink}>
+                                            <Image src={shot} style={styles.pressShot} />
+                                        </Link>
+                                    ))}
+                                </View>
+                            </View>
+                        )}
 
                         {profile.mixes && profile.mixes.length > 0 && (
                             <View style={styles.section}>
@@ -361,22 +377,6 @@ export const EPKDocument = ({ profile }: { profile: EPKProfileData }) => {
                                                 Listen
                                             </Link>
                                         </View>
-                                    ))}
-                                </View>
-                            </View>
-                        )}
-                    </View>
-
-                    {/* COLUMN 2: PRESS ASSETS */}
-                    <View style={styles.col2}>
-                        {profile.pressShots && profile.pressShots.length > 0 && (
-                            <View style={styles.section}>
-                                <Text style={styles.sectionTitle}>Press Assets (Click to HD)</Text>
-                                <View style={styles.pressShotContainer}>
-                                    {profile.pressShots.slice(0, 4).map((shot, i) => (
-                                        <Link key={i} src={shot} style={styles.pressShotLink}>
-                                            <Image src={shot} style={styles.pressShot} />
-                                        </Link>
                                     ))}
                                 </View>
                             </View>
