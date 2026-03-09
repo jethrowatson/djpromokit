@@ -39,7 +39,7 @@ The biographies MUST include their DJ name, music style, key influences, perform
         }
 
         const result = await generateObject({
-            model: google('gemini-1.5-pro'),
+            model: google('gemini-1.5-pro-latest'),
             system: systemPrompt,
             schema: z.object({
                 shortBio: z.string().describe('A concise professional short biography of the DJ, roughly 50 to 120 words.'),
