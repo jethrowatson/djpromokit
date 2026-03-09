@@ -305,33 +305,42 @@ export default function EPKContent({ profile, isDraftMode = false }: { profile: 
                 <div className="md:col-span-4 flex flex-col gap-8 animate-fade-in" style={{ animationDelay: '400ms' }}>
 
                     {/* Press Photos */}
-                    {profile.pressShots && profile.pressShots.length > 0 && (
-                        <div className="glass-panel p-6 rounded-3xl border-white/5">
-                            <h3 className="text-lg font-bold text-white mb-4">Press Assets</h3>
-                            <div className="grid grid-cols-2 gap-3 mb-4">
-                                {profile.pressShots.slice(0, 3).map((url, i) => (
-                                    <div
-                                        key={i}
-                                        className={`bg-slate-800 rounded-xl overflow-hidden relative group cursor-pointer border border-transparent hover:border-white/20 transition-all ${i === 2 && profile.pressShots.length === 3 ? 'col-span-2 aspect-[16/9]' : 'aspect-[4/3]'}`}
-                                        onClick={() => handleDownload(url, i)}
-                                    >
-                                        <img src={url} className="w-full h-full object-cover opacity-80 group-hover:opacity-40 transition-opacity duration-300" alt={`Press Shot ${i + 1}`} />
+                    {profile.pressShots && (profile.pressShots.length > 0 || profile.avatar) && (() => {
+                        const allAssets = profile.avatar
+                            ? [profile.avatar, ...profile.pressShots.filter(url => url !== profile.avatar)]
+                            : profile.pressShots;
+                        const displayAssets = allAssets.slice(0, 4);
+                        if (displayAssets.length === 0) return null;
 
-                                        <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col items-center justify-center backdrop-blur-sm z-10">
-                                            {downloadingIndex === i ? (
-                                                <div className="w-8 h-8 rounded-full border-2 border-t-purple-500 border-white/20 animate-spin mb-2"></div>
-                                            ) : (
-                                                <Download className="w-8 h-8 text-white mb-2 transform group-hover:-translate-y-1 transition-transform" />
-                                            )}
-                                            <span className="text-sm font-bold text-white">
-                                                {downloadingIndex === i ? 'Downloading...' : 'Click to Download'}
-                                            </span>
+                        return (
+                            <div className="glass-panel p-6 rounded-3xl border-white/5">
+                                <h3 className="text-lg font-bold text-white mb-4">Press Assets</h3>
+                                <div className="grid grid-cols-2 gap-3 mb-4">
+                                    {displayAssets.map((url, i) => (
+                                        <div
+                                            key={i}
+                                            className={`bg-slate-800 rounded-xl overflow-hidden relative group cursor-pointer border border-transparent hover:border-white/20 transition-all ${displayAssets.length === 3 && i === 2 ? 'col-span-2 aspect-[16/9]' : 'aspect-[4/3]'
+                                                }`}
+                                            onClick={() => handleDownload(url, i)}
+                                        >
+                                            <img src={url} className="w-full h-full object-cover opacity-80 group-hover:opacity-40 transition-opacity duration-300" alt={`Press Asset ${i + 1}`} />
+
+                                            <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col items-center justify-center backdrop-blur-sm z-10">
+                                                {downloadingIndex === i ? (
+                                                    <div className="w-8 h-8 rounded-full border-2 border-t-purple-500 border-white/20 animate-spin mb-2"></div>
+                                                ) : (
+                                                    <Download className="w-8 h-8 text-white mb-2 transform group-hover:-translate-y-1 transition-transform" />
+                                                )}
+                                                <span className="text-sm font-bold text-white">
+                                                    {downloadingIndex === i ? 'Downloading...' : 'Click to Download'}
+                                                </span>
+                                            </div>
                                         </div>
-                                    </div>
-                                ))}
+                                    ))}
+                                </div>
                             </div>
-                        </div>
-                    )}
+                        );
+                    })()}
 
                     {/* Expanded Social Links with Mock Stats */}
                     {Object.keys(profile.socials || {}).length > 0 && (
