@@ -98,7 +98,7 @@ export default function EPKContent({ profile, isDraftMode = false }: { profile: 
     return (
         <div className="min-h-screen bg-[#020617] text-white selection:bg-purple-500/30 relative">
 
-            {isDraftMode && (
+            {isDraftMode && !profile.isPublished && (
                 <>
                     <div className="fixed inset-0 z-40 pointer-events-none flex items-center justify-center overflow-hidden">
                         {/* Diagonal striped overlay for draft mode */}
