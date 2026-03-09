@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { generateObject } from 'ai';
-import { google } from '@ai-sdk/google';
+import { openai } from '@ai-sdk/openai';
 import { z } from 'zod';
 import { createClient } from '@/lib/supabase/server';
 
@@ -39,7 +39,7 @@ The biographies MUST include their DJ name, music style, key influences, perform
         }
 
         const result = await generateObject({
-            model: google('models/gemini-1.5-flash'), // Try explicit models/ prefix just in case the SDK is stripping it or the user's key structure requires it
+            model: openai('gpt-4o-mini'),
             system: systemPrompt,
             schema: z.object({
                 shortBio: z.string().describe('A concise professional short biography of the DJ, roughly 50 to 120 words.'),
@@ -56,10 +56,10 @@ The biographies MUST include their DJ name, music style, key influences, perform
 
     } catch (error: any) {
         console.error('Bio Generation Error:', error);
-        
+
         // Return clear error message showing exactly what failed
-        return NextResponse.json({ 
-            error: error.message || 'Failed to generate bio with Google Gemini.' 
+        return NextResponse.json({
+            error: error.message || 'Failed to generate bio with OpenAI.'
         }, { status: 500 });
     }
 }
