@@ -74,8 +74,14 @@ export default function AIBioGenerator({ defaultValues, onSave, onCancel }: AIBi
 
     const handleSave = async () => {
         setIsSaving(true);
-        await onSave(shortBio, longBio);
-        setIsSaving(false);
+        try {
+            await onSave(shortBio, longBio);
+        } catch (error: any) {
+            console.error("Save error:", error);
+            alert("Failed to save. If you just deployed, please refresh your page and try again.");
+        } finally {
+            setIsSaving(false);
+        }
     };
 
     return (
