@@ -42,7 +42,7 @@ export default async function DashboardLayout({
                     <Link href="/dashboard/edit" className="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 transition-colors font-medium">
                         <FileText className="w-5 h-5" /> Edit Profile
                     </Link>
-                    <Link href={username ? `/${username}` : "#"} className="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 transition-colors font-medium">
+                    <Link href={username ? `/${username}?preview=true` : "#"} className="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 transition-colors font-medium">
                         <Eye className="w-5 h-5" /> View Live EPK
                     </Link>
                 </nav>
