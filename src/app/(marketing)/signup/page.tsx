@@ -125,7 +125,7 @@ export default async function Signup(props: { searchParams: Promise<{ error?: st
                                 className="h-4 w-4 text-cyan-600 focus:ring-cyan-500 border-slate-700 rounded bg-slate-900"
                             />
                             <label htmlFor="terms" className="ml-2 block text-sm text-slate-300">
-                                I agree to the <Link href="#" className="text-cyan-400 hover:text-cyan-300">Terms of Service</Link> and <Link href="#" className="text-cyan-400 hover:text-cyan-300">Privacy Policy</Link>
+                                I agree to the <Link href="/terms" target="_blank" className="text-cyan-400 hover:text-cyan-300">Terms of Service</Link> and <Link href="/privacy" target="_blank" className="text-cyan-400 hover:text-cyan-300">Privacy Policy</Link>
                             </label>
                         </div>
 

@@ -47,8 +47,8 @@ export function Footer() {
                             <div className="mt-12 md:mt-0">
                                 <h3 className="text-sm font-semibold text-white tracking-wider uppercase">Legal</h3>
                                 <ul role="list" className="mt-4 space-y-4">
-                                    <li><Link href="#" className="text-sm text-slate-400 hover:text-white transition-colors">Privacy Policy</Link></li>
-                                    <li><Link href="#" className="text-sm text-slate-400 hover:text-white transition-colors">Terms of Service</Link></li>
+                                    <li><Link href="/privacy" className="text-sm text-slate-400 hover:text-white transition-colors">Privacy Policy</Link></li>
+                                    <li><Link href="/terms" className="text-sm text-slate-400 hover:text-white transition-colors">Terms of Service</Link></li>
                                 </ul>
                             </div>
                         </div>
