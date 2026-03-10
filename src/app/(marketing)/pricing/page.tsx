@@ -1,9 +1,58 @@
 import Link from "next/link";
 import { Check } from "lucide-react";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+    title: 'Pricing | DJ Promo Kit',
+    description: 'Build your EPK for free. Only pay when you\'re ready to share it with the world. No monthly subscriptions.',
+};
+
+const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+        {
+            "@type": "Question",
+            "name": "What does \"lifetime fee\" mean?",
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "The lifetime fee means the lifetime of the product, not your personal lifetime. You pay once, and your published profile page is hosted and kept live for as long as DJpromokit exists. If we release paid upgrades in the future, your page will remain live without additional cost."
+            }
+        },
+        {
+            "@type": "Question",
+            "name": "Can I edit my profile after publishing?",
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Yes! You can log in and update your photos, mixes, and bio at any time. Changes are reflected on your live DJpromokit page instantly, and will also sync to your SYNCgigs.co.uk profile."
+            }
+        },
+        {
+            "@type": "Question",
+            "name": "How does the PDF export work?",
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Once published, a \"Download PDF\" button appears on your dashboard. We auto-generate a beautifully formatted A4 press kit based on your profile data. It includes your photos, bio, and working hyperlinks to your mixes and socials."
+            }
+        },
+        {
+            "@type": "Question",
+            "name": "Is there a refund if I unpublish my page?",
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "No. You can choose to unpublish your page at any time to hide it from the public, but the one-time publish fee is non-refundable."
+            }
+        }
+    ]
+};
 
 export default function Pricing() {
     return (
         <div className="min-h-screen pt-12 pb-24">
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+            />
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="text-center max-w-3xl mx-auto mb-16">
                     <h1 className="text-4xl md:text-5xl font-extrabold text-white mb-6">Simple, transparent pricing</h1>

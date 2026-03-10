@@ -1,5 +1,11 @@
 import Link from "next/link";
 import { ArrowRight, Music2, Headphones, Sparkles, Flame, Radio, Mic2, Play } from "lucide-react";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+    title: 'Example DJ Press Kits | DJ Promo Kit',
+    description: 'See how hundreds of DJs use DJpromokit to send professional EPKs to promoters. View real examples.',
+};
 
 export default function Examples() {
     const examples = [
@@ -47,8 +53,26 @@ export default function Examples() {
         },
     ];
 
+    const jsonLd = {
+        "@context": "https://schema.org",
+        "@type": "ItemList",
+        "itemListElement": examples.map((ex, i) => ({
+            "@type": "ListItem",
+            "position": i + 1,
+            "item": {
+                "@type": "Person",
+                "name": ex.name,
+                "url": `https://djpromokit.com/${ex.username}`
+            }
+        }))
+    };
+
     return (
         <div className="min-h-screen pt-12 pb-24">
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+            />
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="text-center max-w-3xl mx-auto mb-16">
                     <h1 className="text-4xl md:text-5xl font-extrabold text-white mb-6">See it in action</h1>

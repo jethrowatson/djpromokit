@@ -6,6 +6,47 @@ export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://djpromokit.com'),
   title: 'DJ Promo Kit | Your DJ press kit link, built in minutes.',
   description: 'Give DJs a single link that gets them booked faster. Build a pro EPK in under 10 minutes with DJ Promo Kit.',
+  openGraph: {
+    title: 'DJ Promo Kit | Your DJ press kit link, built in minutes.',
+    description: 'Give DJs a single link that gets them booked faster. Build a pro EPK in under 10 minutes with DJ Promo Kit.',
+    url: 'https://djpromokit.com',
+    siteName: 'DJ Promo Kit',
+    locale: 'en_GB',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'DJ Promo Kit | Your DJ press kit link, built in minutes.',
+    description: 'Give DJs a single link that gets them booked faster. Build a pro EPK in under 10 minutes with DJ Promo Kit.',
+  },
+};
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'WebSite',
+      '@id': 'https://djpromokit.com/#website',
+      url: 'https://djpromokit.com',
+      name: 'DJ Promo Kit',
+      description: 'Your DJ press kit link, built in minutes.',
+      publisher: {
+        '@id': 'https://djpromokit.com/#organization',
+      },
+    },
+    {
+      '@type': 'SoftwareApplication',
+      '@id': 'https://djpromokit.com/#software',
+      name: 'DJ Promo Kit',
+      applicationCategory: 'BrowserApplication',
+      operatingSystem: 'Any',
+      offers: {
+        '@type': 'Offer',
+        price: '10.99',
+        priceCurrency: 'GBP',
+      },
+    },
+  ],
 };
 
 export default function RootLayout({
@@ -16,6 +57,10 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark">
       <body className="antialiased min-h-screen selection:bg-purple-500/30">
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
         <Script id="meta-pixel" strategy="afterInteractive">
           {`
             !function(f,b,e,v,n,t,s)
