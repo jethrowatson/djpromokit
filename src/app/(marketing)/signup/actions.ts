@@ -14,6 +14,16 @@ export async function signup(formData: FormData) {
     const username = rawUsername.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '').replace(/-+/g, '-')
     const djName = formData.get('djName') as string
 
+    const { data: existingUser, error: queryError } = await supabase
+        .from('profiles')
+        .select('username')
+        .eq('username', username)
+        .single()
+
+    if (existingUser) {
+        redirect('/signup?error=' + encodeURIComponent('That username is already taken. Please choose another.'))
+    }
+
     const { data, error } = await supabase.auth.signUp({
         email,
         password,

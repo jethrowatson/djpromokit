@@ -140,3 +140,56 @@ export async function sendAdminSignupAlert({
     return { success: false, error };
   }
 }
+
+export async function sendAdminPurchaseAlert({
+  profileId,
+  amount,
+  currency = 'GBP'
+}: {
+  profileId: string;
+  amount: number | null;
+  currency?: string;
+}) {
+  if (!resend) {
+    console.warn("RESEND_API_KEY is not set. Purchase alert skipped.");
+    return { success: false, error: 'Resend API Key missing' };
+  }
+
+  try {
+    const adminEmail = process.env.ADMIN_EMAIL || 'admin@djpromokit.com';
+    const formattedAmount = amount ? new Intl.NumberFormat('en-GB', { style: 'currency', currency }).format(amount / 100) : '£10.99';
+
+    const { data, error } = await resend.emails.send({
+      from: 'DJpromokit Sales <sales@updates.djpromokit.com>',
+      to: adminEmail,
+      subject: `💰 New Sale: ${formattedAmount}!`,
+      html: `
+        <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; background-color: #f8fafc; padding: 40px; border-radius: 12px;">
+          <h2 style="color: #0f172a; margin-top: 0;">Cha-ching! 💸</h2>
+          <p style="color: #334155; font-size: 16px;">A DJ has just paid to publish their profile on DJ Promo Kit.</p>
+          
+          <div style="background-color: white; padding: 24px; border-radius: 8px; border: 1px solid #e2e8f0; margin: 24px 0;">
+            <p style="margin: 0; color: #64748b; font-size: 14px; text-transform: uppercase; font-weight: bold; letter-spacing: 0.05em;">Revenue</p>
+            <p style="margin: 8px 0 0 0; color: #10b981; font-size: 32px; font-weight: 800;">${formattedAmount}</p>
+          </div>
+
+          <p style="color: #64748b; font-size: 14px;"><strong>Profile ID:</strong> ${profileId}</p>
+
+          <div style="margin-top: 32px;">
+            <a href="https://dashboard.stripe.com/" style="background-color: #4f46e5; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; font-weight: bold; display: inline-block;">View in Stripe</a>
+          </div>
+        </div>
+      `
+    });
+
+    if (error) {
+      console.error('Error sending admin purchase alert via Resend:', error);
+      return { success: false, error };
+    }
+
+    return { success: true, data };
+  } catch (error) {
+    console.error('Unexpected error sending admin purchase alert:', error);
+    return { success: false, error };
+  }
+}

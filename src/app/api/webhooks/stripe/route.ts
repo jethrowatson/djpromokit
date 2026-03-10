@@ -1,11 +1,9 @@
 import { NextResponse } from 'next/server';
 import Stripe from 'stripe';
 import { createClient } from '@supabase/supabase-js';
+import { sendAdminPurchaseAlert } from '@/lib/resend';
 
 // Webhook body is read directly from req.text() in App Router
-
-// Webhook body is read directly from req.text() in App Router
-
 
 export async function POST(req: Request) {
     const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
@@ -65,6 +63,13 @@ export async function POST(req: Request) {
             if (paymentError) {
                 console.error('Error logging payment:', paymentError);
                 // We don't return 500 here since the profile is already published we don't want Stripe retrying
+            } else {
+                // Fire non-blocking email alert to admin
+                sendAdminPurchaseAlert({
+                    profileId,
+                    amount: session.amount_total,
+                    currency: session.currency || 'GBP'
+                }).catch(console.error);
             }
         }
     }
