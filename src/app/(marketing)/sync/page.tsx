@@ -24,7 +24,7 @@ export default function SyncPage() {
                         <div className="absolute inset-x-0 h-1 bg-gradient-to-r from-purple-500 to-cyan-500 top-1/2 -translate-y-1/2 z-0 opacity-50 diagram-line"></div>
 
                         <div className="flex justify-between w-full relative z-10 px-8">
-                            <div className="glass-panel p-6 rounded-2xl border-purple-500/50 bg-slate-900 shadow-2xl flex flex-col items-center">
+                            <div className="glass-panel w-44 sm:w-48 p-6 rounded-2xl border-purple-500/50 bg-slate-900 shadow-2xl flex flex-col items-center text-center">
                                 <div className="w-14 h-14 bg-purple-600 rounded-lg flex items-center justify-center mb-3">
                                     <span className="font-bold text-white text-xl">DJP</span>
                                 </div>
@@ -38,7 +38,7 @@ export default function SyncPage() {
                                 </div>
                             </div>
 
-                            <div className="glass-panel p-6 rounded-2xl border-cyan-500/50 bg-slate-900 shadow-2xl flex flex-col items-center">
+                            <div className="glass-panel w-44 sm:w-48 p-6 rounded-2xl border-cyan-500/50 bg-slate-900 shadow-2xl flex flex-col items-center text-center">
                                 <div className="w-14 h-14 bg-cyan-600 rounded-lg flex items-center justify-center mb-3 text-white font-bold text-xl">
                                     SYNC
                                 </div>
