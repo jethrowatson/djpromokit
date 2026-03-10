@@ -25,7 +25,7 @@ export default function SyncPage() {
 
                         <div className="flex justify-between w-full relative z-10 px-8">
                             <div className="glass-panel p-6 rounded-2xl border-purple-500/50 bg-slate-900 shadow-2xl flex flex-col items-center">
-                                <div className="w-12 h-12 bg-purple-600 rounded-lg flex items-center justify-center mb-3">
+                                <div className="w-14 h-14 bg-purple-600 rounded-lg flex items-center justify-center mb-3">
                                     <span className="font-bold text-white text-xl">DJP</span>
                                 </div>
                                 <span className="text-white font-bold">DJpromokit</span>
@@ -39,7 +39,7 @@ export default function SyncPage() {
                             </div>
 
                             <div className="glass-panel p-6 rounded-2xl border-cyan-500/50 bg-slate-900 shadow-2xl flex flex-col items-center">
-                                <div className="w-12 h-12 bg-cyan-600 rounded-lg flex items-center justify-center mb-3 text-white font-bold text-xl">
+                                <div className="w-14 h-14 bg-cyan-600 rounded-lg flex items-center justify-center mb-3 text-white font-bold text-xl">
                                     SYNC
                                 </div>
                                 <span className="text-white font-bold">SYNCgigs.co.uk</span>

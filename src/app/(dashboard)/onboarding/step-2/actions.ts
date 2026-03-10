@@ -3,6 +3,7 @@
 import { createClient } from '@/lib/supabase/server';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
+import { z } from 'zod';
 
 export async function saveStep2Mix(formData: FormData) {
     const supabase = await createClient();
@@ -15,6 +16,11 @@ export async function saveStep2Mix(formData: FormData) {
     const mixUrl = formData.get('mixLink') as string;
 
     if (mixUrl) {
+        // Validate URL
+        const parsedUrl = z.string().url('Please enter a valid URL.').safeParse(mixUrl);
+        if (!parsedUrl.success) {
+            throw new Error(parsedUrl.error.issues[0].message);
+        }
         // Find existing media record or create a new one
         const { data: profile } = await supabase
             .from('profiles')

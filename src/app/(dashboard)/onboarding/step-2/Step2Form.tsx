@@ -21,6 +21,8 @@ export default function Step2Form({ existingMixUrl }: { existingMixUrl: string }
                         name="mixLink"
                         id="mixLink"
                         defaultValue={existingMixUrl}
+                        required
+                        pattern="https?://.*"
                         className="block w-full pl-10 bg-slate-900 border border-slate-700 text-white rounded-lg focus:ring-purple-500 focus:border-purple-500 sm:text-sm py-3 transition-colors"
                         placeholder="https://soundcloud.com/djmarcus/summer-mix-2024"
                     />

@@ -5,6 +5,7 @@ import { Save, Loader2, ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
 import { saveFullProfile } from './actions';
 import ImageUpload from '@/components/ui/ImageUpload';
+import LocationAutocomplete from '@/components/ui/LocationAutocomplete';
 import { saveProfileAvatar, addPressShot, removePressShot } from '@/app/(dashboard)/onboarding/step-3/actions';
 
 interface EditProfileFormProps {
@@ -36,6 +37,13 @@ export default function EditProfileForm({ profile, media, socials }: EditProfile
 
     const pressShots = media.filter(m => m.type === 'press_shot');
     const featuredMixes = media.filter(m => m.type === 'featured_mix').map(m => m.url);
+
+    const primaryGenre = profile?.genres?.[0] || '';
+    const secondaryGenre = profile?.genres?.[1] || '';
+    const genres = [
+        "House", "Techno", "Tech House", "Deep House", "Drum & Bass",
+        "Dubstep", "UK Garage", "Hip Hop", "R&B", "Pop", "Open Format", "Wedding/Events"
+    ];
 
     return (
         <form onSubmit={handleSubmit} className="max-w-4xl mx-auto pb-24 animate-fade-in relative">
@@ -76,7 +84,38 @@ export default function EditProfileForm({ profile, media, socials }: EditProfile
                         </div>
                         <div>
                             <label className="block text-sm font-medium text-slate-300 mb-2">Location</label>
-                            <input type="text" name="location" defaultValue={profile.location} required className="w-full bg-slate-900 border border-slate-700 rounded-lg p-3 text-white focus:border-purple-500 outline-none" />
+                            <LocationAutocomplete defaultValue={profile.location || ''} />
+                        </div>
+                    </div>
+                    <div className="grid sm:grid-cols-2 gap-6">
+                        <div>
+                            <label htmlFor="primary-genre" className="block text-sm font-medium text-slate-300 mb-2">Primary Genre</label>
+                            <div className="relative rounded-lg border border-slate-700 bg-slate-900 overflow-hidden">
+                                <select
+                                    id="primaryGenre"
+                                    name="primaryGenre"
+                                    defaultValue={primaryGenre}
+                                    required
+                                    className="block w-full pl-3 pr-10 py-3 bg-transparent text-white focus:ring-purple-500 focus:border-purple-500 sm:text-sm appearance-none outline-none"
+                                >
+                                    <option value="" disabled className="bg-slate-900">Select a genre</option>
+                                    {genres.map(g => <option key={g} value={g} className="bg-slate-900">{g}</option>)}
+                                </select>
+                            </div>
+                        </div>
+                        <div>
+                            <label htmlFor="secondary-genre" className="block text-sm font-medium text-slate-300 mb-2">Secondary Genre <span className="text-slate-500 text-xs font-normal">(Optional)</span></label>
+                            <div className="relative rounded-lg border border-slate-700 bg-slate-900 overflow-hidden">
+                                <select
+                                    id="secondaryGenre"
+                                    name="secondaryGenre"
+                                    className="block w-full pl-3 pr-10 py-3 bg-transparent text-white focus:ring-purple-500 focus:border-purple-500 sm:text-sm appearance-none outline-none"
+                                    defaultValue={secondaryGenre}
+                                >
+                                    <option value="" disabled className="bg-slate-900">Select another</option>
+                                    {genres.map(g => <option key={g} value={g} className="bg-slate-900">{g}</option>)}
+                                </select>
+                            </div>
                         </div>
                     </div>
                     <div>

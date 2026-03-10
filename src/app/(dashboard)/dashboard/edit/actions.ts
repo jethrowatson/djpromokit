@@ -14,6 +14,9 @@ export async function saveFullProfile(formData: FormData) {
     const short_bio = formData.get('shortBio') as string;
     const long_bio = formData.get('longBio') as string;
 
+    const primaryGenre = formData.get('primaryGenre') as string;
+    const secondaryGenre = formData.get('secondaryGenre') as string;
+
     const booking_type = formData.get('bookingType') as 'form' | 'email';
     const public_email = formData.get('publicEmail') as string;
     const agent_name = formData.get('agentName') as string;
@@ -25,6 +28,7 @@ export async function saveFullProfile(formData: FormData) {
         .update({
             name,
             location,
+            genres: [primaryGenre, secondaryGenre].filter(Boolean),
             tagline: tagline || null,
             short_bio: short_bio || null,
             long_bio: long_bio || null,

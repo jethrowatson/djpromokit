@@ -2,6 +2,7 @@
 
 import { ArrowRight, User, MapPin, Music } from "lucide-react";
 import { saveStep1Basics } from "./actions";
+import LocationAutocomplete from "@/components/ui/LocationAutocomplete";
 
 interface Step1FormProps {
     profile: {
@@ -17,7 +18,7 @@ export default function Step1Form({ profile }: Step1FormProps) {
     const secondaryGenre = profile?.genres?.[1] || '';
     const genres = [
         "House", "Techno", "Tech House", "Deep House", "Drum & Bass",
-        "Dubstep", "Hip Hop", "R&B", "Pop", "Open Format", "Wedding/Events"
+        "Dubstep", "UK Garage", "Hip Hop", "R&B", "Pop", "Open Format", "Wedding/Events"
     ];
 
     return (
@@ -46,19 +47,8 @@ export default function Step1Form({ profile }: Step1FormProps) {
                 <label htmlFor="location" className="block text-sm font-medium text-slate-300">
                     Location (City) <span className="text-red-400">*</span>
                 </label>
-                <div className="mt-1 relative rounded-md shadow-sm">
-                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                        <MapPin className="h-5 w-5 text-slate-500" />
-                    </div>
-                    <input
-                        type="text"
-                        name="location"
-                        id="location"
-                        required
-                        defaultValue={profile?.location || ''}
-                        className="block w-full pl-10 bg-slate-900 border border-slate-700 text-white rounded-lg focus:ring-purple-500 focus:border-purple-500 sm:text-sm py-3 transition-colors"
-                        placeholder="e.g. London, UK"
-                    />
+                <div className="mt-1">
+                    <LocationAutocomplete defaultValue={profile?.location || ''} />
                 </div>
             </div>
 

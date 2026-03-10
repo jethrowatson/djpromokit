@@ -70,6 +70,7 @@ export default function SignupForm() {
                         type="email"
                         autoComplete="email"
                         required
+                        pattern="[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,}$"
                         className="block w-full pl-10 bg-slate-900 border border-slate-700 text-white rounded-lg focus:ring-cyan-500 focus:border-cyan-500 sm:text-sm py-3 transition-colors"
                         placeholder="hello@example.com"
                     />

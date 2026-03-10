@@ -4,6 +4,7 @@ import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 import { sendAdminSignupAlert } from '@/lib/resend'
+import { z } from 'zod';
 
 export async function signup(formData: FormData) {
     const supabase = await createClient()
@@ -13,6 +14,13 @@ export async function signup(formData: FormData) {
     const rawUsername = formData.get('username') as string || ''
     const username = rawUsername.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '').replace(/-+/g, '-')
     const djName = formData.get('djName') as string
+
+    const emailSchema = z.string().email('Please enter a valid email address.');
+    const parsedEmail = emailSchema.safeParse(email);
+
+    if (!parsedEmail.success) {
+        redirect('/signup?error=' + encodeURIComponent(parsedEmail.error.issues[0].message));
+    }
 
     const { data: existingUser, error: queryError } = await supabase
         .from('profiles')

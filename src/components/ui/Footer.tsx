@@ -33,7 +33,7 @@ export function Footer() {
                             <div className="mt-12 md:mt-0">
                                 <h3 className="text-sm font-semibold text-white tracking-wider uppercase">Partners</h3>
                                 <ul role="list" className="mt-4 space-y-4">
-                                    <li><Link href="/sync" className="text-sm text-cyan-400 hover:text-cyan-300 transition-colors">SYNCgigs.co.uk Integration</Link></li>
+                                    <li><Link href="/sync" className="text-sm text-cyan-400 hover:text-cyan-300 transition-colors">SYNCgigs.co.uk</Link></li>
                                 </ul>
                             </div>
                         </div>
