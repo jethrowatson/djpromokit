@@ -21,6 +21,7 @@ export function Navbar() {
                     <div className="hidden md:ml-6 md:flex md:items-center md:space-x-8">
                         <Link href="/how-it-works" className="text-sm font-medium text-slate-300 hover:text-white transition-colors">How it works</Link>
                         <Link href="/pricing" className="text-sm font-medium text-slate-300 hover:text-white transition-colors">Pricing</Link>
+                        <Link href="/blog" className="text-sm font-medium text-slate-300 hover:text-white transition-colors">Guides</Link>
                         <Link href="/examples" className="text-sm font-medium text-slate-300 hover:text-white transition-colors">Examples</Link>
                         <Link href="/sync" className="text-sm font-medium text-slate-300 hover:text-white transition-colors flex items-center gap-1">
                             SYNCgigs <span className="inline-flex items-center px-1.5 py-0.5 rounded-full text-[10px] font-bold bg-cyan-500/10 text-cyan-400 ring-1 ring-inset ring-cyan-500/20">NEW</span>
@@ -59,6 +60,13 @@ export function Navbar() {
                             className="block px-3 py-4 text-base font-bold text-white hover:bg-white/5 rounded-xl transition-colors"
                         >
                             How it works
+                        </Link>
+                        <Link
+                            href="/blog"
+                            onClick={() => setIsOpen(false)}
+                            className="block px-3 py-4 text-base font-bold text-white hover:bg-white/5 rounded-xl transition-colors"
+                        >
+                            Guides
                         </Link>
                         <Link
                             href="/pricing"

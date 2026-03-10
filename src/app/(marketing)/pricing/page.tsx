@@ -129,7 +129,7 @@ export default function Pricing() {
                 </div>
 
                 {/* FAQ Section */}
-                <div className="max-w-3xl mx-auto mt-32">
+                <div id="faq" className="max-w-3xl mx-auto mt-32 scroll-mt-24">
                     <h2 className="text-3xl font-bold text-white mb-10 text-center">Frequently asked questions</h2>
 
                     <div className="space-y-6">

@@ -193,3 +193,54 @@ export async function sendAdminPurchaseAlert({
     return { success: false, error };
   }
 }
+
+export async function sendGeneralContactEmail({
+  name,
+  email,
+  message
+}: {
+  name: string;
+  email: string;
+  message: string;
+}) {
+  if (!resend) {
+    console.warn("RESEND_API_KEY is not set. General contact email skipped.");
+    return { success: false, error: 'Resend API Key missing' };
+  }
+
+  try {
+    const adminEmail = process.env.ADMIN_EMAIL || 'admin@djpromokit.com';
+    const { data, error } = await resend.emails.send({
+      from: 'DJpromokit Website <contact@updates.djpromokit.com>',
+      to: adminEmail,
+      replyTo: email,
+      subject: `New Contact Message from ${name}`,
+      html: `
+        <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; background-color: #f8fafc; padding: 40px; border-radius: 12px;">
+          <h2 style="color: #0f172a; margin-top: 0;">New Website Inquiry</h2>
+          <p style="color: #475569; font-size: 16px;">Someone has submitted a message via the DJ Promo Kit contact page.</p>
+          
+          <div style="background-color: white; padding: 24px; border-radius: 8px; border: 1px solid #e2e8f0; margin: 24px 0;">
+            <p style="margin: 0 0 8px 0; color: #64748b; font-size: 14px;"><strong>From:</strong> ${name} (<a href="mailto:${email}" style="color: #4f46e5;">${email}</a>)</p>
+            <hr style="border: 0; border-top: 1px solid #e2e8f0; margin: 16px 0;" />
+            <p style="margin: 0; color: #334155; white-space: pre-wrap; line-height: 1.6;">${message}</p>
+          </div>
+
+          <div style="margin-top: 32px; text-align: center;">
+            <a href="mailto:${email}" style="background-color: #8b5cf6; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; font-weight: bold; display: inline-block;">Reply to ${name}</a>
+          </div>
+        </div>
+      `
+    });
+
+    if (error) {
+      console.error('Error sending general contact email via Resend:', error);
+      return { success: false, error };
+    }
+
+    return { success: true, data };
+  } catch (error) {
+    console.error('Unexpected error sending general contact email:', error);
+    return { success: false, error };
+  }
+}

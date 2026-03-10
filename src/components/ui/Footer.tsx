@@ -26,6 +26,7 @@ export function Footer() {
                                     <li><Link href="/how-it-works" className="text-sm text-slate-400 hover:text-white transition-colors">How it works</Link></li>
                                     <li><Link href="/pricing" className="text-sm text-slate-400 hover:text-white transition-colors">Pricing</Link></li>
                                     <li><Link href="/examples" className="text-sm text-slate-400 hover:text-white transition-colors">Examples</Link></li>
+                                    <li><Link href="/blog" className="text-sm text-slate-400 hover:text-white transition-colors">Blog & Guides</Link></li>
                                     <li><Link href="/venue-outreach" className="text-sm text-slate-400 hover:text-white transition-colors">Venue Outreach Guide</Link></li>
                                 </ul>
                             </div>
@@ -40,8 +41,8 @@ export function Footer() {
                             <div>
                                 <h3 className="text-sm font-semibold text-white tracking-wider uppercase">Support</h3>
                                 <ul role="list" className="mt-4 space-y-4">
-                                    <li><Link href="#" className="text-sm text-slate-400 hover:text-white transition-colors">FAQ</Link></li>
-                                    <li><Link href="#" className="text-sm text-slate-400 hover:text-white transition-colors">Contact</Link></li>
+                                    <li><Link href="/pricing#faq" className="text-sm text-slate-400 hover:text-white transition-colors">FAQ</Link></li>
+                                    <li><Link href="/contact" className="text-sm text-slate-400 hover:text-white transition-colors">Contact</Link></li>
                                 </ul>
                             </div>
                             <div className="mt-12 md:mt-0">
