@@ -26,10 +26,7 @@ export default function Home() {
                 </div>
 
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center animate-slide-up">
-                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full glass-panel mb-8 border-purple-500/30 text-sm animate-fade-in">
-                        <span className="flex h-2 w-2 rounded-full bg-cyan-400 animate-pulse"></span>
-                        <span className="text-slate-300">New: Auto-sync your profile with SYNCgigs.co.uk</span>
-                    </div>
+
 
                     <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight text-white mb-6 max-w-4xl mx-auto drop-shadow-lg">
                         Your DJ press kit link, <br className="hidden md:block" />
@@ -118,18 +115,15 @@ export default function Home() {
                                 ))}
                             </ul>
                         </div>
-                        <div className="flex-1 w-full max-w-md relative z-10">
-                            <div className="bg-slate-900 border border-slate-700 rounded-2xl p-6 shadow-2xl">
-                                <div className="space-y-4">
-                                    <div className="h-4 bg-slate-800 rounded w-3/4 animate-pulse"></div>
-                                    <div className="h-4 bg-slate-800 rounded w-full animate-pulse"></div>
-                                    <div className="h-4 bg-slate-800 rounded w-5/6 animate-pulse"></div>
-                                    <div className="mt-8 pt-6 border-t border-slate-800 flex flex-col gap-3">
-                                        <div className="h-4 bg-slate-800 rounded w-1/4 animate-pulse"></div>
-                                        <div className="h-10 bg-slate-800 rounded-lg w-full animate-pulse"></div>
-                                        <div className="h-10 bg-purple-600/50 rounded-lg w-full animate-pulse mt-2"></div>
-                                    </div>
-                                </div>
+                        <div className="flex-1 w-full relative z-10 flex justify-center lg:justify-end">
+                            <div className="relative w-full max-w-lg aspect-square">
+                                <div className="absolute inset-0 bg-gradient-to-br from-purple-500/20 to-cyan-500/30 rounded-3xl blur-[40px] mix-blend-screen scale-90"></div>
+                                <img
+                                    src="/ai-bio-visual.png"
+                                    alt="AI DJ Biography Generator brain floating over a mixer"
+                                    className="relative z-10 w-full h-full object-cover rounded-3xl shadow-2xl border border-white/5"
+                                />
+                                <div className="absolute inset-0 rounded-3xl ring-1 ring-inset ring-white/10 z-20 pointer-events-none"></div>
                             </div>
                         </div>
                     </div>
