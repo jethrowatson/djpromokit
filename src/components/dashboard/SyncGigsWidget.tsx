@@ -68,9 +68,7 @@ export default function SyncGigsWidget({ initialState = false }: { initialState?
                                 <CheckCircle2 className="w-3 h-3" /> Synced perfectly
                             </span>
                             <a
-                                href="https://SYNCgigs.co.uk"
-                                target="_blank"
-                                rel="noopener noreferrer"
+                                href="/api/auth/sso-sync"
                                 className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 text-xs font-bold transition-colors border border-emerald-500/20"
                             >
                                 Open SYNCgigs
