@@ -48,6 +48,11 @@ export default function BookingModal({ isOpen, onClose, djName, djUsername }: Bo
                 throw new Error(errorData.error || 'Failed to send request');
             }
 
+            // Fire Meta Pixel tracking event
+            if (typeof window !== 'undefined' && (window as any).fbq) {
+                (window as any).fbq('track', 'Contact');
+            }
+
             setStatus('success');
             // Auto close after 3 seconds on success
             setTimeout(() => {

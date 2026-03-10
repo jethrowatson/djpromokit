@@ -33,7 +33,15 @@ export default async function Signup(props: { searchParams: Promise<{ error?: st
 
             <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-lg relative z-10">
                 <div className="glass-panel py-8 px-4 shadow-2xl sm:rounded-2xl sm:px-10 border-white/10">
-                    <form className="space-y-6" action={signup}>
+                    <form
+                        className="space-y-6"
+                        action={signup}
+                        onSubmit={() => {
+                            if (typeof window !== 'undefined' && (window as any).fbq) {
+                                (window as any).fbq('track', 'CompleteRegistration');
+                            }
+                        }}
+                    >
 
                         <div className="grid grid-cols-2 gap-4">
                             <div>

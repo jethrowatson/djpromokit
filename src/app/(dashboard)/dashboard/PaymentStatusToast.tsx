@@ -13,6 +13,14 @@ export default function PaymentStatusToast() {
         const paymentParam = searchParams.get('payment');
         if (paymentParam === 'success' || paymentParam === 'canceled') {
             setStatus(paymentParam);
+
+            if (paymentParam === 'success') {
+                // Fire Meta Pixel tracking event for a successful £10.99 upgrade
+                if (typeof window !== 'undefined' && (window as any).fbq) {
+                    (window as any).fbq('track', 'Purchase', { currency: 'GBP', value: 10.99 });
+                }
+            }
+
             // Optional: Remove query param from URL without refreshing
             const url = new URL(window.location.href);
             url.searchParams.delete('payment');
@@ -29,8 +37,8 @@ export default function PaymentStatusToast() {
     return (
         <div className="fixed bottom-6 right-6 z-50 animate-slide-up">
             <div className={`flex items-start gap-3 p-4 pr-12 rounded-2xl shadow-2xl border backdrop-blur-md relative ${status === 'success'
-                    ? 'bg-emerald-950/90 border-emerald-500/30 text-emerald-100'
-                    : 'bg-red-950/90 border-red-500/30 text-red-100'
+                ? 'bg-emerald-950/90 border-emerald-500/30 text-emerald-100'
+                : 'bg-red-950/90 border-red-500/30 text-red-100'
                 }`}>
                 <div className="flex-shrink-0 mt-0.5">
                     {status === 'success' ? (

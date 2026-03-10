@@ -14,6 +14,12 @@ export default function CheckoutButton({
 
     const handleCheckout = async () => {
         setIsLoading(true);
+
+        // Fire Meta Pixel tracking event
+        if (typeof window !== 'undefined' && (window as any).fbq) {
+            (window as any).fbq('track', 'InitiateCheckout');
+        }
+
         try {
             const res = await fetch('/api/profile/publish', {
                 method: 'POST',
