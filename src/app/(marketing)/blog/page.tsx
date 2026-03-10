@@ -16,7 +16,43 @@ const posts = [
         date: 'March 10, 2026',
         readTime: '6 min read',
         category: 'Guides',
-        image: '/examples/flow.png' // Utilizing existing assets
+        image: '/examples/flow.png'
+    },
+    {
+        slug: 'how-to-get-your-first-club-residency',
+        title: 'How to Get Your First Club Residency in 2026',
+        excerpt: 'Stop sending cold emails that go ignored. Here is the exact step-by-step framework to transition from bedroom DJ to securing a weekly club residency.',
+        date: 'March 11, 2026',
+        readTime: '8 min read',
+        category: 'Career Growth',
+        image: '/examples/marcus.png'
+    },
+    {
+        slug: 'dj-marketing-101-instagram-tiktok',
+        title: 'DJ Marketing 101: Growing Your Audience on Instagram & TikTok',
+        excerpt: 'In 2026, promoters book DJs with an audience. Learn how to optimize your social media strategy, what content actually works, and how to convert followers into ticket sales.',
+        date: 'March 12, 2026',
+        readTime: '10 min read',
+        category: 'Marketing',
+        image: '/examples/sarah.png'
+    },
+    {
+        slug: 'organizing-your-rekordbox-library',
+        title: 'Organizing Your Rekordbox Library Like a Touring Pro',
+        excerpt: 'A messy library leads to trainwreck transitions. Discover the folder structures, intelligent playlists, and tagging systems used by headline touring DJs.',
+        date: 'March 13, 2026',
+        readTime: '7 min read',
+        category: 'Technical',
+        image: '/examples/elena.png'
+    },
+    {
+        slug: 'ultimate-guide-music-industry-networking',
+        title: 'The Ultimate Guide to Networking in the Music Industry',
+        excerpt: 'Your net worth is your network. Learn how to genuinely connect with promoters, club owners, and other producers without seeming desperate or "salesy".',
+        date: 'March 14, 2026',
+        readTime: '9 min read',
+        category: 'Career Growth',
+        image: '/examples/twins.png'
     }
 ];
 
@@ -34,7 +70,7 @@ export default function BlogIndex() {
                 </div>
 
                 {/* Featured Post (First one) */}
-                {posts.slice(0, 1).map(post => (
+                {posts.map(post => (
                     <Link href={`/blog/${post.slug}`} key={post.slug} className="group block mb-16">
                         <div className="glass-panel p-2 rounded-3xl overflow-hidden border-purple-500/20 hover:border-purple-500/60 transition-colors relative">
                             <div className="absolute top-0 right-0 -mr-32 -mt-32 w-96 h-96 rounded-full bg-purple-600/10 blur-[100px] pointer-events-none"></div>
