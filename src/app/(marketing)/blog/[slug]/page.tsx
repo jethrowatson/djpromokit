@@ -47,8 +47,9 @@ const mockPosts = {
     }
 };
 
-export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
-    const post = mockPosts[params.slug as keyof typeof mockPosts];
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+    const { slug } = await params;
+    const post = mockPosts[slug as keyof typeof mockPosts];
     if (!post) return { title: 'Post Not Found' };
 
     return {
@@ -64,8 +65,9 @@ export async function generateMetadata({ params }: { params: { slug: string } })
     };
 }
 
-export default function BlogPost({ params }: { params: { slug: string } }) {
-    const post = mockPosts[params.slug as keyof typeof mockPosts];
+export default async function BlogPost({ params }: { params: Promise<{ slug: string }> }) {
+    const { slug } = await params;
+    const post = mockPosts[slug as keyof typeof mockPosts];
 
     if (!post) {
         notFound();
