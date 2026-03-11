@@ -46,19 +46,32 @@ export async function toggleSyncGigs(enabled: boolean) {
         throw new Error('Failed to save data. Please try again.');
     }
 
-    // If turning it on, ping the webhook stub to simulate the integration link
+    // If turning it on, export the full DJ Profile architecture to SYNCgigs
     if (enabled) {
-        const { data: profile } = await supabase.from('profiles').select('username').eq('id', user.id).single();
+        // Fetch exhaustive profile data
+        const { data: profile } = await supabase.from('profiles').select('*').eq('id', user.id).single();
+        const { data: socials } = await supabase.from('socials').select('*').eq('profile_id', user.id);
+        const { data: media } = await supabase.from('media').select('*').eq('profile_id', user.id);
+
         if (profile) {
+            const fullExportPayload = {
+                syncEnabled: true,
+                djData: {
+                    ...profile, // username, full_name, bio, location, genres, avatar_url, etc.
+                    socials: socials || [],
+                    media: media || []
+                }
+            };
+
             const webhookUrl = process.env.SYNC_WEBHOOK_URL || (process.env.NEXT_PUBLIC_SITE_URL ? `${process.env.NEXT_PUBLIC_SITE_URL}/api/webhooks/sync` : 'http://localhost:3000/api/webhooks/sync');
             try {
                 await fetch(webhookUrl, {
                     method: 'POST',
-                    body: JSON.stringify({ username: profile.username, syncEnabled: true }),
+                    body: JSON.stringify(fullExportPayload),
                     headers: { 'Content-Type': 'application/json' }
                 });
             } catch (e) {
-                console.log("Mock Webhook ping failed safely.");
+                console.log("SYNC Webhook ping failed safely.", e);
             }
         }
     }
