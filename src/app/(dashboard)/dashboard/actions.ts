@@ -58,6 +58,7 @@ export async function toggleSyncGigs(enabled: boolean) {
                 syncEnabled: true,
                 djData: {
                     ...profile, // username, full_name, bio, location, genres, avatar_url, etc.
+                    email: user.email,
                     socials: socials || [],
                     media: media || []
                 }
