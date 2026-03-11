@@ -13,12 +13,13 @@ export async function GET() {
             return NextResponse.redirect(new URL('/login', process.env.NEXT_PUBLIC_SITE_URL || 'https://djpromokit.com'));
         }
 
-        // 2. We use the powerful Service Role Key as a cryptographically symmetric 
-        // signing secret to securely pass the DJ's identity between the two domains.
-        const SYNC_SECRET = process.env.SUPABASE_SERVICE_ROLE_KEY;
+        // 2. We use a custom, shared AES/HMAC secret to securely pass the DJ's identity 
+        // between the two entirely separate databases. 
+        // Both Vercel projects must have this exact same environment variable string!
+        const SYNC_SECRET = process.env.SYNCGIGS_BRIDGE_SECRET;
 
         if (!SYNC_SECRET) {
-            console.error('[SSO] Missing SUPABASE_SERVICE_ROLE_KEY');
+            console.error('[SSO] Missing SYNCGIGS_BRIDGE_SECRET. Cannot cryptographically sign handoff.');
             return NextResponse.redirect('https://syncgigs.co.uk');
         }
 
