@@ -32,7 +32,10 @@ export async function GET() {
             aud: 'syncgigs_sso',
         };
 
-        const token = jwt.sign(ssoPayload, SYNC_SECRET, { expiresIn: 60 });
+        const token = jwt.sign(ssoPayload, SYNC_SECRET, { 
+            expiresIn: 60,
+            algorithm: 'HS256' 
+        });
 
         // 4. Redirect strictly to the SYNCgigs Client Catch endpoint with the explicit token param
         const syncgigsCallbackUrl = process.env.NODE_ENV === 'development' 
