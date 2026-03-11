@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
-import jwt from 'jsonwebtoken';
+import { SignJWT } from 'jose';
 
 export async function GET() {
     try {
@@ -32,10 +32,15 @@ export async function GET() {
             aud: 'syncgigs_sso',
         };
 
-        const token = jwt.sign(ssoPayload, SYNC_SECRET, { 
-            expiresIn: 60,
-            algorithm: 'HS256' 
-        });
+        // Encode the bridge secret into standard WebCrypto bytes so the edge runtime 
+        // doesn't warp the mathematical signature compared to the Node receiver.
+        const secretKey = new TextEncoder().encode(SYNC_SECRET);
+
+        const token = await new SignJWT(ssoPayload)
+            .setProtectedHeader({ alg: 'HS256' })
+            .setIssuedAt()
+            .setExpirationTime('1m')
+            .sign(secretKey);
 
         // 4. Redirect strictly to the SYNCgigs Client Catch endpoint with the explicit token param
         const syncgigsCallbackUrl = process.env.NODE_ENV === 'development' 
