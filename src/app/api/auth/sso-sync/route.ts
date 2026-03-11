@@ -40,9 +40,16 @@ export async function GET() {
             return NextResponse.redirect('https://SYNCgigs.co.uk');
         }
 
-        // 4. Redirect the user's browser directly to the Supabase verification endpoint payload
+        // 4. Force the redirect_to parameter into the verify endpoint payload
+        // Supabase generateLink often natively omits the redirectTo option in the final string, causing fallback to SITE_URL.
+        let actionLink = linkData.properties.action_link;
+        if (!actionLink.includes('redirect_to=')) {
+            actionLink = `${actionLink}&redirect_to=${encodeURIComponent(syncgigsCallbackUrl)}`;
+        }
+
+        // 5. Redirect the user's browser directly to the Supabase verification endpoint payload
         // This will securely log them in and bounce them to SYNCgigs.co.uk
-        return NextResponse.redirect(linkData.properties.action_link);
+        return NextResponse.redirect(actionLink);
 
     } catch (error) {
         console.error('[SSO] Unexpected error during SSO handoff', error);
