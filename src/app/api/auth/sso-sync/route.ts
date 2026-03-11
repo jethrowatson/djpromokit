@@ -23,8 +23,8 @@ export async function GET() {
 
         // 3. Generate a one-time magic link directed to the SYNCgigs callback URL
         const syncgigsCallbackUrl = process.env.NODE_ENV === 'development' 
-            ? 'http://localhost:3000/auth/callback' // Adjust this if your local SYNCgigs runs on a different port
-            : 'https://SYNCgigs.co.uk/auth/callback';
+            ? 'http://localhost:3000/auth/callback' 
+            : 'https://syncgigs.co.uk/auth/callback'; // Strictly lowercase to match Supabase wildcard validation
 
         const { data: linkData, error: linkError } = await supabaseAdmin.auth.admin.generateLink({
             type: 'magiclink',
