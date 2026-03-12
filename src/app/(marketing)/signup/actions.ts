@@ -8,31 +8,7 @@ import { sendAdminSignupAlert } from '@/lib/resend'
 import { z } from 'zod';
 import { scrapeResidentAdvisor } from '@/lib/scraper';
 
-import { Headers } from 'next/dist/compiled/@edge-runtime/primitives/fetch'
 
-export async function signInWithGoogle() {
-    const supabase = await createClient();
-    
-    // We get the origin dynamically to support localhost / preview / prod seamlessly
-    const headersList = await import('next/headers');
-    const headers = await headersList.headers();
-    const origin = headers.get('origin') || 'https://djpromokit.com';
-
-    const { data, error } = await supabase.auth.signInWithOAuth({
-        provider: 'google',
-        options: {
-            redirectTo: `${origin}/auth/callback`,
-        },
-    });
-
-    if (error) {
-        redirect('/signup?error=' + encodeURIComponent(error.message));
-    }
-
-    if (data.url) {
-        redirect(data.url);
-    }
-}
 
 export async function signup(formData: FormData) {
     const supabase = await createClient()

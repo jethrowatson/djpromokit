@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { AudioWaveform, Mail, Lock, ArrowRight } from "lucide-react";
 import { login } from "./actions";
+import GoogleLoginButton from "@/components/auth/GoogleLoginButton";
 
 export default async function Login(props: { searchParams: Promise<{ error?: string }> }) {
     const searchParams = await props.searchParams;
@@ -33,6 +34,17 @@ export default async function Login(props: { searchParams: Promise<{ error?: str
 
             <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md relative z-10">
                 <div className="glass-panel py-8 px-4 shadow-2xl sm:rounded-2xl sm:px-10 border-white/10">
+                    <GoogleLoginButton text="signin_with" />
+
+                    <div className="relative mt-6 mb-6">
+                        <div className="absolute inset-0 flex items-center">
+                            <div className="w-full border-t border-slate-700"></div>
+                        </div>
+                        <div className="relative flex justify-center text-sm">
+                            <span className="px-2 bg-slate-900 text-slate-400">Or continue with email</span>
+                        </div>
+                    </div>
+
                     <form className="space-y-6" action={login}>
                         <div>
                             <label htmlFor="email" className="block text-sm font-medium text-slate-300">
