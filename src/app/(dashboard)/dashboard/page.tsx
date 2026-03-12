@@ -10,7 +10,6 @@ import CheckoutButton from "@/components/ui/CheckoutButton";
 import BioDashboardSection from "./BioDashboardSection";
 import CopyLinkWidget from "@/components/dashboard/CopyLinkWidget";
 import SyncGigsWidget from "@/components/dashboard/SyncGigsWidget";
-import ProfileWizard from "@/components/dashboard/ProfileWizard";
 
 export default async function DashboardHome() {
     const supabase = await createClient();
@@ -63,11 +62,7 @@ export default async function DashboardHome() {
         <div className="max-w-5xl mx-auto animate-fade-in">
             <PaymentStatusToast />
             
-            {!profile.is_onboarded ? (
-                <ProfileWizard profile={profile} user={user} />
-            ) : null}
-
-            <div className={`flex flex-col md:flex-row md:items-center justify-between gap-4 mb-10 ${!profile.is_onboarded ? 'opacity-30 pointer-events-none' : ''}`}>
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-10">
                 <div>
                     <h1 className="text-3xl font-extrabold text-white mb-1">Welcome back, {profile.name}</h1>
                     <p className="text-slate-400">Your EPK is looking great.</p>
@@ -143,7 +138,7 @@ export default async function DashboardHome() {
                     </div>
                     <h3 className="text-lg font-bold text-white mb-1">Edit Profile</h3>
                     <p className="text-sm text-slate-400">Update your bio, swap out press shots, add a new featured mix, and manage links.</p>
-                    <Link href="/dashboard/edit" className="absolute inset-0 z-10"><span className="sr-only">Edit Profile</span></Link>
+                    <Link href="/dashboard/profile" className="absolute inset-0 z-10"><span className="sr-only">Edit Profile</span></Link>
                 </div>
 
                 <SyncGigsWidget initialState={sync_gigs_enabled} />

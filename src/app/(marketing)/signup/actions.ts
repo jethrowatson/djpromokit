@@ -3,6 +3,7 @@
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
+import { createClient as createSupabaseClient } from '@supabase/supabase-js'
 import { sendAdminSignupAlert } from '@/lib/resend'
 import { z } from 'zod';
 import { scrapeResidentAdvisor } from '@/lib/scraper';
@@ -16,6 +17,17 @@ export async function continueToSecureSignup(formData: FormData) {
 
     if (!parsedEmail.success) {
         redirect('/signup?error=' + encodeURIComponent(parsedEmail.error.issues[0].message));
+    }
+
+    // Capture the lead asynchronously using the Admin client (bypasses RLS)
+    try {
+        const adminClient = createSupabaseClient(
+            process.env.NEXT_PUBLIC_SUPABASE_URL!,
+            process.env.SUPABASE_SERVICE_ROLE_KEY!
+        );
+        await adminClient.from('leads').insert({ email, profile_url: profileUrl });
+    } catch (e) {
+        console.error('Failed to capture lead:', e);
     }
 
     // Pass the collected data forward via URL parameters

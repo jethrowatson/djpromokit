@@ -23,7 +23,7 @@ export const DashboardSidebar = ({ username, logoutAction }: DashboardSidebarPro
         { name: 'Overview', href: '/dashboard', icon: Play },
         { name: 'Statistics', href: '/dashboard/stats', icon: BarChart3 },
         { name: 'Booking Requests', href: '/dashboard/requests', icon: Inbox },
-        { name: 'Edit Profile', href: '/dashboard/edit', icon: FileText },
+        { name: 'Edit Profile', href: '/dashboard/profile', icon: FileText },
         { name: 'View Live Profile', href: username ? `/${username}?preview=true` : "#", icon: Eye },
     ];
 
