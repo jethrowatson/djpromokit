@@ -10,6 +10,7 @@ import CheckoutButton from "@/components/ui/CheckoutButton";
 import BioDashboardSection from "./BioDashboardSection";
 import CopyLinkWidget from "@/components/dashboard/CopyLinkWidget";
 import SyncGigsWidget from "@/components/dashboard/SyncGigsWidget";
+import ProfileWizard from "@/components/dashboard/ProfileWizard";
 
 export default async function DashboardHome() {
     const supabase = await createClient();
@@ -18,11 +19,11 @@ export default async function DashboardHome() {
 
     const { data: profile } = await supabase
         .from('profiles')
-        .select('name, username, is_published, short_bio, long_bio, location, genres')
+        .select('name, username, is_published, short_bio, long_bio, location, genres, is_onboarded, onboarding_step')
         .eq('id', user.id)
         .single();
 
-    if (!profile) redirect('/onboarding/step-1');
+    if (!profile) redirect('/login');
 
     let sync_gigs_enabled = false;
     const { data: syncData, error: syncError } = await supabase
@@ -61,7 +62,12 @@ export default async function DashboardHome() {
     return (
         <div className="max-w-5xl mx-auto animate-fade-in">
             <PaymentStatusToast />
-            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-10">
+            
+            {!profile.is_onboarded ? (
+                <ProfileWizard profile={profile} user={user} />
+            ) : null}
+
+            <div className={`flex flex-col md:flex-row md:items-center justify-between gap-4 mb-10 ${!profile.is_onboarded ? 'opacity-30 pointer-events-none' : ''}`}>
                 <div>
                     <h1 className="text-3xl font-extrabold text-white mb-1">Welcome back, {profile.name}</h1>
                     <p className="text-slate-400">Your EPK is looking great.</p>

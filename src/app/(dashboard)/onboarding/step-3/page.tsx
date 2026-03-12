@@ -3,7 +3,7 @@ import { ArrowLeft, ArrowRight } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import ImageUpload from "@/components/ui/ImageUpload";
-import { saveProfileAvatar, addPressShot, removePressShot } from "./actions";
+import { saveProfileAvatar, addPressShot, removePressShot, completeStep3 } from "./actions";
 
 export default async function Step3Photos() {
     const supabase = await createClient();
@@ -99,19 +99,21 @@ export default async function Step3Photos() {
                         Back
                     </Link>
                     <div className="flex gap-3">
-                        <Link
-                            href="/onboarding/step-4"
+                    <form action={completeStep3} className="flex gap-3">
+                        <button
+                            type="submit"
                             className="inline-flex items-center px-4 py-2 text-sm font-medium text-slate-300 hover:text-white transition-colors"
                         >
                             Skip
-                        </Link>
-                        <Link
-                            href="/onboarding/step-4"
+                        </button>
+                        <button
+                            type="submit"
                             className="inline-flex items-center justify-center rounded-xl bg-purple-600 px-6 py-3 text-sm font-bold text-white shadow-sm hover:bg-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 focus:ring-offset-slate-900 transition-all hover-glow"
                         >
                             Save and Continue
                             <ArrowRight className="ml-2 w-4 h-4" />
-                        </Link>
+                        </button>
+                    </form>
                     </div>
                 </div>
             </div>

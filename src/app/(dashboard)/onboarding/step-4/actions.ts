@@ -28,6 +28,8 @@ export async function saveStep4Bio(formData: FormData) {
         throw new Error('Failed to save data. Please try again.');
     }
 
-    revalidatePath('/onboarding/step-[n]', 'layout');
-    redirect('/onboarding/step-5');
+    await supabase.from('profiles').update({ onboarding_step: 5 }).eq('id', user.id);
+
+    revalidatePath('/dashboard', 'layout');
+    redirect('/dashboard');
 }

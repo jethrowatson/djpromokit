@@ -59,6 +59,7 @@ export async function saveStep1Basics(formData: FormData) {
             location: location,
             genres: [primaryGenre, secondaryGenre].filter(Boolean),
             tagline: tagline || null,
+            onboarding_step: 2
         });
 
     if (error) {
@@ -66,6 +67,6 @@ export async function saveStep1Basics(formData: FormData) {
         throw new Error('Failed to save data. Please try again.');
     }
 
-    revalidatePath('/onboarding/step-[n]', 'layout');
-    redirect('/onboarding/step-2');
+    revalidatePath('/dashboard', 'layout');
+    redirect('/dashboard');
 }

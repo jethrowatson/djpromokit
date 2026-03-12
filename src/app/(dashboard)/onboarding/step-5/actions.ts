@@ -44,6 +44,8 @@ export async function saveStep5Socials(formData: FormData) {
         }
     }
 
-    revalidatePath('/onboarding/step-[n]', 'layout');
-    redirect('/onboarding/step-6');
+    await supabase.from('profiles').update({ onboarding_step: 6 }).eq('id', user.id);
+
+    revalidatePath('/dashboard', 'layout');
+    redirect('/dashboard');
 }

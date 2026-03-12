@@ -44,6 +44,8 @@ export async function saveStep2Mix(formData: FormData) {
         }
     }
 
-    revalidatePath('/onboarding/step-[n]', 'layout');
-    redirect('/onboarding/step-3');
+    await supabase.from('profiles').update({ onboarding_step: 3 }).eq('id', user.id);
+
+    revalidatePath('/dashboard', 'layout');
+    redirect('/dashboard');
 }

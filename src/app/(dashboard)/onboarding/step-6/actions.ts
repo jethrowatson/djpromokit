@@ -34,6 +34,8 @@ export async function saveStep6Booking(formData: FormData) {
         throw new Error('Failed to save data. Please try again.');
     }
 
-    revalidatePath('/onboarding/step-[n]', 'layout');
-    redirect('/onboarding/step-7');
+    await supabase.from('profiles').update({ onboarding_step: 7 }).eq('id', user.id);
+
+    revalidatePath('/dashboard', 'layout');
+    redirect('/dashboard');
 }

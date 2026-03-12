@@ -2,6 +2,17 @@
 
 import { createClient } from '@/lib/supabase/server';
 import { revalidatePath } from 'next/cache';
+import { redirect } from 'next/navigation';
+
+export async function completeStep3() {
+    const supabase = await createClient();
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) redirect('/login');
+
+    await supabase.from('profiles').update({ onboarding_step: 4 }).eq('id', user.id);
+    revalidatePath('/dashboard', 'layout');
+    redirect('/dashboard');
+}
 
 export async function saveProfileAvatar(avatarUrl: string) {
     const supabase = await createClient();

@@ -4,6 +4,7 @@ import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import EPKContent, { EPKProfileData } from "@/components/epk/EPKContent";
 import CheckoutButton from "@/components/ui/CheckoutButton";
+import { finishOnboarding } from "./actions";
 
 export default async function Step7Preview() {
     const supabase = await createClient();
@@ -122,9 +123,11 @@ export default async function Step7Preview() {
                     <div className="flex flex-col items-center gap-4">
                         <CheckoutButton />
 
-                        <Link href="/dashboard" className="text-sm font-bold text-slate-400 hover:text-white transition-colors">
-                            I'll do this later, take me to dashboard
-                        </Link>
+                        <form action={finishOnboarding}>
+                            <button type="submit" className="text-sm font-bold text-slate-400 hover:text-white transition-colors cursor-pointer bg-transparent border-none p-0">
+                                I'll do this later, take me to dashboard
+                            </button>
+                        </form>
                     </div>
                 </div>
 

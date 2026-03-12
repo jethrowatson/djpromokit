@@ -38,10 +38,10 @@ export async function POST(req: Request) {
             const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
             const supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey);
 
-            // 1. Mark profile as published
+            // 1. Mark profile as published and onboarded
             const { error: profileError } = await supabaseAdmin
                 .from('profiles')
-                .update({ is_published: true })
+                .update({ is_published: true, is_onboarded: true })
                 .eq('id', profileId);
 
             if (profileError) {

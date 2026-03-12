@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Mail, Lock, User, AtSign, ArrowRight } from "lucide-react";
+import { Mail, Lock, User, AtSign, ArrowRight, Globe } from "lucide-react";
 import { signup } from "./actions";
 
 export default function SignupForm() {
@@ -73,6 +73,25 @@ export default function SignupForm() {
                         pattern="[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,}$"
                         className="block w-full pl-10 bg-slate-900 border border-slate-700 text-white rounded-lg focus:ring-cyan-500 focus:border-cyan-500 sm:text-sm py-3 transition-colors"
                         placeholder="hello@example.com"
+                    />
+                </div>
+            </div>
+
+            <div>
+                <label htmlFor="raUrl" className="block text-sm font-medium text-slate-300">
+                    Resident Advisor Profile URL <span className="text-slate-500 font-normal">(Optional)</span>
+                </label>
+                <p className="text-xs text-slate-500 mt-1 mb-2">We'll automatically extract your bio, location, and press shot to save you time.</p>
+                <div className="relative rounded-md shadow-sm">
+                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <Globe className="h-5 w-5 text-slate-500" />
+                    </div>
+                    <input
+                        id="raUrl"
+                        name="raUrl"
+                        type="url"
+                        className="block w-full pl-10 bg-slate-900 border border-slate-700 text-white rounded-lg focus:ring-cyan-500 focus:border-cyan-500 sm:text-sm py-3 transition-colors"
+                        placeholder="https://ra.co/dj/marcus"
                     />
                 </div>
             </div>
