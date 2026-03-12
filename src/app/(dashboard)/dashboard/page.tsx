@@ -70,6 +70,21 @@ export default async function DashboardHome() {
         });
     }
 
+    // Fetch data for Profile Completion Widget
+    const { data: media } = await supabase
+        .from('media')
+        .select('*')
+        .eq('profile_id', user.id);
+
+    const pressShotsCount = media ? media.filter(m => m.type === 'press_shot').length : 0;
+    const featuredMixesCount = media ? media.filter(m => m.type === 'featured_mix').length : 0;
+
+    const { data: socialLink } = await supabase
+        .from('social_links')
+        .select('*')
+        .eq('profile_id', user.id)
+        .maybeSingle();
+
     const isPublished = profile.is_published;
     const link = `djpromokit.com/${profile.username}`;
 
@@ -140,7 +155,12 @@ export default async function DashboardHome() {
                 </div>
             </div>
 
-            <BioDashboardSection profile={profile} />
+            <BioDashboardSection 
+                profile={profile} 
+                pressShotsCount={pressShotsCount}
+                featuredMixesCount={featuredMixesCount}
+                socialLink={socialLink}
+            />
 
             {/* Action Grid */}
             <h2 className="text-xl font-bold text-white mb-4 mt-12">Tools & Actions</h2>
