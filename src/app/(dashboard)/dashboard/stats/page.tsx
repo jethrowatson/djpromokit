@@ -11,7 +11,7 @@ export default async function DashboardStats() {
     if (!user) redirect('/login');
 
     const { data: profile } = await supabase.from('profiles').select('id').eq('id', user.id).single();
-    if (!profile) redirect('/onboarding/step-1');
+    if (!profile) redirect('/dashboard');
 
     // Get Analytics Data
     const { data: analytics } = await supabase

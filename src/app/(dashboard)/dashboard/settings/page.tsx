@@ -17,7 +17,7 @@ export default async function AccountSettingsPage() {
         .single();
 
     if (!profile) {
-        redirect('/onboarding/step-1');
+        redirect('/dashboard');
     }
 
     return (

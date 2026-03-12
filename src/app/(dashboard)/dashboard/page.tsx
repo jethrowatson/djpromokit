@@ -16,13 +16,28 @@ export default async function DashboardHome() {
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) redirect('/login');
 
-    const { data: profile } = await supabase
+    let { data: profile } = await supabase
         .from('profiles')
         .select('name, username, is_published, short_bio, long_bio, location, genres, is_onboarded, onboarding_step')
         .eq('id', user.id)
-        .single();
+        .maybeSingle();
 
-    if (!profile) redirect('/login');
+    if (!profile) {
+        // Auto-heal missing profile row to prevent ERR_TOO_MANY_REDIRECTS loop
+        const fallbackUsername = `dj-${Math.random().toString(36).substring(2, 8)}`;
+        const { data: newProfile, error } = await supabase.from('profiles').insert({
+            id: user.id,
+            username: user.user_metadata?.username || fallbackUsername,
+            name: user.user_metadata?.full_name || 'DJ',
+            location: 'Unknown Location',
+        }).select('name, username, is_published, short_bio, long_bio, location, genres, is_onboarded, onboarding_step').single();
+        
+        if (error || !newProfile) {
+            await supabase.auth.signOut();
+            redirect('/login?error=' + encodeURIComponent('Could not recover profile. Please sign up again.')); 
+        }
+        profile = newProfile;
+    }
 
     let sync_gigs_enabled = false;
     const { data: syncData, error: syncError } = await supabase

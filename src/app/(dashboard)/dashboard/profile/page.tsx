@@ -13,7 +13,7 @@ export default async function EditProfilePage() {
         .eq('id', user.id)
         .single();
 
-    if (!profile) redirect('/login');
+    if (!profile) redirect('/dashboard');
 
     const { data: media } = await supabase
         .from('media')
