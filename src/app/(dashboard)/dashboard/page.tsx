@@ -104,12 +104,19 @@ export default async function DashboardHome() {
                         </span>
                     ) : (
                         <>
-                            <span className="hidden sm:inline-flex items-center gap-1.5 px-3 py-2 rounded-full bg-slate-800 border border-white/10 text-xs font-bold text-slate-400">
+                            <span className="hidden sm:inline-flex items-center gap-1.5 px-3 py-2 rounded-full bg-slate-800 border border-white/10 text-xs font-bold text-slate-400 mr-2">
                                 Draft Mode
                             </span>
+                            <div className="flex flex-col items-end mr-1 sm:mr-3 text-right">
+                                <div className="flex items-center gap-1.5">
+                                    <span className="text-slate-500 line-through decoration-red-500/50 text-xs hidden sm:inline">£10.99</span>
+                                    <span className="text-white font-extrabold text-sm">£5.99</span>
+                                </div>
+                                <span className="text-[9px] text-purple-400/80 uppercase tracking-wider font-bold">One-Time Fee</span>
+                            </div>
                             <CheckoutButton
                                 text="Publish EPK"
-                                className="inline-flex items-center justify-center px-4 py-2 rounded-full bg-purple-600 text-white text-xs font-bold hover:bg-purple-500 transition-colors shadow-lg shadow-purple-900/50 disabled:opacity-50"
+                                className="inline-flex items-center justify-center px-4 py-2 rounded-full flex-shrink-0 bg-purple-600 text-white text-xs font-bold hover:bg-purple-500 transition-colors shadow-lg shadow-purple-900/50 disabled:opacity-50"
                             />
                         </>
                     )}

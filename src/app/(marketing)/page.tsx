@@ -46,6 +46,18 @@ export default function Home() {
                             See an example
                         </Link>
                     </div>
+
+                    <div className="mt-8 flex flex-col items-center justify-center gap-2">
+                        <div className="flex flex-col sm:flex-row items-center gap-2 text-sm sm:text-base">
+                            <span className="text-slate-400 font-medium">Totally free to build.</span>
+                            <span className="inline-flex items-center gap-2 px-3 py-1 bg-purple-900/40 border border-purple-500/30 rounded-full">
+                                <span className="text-slate-500 line-through decoration-red-500/50 font-medium">£10.99</span>
+                                <span className="text-white font-extrabold">£5.99</span>
+                                <span className="text-purple-400 font-bold text-xs uppercase tracking-wider ml-1">Intro Offer</span>
+                            </span>
+                        </div>
+                        <p className="text-slate-500 text-xs sm:text-sm max-w-sm mt-1">One-off lifetime payment to publish. No subscriptions, ever.</p>
+                    </div>
                 </div>
             </section>
 
