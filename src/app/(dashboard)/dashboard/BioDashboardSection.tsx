@@ -29,26 +29,30 @@ export default function BioDashboardSection({ profile, pressShotsCount, featured
     if (showAI) {
         return (
             <div className="grid lg:grid-cols-2 gap-6 mb-8 mt-12 animate-fade-in">
-                <div>
-                    <h2 className="text-xl font-bold text-white mb-4">AI Bio Generator</h2>
-                    <AIBioGenerator
-                        defaultValues={{
-                            djName: profile?.name || '',
-                            location: profile?.location || '',
-                            genres: profile?.genres || []
-                        }}
-                        onSave={handleSave}
-                        onCancel={() => setShowAI(false)}
-                    />
+                <div className="flex flex-col">
+                    <h2 className="text-xl font-bold text-white mb-4 shrink-0">AI Bio Generator</h2>
+                    <div className="flex-1 flex flex-col">
+                        <AIBioGenerator
+                            defaultValues={{
+                                djName: profile?.name || '',
+                                location: profile?.location || '',
+                                genres: profile?.genres || []
+                            }}
+                            onSave={handleSave}
+                            onCancel={() => setShowAI(false)}
+                        />
+                    </div>
                 </div>
-                <div>
-                    <h2 className="text-xl font-bold text-white mb-4">Profile Status</h2>
-                    <ProfileCompletionWidget 
-                        profile={profile} 
-                        pressShotsCount={pressShotsCount} 
-                        featuredMixesCount={featuredMixesCount} 
-                        socialLink={socialLink} 
-                    />
+                <div className="flex flex-col">
+                    <h2 className="text-xl font-bold text-white mb-4 shrink-0">Profile Status</h2>
+                    <div className="flex-1 flex flex-col">
+                        <ProfileCompletionWidget 
+                            profile={profile} 
+                            pressShotsCount={pressShotsCount} 
+                            featuredMixesCount={featuredMixesCount} 
+                            socialLink={socialLink} 
+                        />
+                    </div>
                 </div>
             </div>
         );
@@ -56,11 +60,11 @@ export default function BioDashboardSection({ profile, pressShotsCount, featured
 
     return (
         <div className="grid lg:grid-cols-2 gap-6 mb-8 mt-12 animate-fade-in">
-            <div>
-                <h2 className="text-xl font-bold text-white mb-4">Your Biography</h2>
+            <div className="flex flex-col">
+                <h2 className="text-xl font-bold text-white mb-4 shrink-0">Your Biography</h2>
 
                 {hasBio ? (
-                    <div className="glass-panel p-6 rounded-3xl border-white/5 space-y-4 relative overflow-hidden group">
+                    <div className="glass-panel p-6 rounded-3xl border-white/5 space-y-4 relative overflow-hidden group flex-1">
                         <div className="absolute inset-0 bg-gradient-to-br from-purple-600/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
 
                         <div className="flex items-center justify-between relative z-10">
@@ -86,7 +90,7 @@ export default function BioDashboardSection({ profile, pressShotsCount, featured
                         </p>
                     </div>
                 ) : (
-                    <div className="glass-panel p-8 rounded-3xl border-purple-500/30 bg-purple-900/10 text-center flex flex-col items-center justify-center relative overflow-hidden h-full">
+                    <div className="glass-panel p-8 rounded-3xl border-purple-500/30 bg-purple-900/10 text-center flex flex-col items-center justify-center relative overflow-hidden flex-1">
                         <div className="absolute top-0 right-0 w-64 h-64 bg-purple-500/10 blur-[50px] pointer-events-none"></div>
 
                         <div className="w-12 h-12 bg-purple-600/20 text-purple-400 rounded-xl flex items-center justify-center mb-4 relative z-10">
@@ -106,14 +110,16 @@ export default function BioDashboardSection({ profile, pressShotsCount, featured
                 )}
             </div>
 
-            <div>
-                <h2 className="text-xl font-bold text-white mb-4">Profile Status</h2>
-                <ProfileCompletionWidget 
-                    profile={profile} 
-                    pressShotsCount={pressShotsCount} 
-                    featuredMixesCount={featuredMixesCount} 
-                    socialLink={socialLink} 
-                />
+            <div className="flex flex-col">
+                <h2 className="text-xl font-bold text-white mb-4 shrink-0">Profile Status</h2>
+                <div className="flex-1 flex flex-col">
+                    <ProfileCompletionWidget 
+                        profile={profile} 
+                        pressShotsCount={pressShotsCount} 
+                        featuredMixesCount={featuredMixesCount} 
+                        socialLink={socialLink} 
+                    />
+                </div>
             </div>
         </div>
     );
