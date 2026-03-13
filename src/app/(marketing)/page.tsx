@@ -34,7 +34,7 @@ export default function Home() {
                     </h1>
 
                     <p className="mt-6 text-xl text-slate-300 max-w-2xl mx-auto mb-10">
-                        Give DJs a single link that gets them booked faster. Mixes, videos, photos, and contact info in one clean EPK.
+                        Give promoters a single link that gets you booked faster. Mixes, videos, photos, and contact info in one clean EPK.
                     </p>
 
                     <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">

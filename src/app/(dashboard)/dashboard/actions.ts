@@ -4,28 +4,34 @@ import { createClient } from '@/lib/supabase/server';
 import { revalidatePath } from 'next/cache';
 
 export async function saveDashboardBio(shortBio: string, longBio: string) {
-    const supabase = await createClient();
-    const { data: { user } } = await supabase.auth.getUser();
+    try {
+        const supabase = await createClient();
+        const { data: { user } } = await supabase.auth.getUser();
 
-    if (!user) {
-        throw new Error('Unauthorized');
+        if (!user) {
+            return { error: 'Unauthorized' };
+        }
+
+        const { error } = await supabase
+            .from('profiles')
+            .update({
+                short_bio: shortBio || null,
+                long_bio: longBio || null,
+            })
+            .eq('id', user.id);
+
+        if (error) {
+            console.error('Failed to save dashboard bio:', error);
+            return { error: 'Failed to save data. Please try again.' };
+        }
+
+        revalidatePath('/dashboard', 'layout');
+        revalidatePath('/[username]', 'page');
+        
+        return { success: true };
+    } catch (err: any) {
+        return { error: err.message };
     }
-
-    const { error } = await supabase
-        .from('profiles')
-        .update({
-            short_bio: shortBio || null,
-            long_bio: longBio || null,
-        })
-        .eq('id', user.id);
-
-    if (error) {
-        console.error('Failed to save dashboard bio:', error);
-        throw new Error('Failed to save data. Please try again.');
-    }
-
-    revalidatePath('/dashboard', 'layout');
-    revalidatePath('/[username]', 'page');
 }
 
 export async function toggleSyncGigs(enabled: boolean) {

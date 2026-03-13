@@ -8,19 +8,30 @@ import { saveProfileAvatar, addPressShot, removePressShot } from "@/app/(dashboa
 import Step4Client from "@/app/(dashboard)/onboarding/step-4/Step4Client";
 import Step5Form from "@/app/(dashboard)/onboarding/step-5/Step5Form";
 import BookingForm from "@/app/(dashboard)/onboarding/step-6/BookingForm";
-import { User, Music, Camera, BookText, Link as LinkIcon, Calendar } from "lucide-react";
+import { User, Music, Camera, BookText, Link as LinkIcon, Calendar, ArrowRight } from "lucide-react";
+import { useSearchParams } from "next/navigation";
+import { useEffect } from "react";
 
 export default function ProfileEditor({ profile, pressShots, featuredMixes, socialLink }: { profile: any, pressShots: any[], featuredMixes: any[], socialLink: any }) {
+    const searchParams = useSearchParams();
     const [activeTab, setActiveTab] = useState(1);
 
     const tabs = [
-        { id: 1, label: "Basic Info", icon: User },
-        { id: 2, label: "Mixes", icon: Music },
-        { id: 3, label: "Photos", icon: Camera },
-        { id: 4, label: "Biography", icon: BookText },
-        { id: 5, label: "Socials", icon: LinkIcon },
-        { id: 6, label: "Booking", icon: Calendar },
+        { id: 1, label: "Basic Info", icon: User, key: 'basic' },
+        { id: 2, label: "Mixes", icon: Music, key: 'mixes' },
+        { id: 3, label: "Photos", icon: Camera, key: 'photos' },
+        { id: 4, label: "Biography", icon: BookText, key: 'bio' },
+        { id: 5, label: "Socials", icon: LinkIcon, key: 'socials' },
+        { id: 6, label: "Booking", icon: Calendar, key: 'booking' },
     ];
+
+    useEffect(() => {
+        const tabParam = searchParams.get('tab');
+        if (tabParam) {
+            const foundTab = tabs.find(t => t.key === tabParam);
+            if (foundTab) setActiveTab(foundTab.id);
+        }
+    }, [searchParams]);
 
     const renderTabContent = () => {
         switch (activeTab) {
@@ -29,7 +40,7 @@ export default function ProfileEditor({ profile, pressShots, featuredMixes, soci
                     <div className="space-y-6 animate-fade-in">
                         <div className="mb-4">
                             <h2 className="text-2xl font-extrabold text-white">Basic Profile Info</h2>
-                            <p className="text-slate-400">Manage your core identity and the genres you play.</p>
+                            <p className="text-slate-400 text-sm sm:text-base">Manage your core identity and the genres you play.</p>
                         </div>
                         <Step1Form profile={{
                             name: profile.name,
@@ -45,7 +56,7 @@ export default function ProfileEditor({ profile, pressShots, featuredMixes, soci
                     <div className="space-y-6 animate-fade-in">
                         <div className="mb-4">
                             <h2 className="text-2xl font-extrabold text-white">Featured Mixes</h2>
-                            <p className="text-slate-400">Update the mix displayed on your EPK.</p>
+                            <p className="text-slate-400 text-sm sm:text-base">Update the mix displayed on your EPK.</p>
                         </div>
                         <Step2Form existingMixUrl={mixes.length > 0 ? mixes[0].url : ''} />
                     </div>
@@ -55,7 +66,7 @@ export default function ProfileEditor({ profile, pressShots, featuredMixes, soci
                     <div className="space-y-6 animate-fade-in">
                         <div className="mb-4">
                             <h2 className="text-2xl font-extrabold text-white">Profile Photos</h2>
-                            <p className="text-slate-400">Manage your main avatar and downloadable press shots.</p>
+                            <p className="text-slate-400 text-sm sm:text-base">Manage your avatar and press shots.</p>
                         </div>
                         <div className="space-y-8">
                             <div>
@@ -84,7 +95,7 @@ export default function ProfileEditor({ profile, pressShots, featuredMixes, soci
                     <div className="space-y-6 animate-fade-in">
                         <div className="mb-4">
                             <h2 className="text-2xl font-extrabold text-white">Biography</h2>
-                            <p className="text-slate-400">Edit your professional artist biography.</p>
+                            <p className="text-slate-400 text-sm sm:text-base">Edit your professional artist biography.</p>
                         </div>
                         <Step4Client profile={profile} />
                     </div>
@@ -102,7 +113,7 @@ export default function ProfileEditor({ profile, pressShots, featuredMixes, soci
                     <div className="space-y-6 animate-fade-in">
                         <div className="mb-4">
                             <h2 className="text-2xl font-extrabold text-white">Social Links</h2>
-                            <p className="text-slate-400">Update the social footprint attached to your EPK.</p>
+                            <p className="text-slate-400 text-sm sm:text-base">Update social profiles on your EPK.</p>
                         </div>
                         <Step5Form existingSocials={socialsRecord as any} />
                     </div>
@@ -112,7 +123,7 @@ export default function ProfileEditor({ profile, pressShots, featuredMixes, soci
                     <div className="space-y-6 animate-fade-in">
                         <div className="mb-4">
                             <h2 className="text-2xl font-extrabold text-white">Booking Preferences</h2>
-                            <p className="text-slate-400">Configure how promoters contact you and your hidden fee ranges.</p>
+                            <p className="text-slate-400 text-sm sm:text-base">Configure how promoters contact you.</p>
                         </div>
                         <BookingForm defaults={{
                             bookingType: profile.booking_type || 'form',
@@ -129,34 +140,40 @@ export default function ProfileEditor({ profile, pressShots, featuredMixes, soci
     };
 
     return (
-        <div className="grid lg:grid-cols-12 gap-8 items-start animate-fade-in">
+        <div className="grid lg:grid-cols-12 gap-6 lg:gap-8 items-start animate-fade-in relative">
             {/* Desktop Sidebar / Mobile Horizontal Scroll */}
-            <div className="lg:col-span-3 glass-panel rounded-2xl p-2 border-white/5 overflow-x-auto lg:overflow-x-visible">
-                <nav className="flex lg:flex-col gap-1 min-w-max lg:min-w-0 pb-2 lg:pb-0">
-                    {tabs.map((tab) => {
-                        const Icon = tab.icon;
-                        const isActive = activeTab === tab.id;
-                        return (
-                            <button
-                                key={tab.id}
-                                onClick={() => setActiveTab(tab.id)}
-                                className={`flex items-center gap-3 px-4 py-3 text-sm font-bold rounded-xl transition-all whitespace-nowrap lg:whitespace-normal text-left
-                                    ${isActive 
-                                        ? 'bg-purple-600/20 text-purple-400 border border-purple-500/30 shadow-[0_0_15px_-3px_#8b5cf6]' 
-                                        : 'text-slate-400 hover:bg-white/5 hover:text-white border border-transparent'
-                                    }
-                                `}
-                            >
-                                <Icon className={`w-4 h-4 ${isActive ? 'text-purple-400' : 'text-slate-500'}`} />
-                                {tab.label}
-                            </button>
-                        );
-                    })}
-                </nav>
+            <div className="lg:col-span-3 glass-panel rounded-2xl p-2 border-white/5 relative">
+                <div className="overflow-x-auto lg:overflow-x-visible hide-scrollbar relative z-10">
+                    <nav className="flex lg:flex-col gap-1 min-w-max lg:min-w-0 pb-1 lg:pb-0 px-1">
+                        {tabs.map((tab) => {
+                            const Icon = tab.icon;
+                            const isActive = activeTab === tab.id;
+                            return (
+                                <button
+                                    key={tab.id}
+                                    onClick={() => setActiveTab(tab.id)}
+                                    className={`flex items-center gap-3 px-4 py-3 text-sm font-bold rounded-xl transition-all whitespace-nowrap lg:whitespace-normal text-left
+                                        ${isActive 
+                                            ? 'bg-purple-600/20 text-purple-400 border border-purple-500/30 shadow-[0_0_15px_-3px_#8b5cf6]' 
+                                            : 'text-slate-400 hover:bg-white/5 hover:text-white border border-transparent'
+                                        }
+                                    `}
+                                >
+                                    <Icon className={`w-4 h-4 ${isActive ? 'text-purple-400' : 'text-slate-500'}`} />
+                                    {tab.label}
+                                </button>
+                            );
+                        })}
+                    </nav>
+                </div>
+                {/* Scroll Indicator Gradient for mobile */}
+                <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-slate-900 via-slate-900/80 to-transparent lg:hidden pointer-events-none rounded-r-2xl flex items-center justify-end pr-1">
+                    <ArrowRight className="w-3 h-3 text-slate-500 opacity-50" />
+                </div>
             </div>
 
             {/* Content Area */}
-            <div className="lg:col-span-9 glass-panel rounded-3xl p-6 sm:p-10 border border-white/5 relative overflow-hidden bg-slate-900 shadow-2xl">
+            <div className="lg:col-span-9 glass-panel rounded-3xl p-5 sm:p-10 border border-white/5 relative overflow-hidden bg-slate-900 shadow-2xl">
                 {renderTabContent()}
             </div>
         </div>

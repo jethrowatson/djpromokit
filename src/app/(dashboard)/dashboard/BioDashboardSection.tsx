@@ -19,7 +19,10 @@ export default function BioDashboardSection({ profile, pressShotsCount, featured
     const hasBio = !!profile?.short_bio || !!profile?.long_bio;
 
     const handleSave = async (short: string, long: string) => {
-        await saveDashboardBio(short, long);
+        const res = await saveDashboardBio(short, long) as any;
+        if (res?.error) {
+            throw new Error(res.error);
+        }
         setShowAI(false);
     };
 

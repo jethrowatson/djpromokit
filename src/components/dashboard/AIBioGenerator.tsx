@@ -85,7 +85,7 @@ export default function AIBioGenerator({ defaultValues, onSave, onCancel }: AIBi
     };
 
     return (
-        <div className="bg-[#020617] border border-white/10 rounded-2xl shadow-2xl p-6 md:p-8 animate-fade-in relative overflow-hidden">
+        <div className="w-full bg-[#020617] border border-white/10 rounded-2xl shadow-2xl p-4 sm:p-6 md:p-8 animate-fade-in relative overflow-hidden">
             <div className="absolute top-0 right-0 w-64 h-64 bg-purple-600/10 blur-[100px] pointer-events-none rounded-full" />
 
             <div className="mb-8 flex items-center justify-between">
@@ -98,7 +98,7 @@ export default function AIBioGenerator({ defaultValues, onSave, onCancel }: AIBi
                         {step < 7 ? `Step ${step} of 6` : 'Review & Refine'}
                     </p>
                 </div>
-                <button onClick={onCancel} className="text-slate-400 hover:text-white border border-slate-700 hover:bg-slate-800 rounded-lg px-3 py-1 text-sm font-medium transition-colors">
+                <button onClick={onCancel} className="text-slate-400 hover:text-white border border-slate-700 hover:bg-slate-800 rounded-lg px-2 sm:px-3 py-1 text-xs sm:text-sm font-medium transition-colors shrink-0">
                     Cancel
                 </button>
             </div>
@@ -262,9 +262,9 @@ export default function AIBioGenerator({ defaultValues, onSave, onCancel }: AIBi
                 {step < 7 && (
                     <button
                         onClick={() => step === 1 ? onCancel() : setStep(step - 1)}
-                        className="inline-flex items-center px-4 py-2 text-sm font-bold text-slate-300 hover:text-white transition-colors"
+                        className="inline-flex items-center px-2 sm:px-4 py-2 text-sm font-bold text-slate-300 hover:text-white transition-colors"
                     >
-                        <ArrowLeft className="w-4 h-4 mr-2" /> {step === 1 ? 'Cancel' : 'Back'}
+                        <ArrowLeft className="w-4 h-4 mr-1 sm:mr-2" /> <span className="hidden sm:inline">{step === 1 ? 'Cancel' : 'Back'}</span>
                     </button>
                 )}
 
@@ -281,21 +281,21 @@ export default function AIBioGenerator({ defaultValues, onSave, onCancel }: AIBi
                     {step < 6 && (
                         <button
                             onClick={() => setStep(step + 1)}
-                            className="inline-flex items-center justify-center rounded-xl bg-slate-100 text-[#020617] px-6 py-2.5 text-sm font-bold shadow-sm hover:bg-white transition-colors"
+                            className="inline-flex items-center justify-center rounded-xl bg-slate-100 text-[#020617] px-4 sm:px-6 py-2.5 text-sm font-bold shadow-sm hover:bg-white transition-colors"
                         >
-                            Next <ArrowRight className="w-4 h-4 ml-2" />
+                            Next <ArrowRight className="w-4 h-4 ml-1 sm:ml-2" />
                         </button>
                     )}
                     {step === 6 && (
                         <button
                             onClick={() => handleGenerate(false)}
                             disabled={isGenerating}
-                            className="inline-flex items-center justify-center rounded-xl bg-purple-600 px-6 py-2.5 text-sm font-bold text-white shadow-sm hover:bg-purple-500 transition-all hover-glow disabled:opacity-70"
+                            className="inline-flex items-center justify-center rounded-xl bg-purple-600 px-4 sm:px-6 py-2.5 text-sm font-bold text-white shadow-sm hover:bg-purple-500 transition-all hover-glow disabled:opacity-70"
                         >
                             {isGenerating ? (
                                 <>Generating... <Loader2 className="w-4 h-4 ml-2 animate-spin" /></>
                             ) : (
-                                <>Generate Biography <Sparkles className="w-4 h-4 ml-2" /></>
+                                <><span className="hidden sm:inline">Generate Biography</span><span className="sm:hidden">Generate</span> <Sparkles className="w-4 h-4 ml-1 sm:ml-2" /></>
                             )}
                         </button>
                     )}
@@ -303,12 +303,12 @@ export default function AIBioGenerator({ defaultValues, onSave, onCancel }: AIBi
                         <button
                             onClick={handleSave}
                             disabled={isSaving}
-                            className="inline-flex items-center justify-center rounded-xl bg-purple-600 px-6 py-3 text-sm font-bold text-white shadow-sm hover:bg-purple-500 transition-all hover-glow w-full sm:w-auto"
+                            className="inline-flex items-center justify-center rounded-xl bg-purple-600 px-4 sm:px-6 py-3 text-sm font-bold text-white shadow-sm hover:bg-purple-500 transition-all hover-glow w-full sm:w-auto"
                         >
                             {isSaving ? (
                                 <><Loader2 className="w-4 h-4 mr-2 animate-spin" /> Saving...</>
                             ) : (
-                                <><Check className="w-4 h-4 mr-2" /> Save to Profile</>
+                                <><Check className="w-4 h-4 mr-1 sm:mr-2" /> Save to Profile</>
                             )}
                         </button>
                     )}

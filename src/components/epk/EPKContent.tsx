@@ -1,9 +1,10 @@
 "use client";
 
 import React, { useState } from "react";
-import { AudioWaveform, MapPin, Music, Mail, Download, Instagram, Youtube, ExternalLink, CalendarDays, Zap, Radio, Headphones, Users, Play, Sparkles } from "lucide-react";
+import { AudioWaveform, MapPin, Music, Mail, Download, Instagram, Youtube, ExternalLink, CalendarDays, Zap, Radio, Headphones, Users, Play, Sparkles, X } from "lucide-react";
 import MixEmbed from "@/components/ui/MixEmbed";
 import BookingModal from "./BookingModal";
+import CheckoutButton from "@/components/ui/CheckoutButton";
 import { trackEvent } from "@/app/actions/analytics";
 
 export interface EPKProfileData {
@@ -91,6 +92,7 @@ function getDynamicHighlights(profile: EPKProfileData) {
 export default function EPKContent({ profile, isDraftMode = false }: { profile: EPKProfileData, isDraftMode?: boolean }) {
     const [isBookingModalOpen, setIsBookingModalOpen] = useState(false);
     const [downloadingIndex, setDownloadingIndex] = useState<number | null>(null);
+    const [showBanner, setShowBanner] = useState(true);
 
     const handleDownload = async (url: string, index: number) => {
         if (downloadingIndex !== null) return; // Prevent concurrent spam
@@ -136,25 +138,26 @@ export default function EPKContent({ profile, isDraftMode = false }: { profile: 
                     </div>
 
                     {/* Floating Publish CTA */}
-                    <div className="fixed bottom-0 left-0 right-0 p-4 md:p-6 z-50 animate-slide-up pointer-events-none">
-                        <div className="max-w-4xl mx-auto glass-panel border border-purple-500/50 bg-[#020617]/95 shadow-2xl shadow-purple-900/50 rounded-3xl p-6 md:p-8 flex flex-col md:flex-row items-center justify-between gap-6 pointer-events-auto backdrop-blur-xl relative overflow-hidden">
-                            <div className="absolute top-0 right-0 w-64 h-64 bg-purple-500/20 blur-[100px] pointer-events-none rounded-full" />
-                            <div className="flex-1 relative z-10">
-                                <h3 className="text-xl md:text-2xl font-black text-white mb-2 flex items-center gap-2">
-                                    <Sparkles className="w-6 h-6 text-purple-400" />
-                                    Your EPK is ready for the world
-                                </h3>
-                                <p className="text-slate-300 text-sm md:text-base">
-                                    Publish your profile to unlock your public link, get discovered by promoters, and start accepting direct booking requests.
-                                </p>
-                            </div>
-                            <div className="flex-shrink-0 w-full md:w-auto relative z-10">
-                                <a href="/dashboard" className="w-full md:w-auto inline-flex items-center justify-center px-8 py-4 rounded-xl bg-purple-600 text-white font-bold hover:bg-purple-500 transition-all hover-glow shadow-lg shadow-purple-900/50">
-                                    Publish Profile
-                                </a>
+                    {showBanner && (
+                        <div className="fixed bottom-0 left-0 right-0 p-4 md:p-6 z-50 animate-slide-up pointer-events-none">
+                            <div className="max-w-4xl mx-auto glass-panel border border-purple-500/50 bg-[#020617]/95 shadow-2xl shadow-purple-900/50 rounded-3xl p-6 md:p-8 flex flex-col md:flex-row items-center justify-between gap-6 pointer-events-auto backdrop-blur-xl relative overflow-hidden">
+                                <button onClick={() => setShowBanner(false)} className="absolute top-4 right-4 text-slate-400 hover:text-white z-20"><X className="w-5 h-5"/></button>
+                                <div className="absolute top-0 right-0 w-64 h-64 bg-purple-500/20 blur-[100px] pointer-events-none rounded-full" />
+                                <div className="flex-1 relative z-10 pr-4">
+                                    <h3 className="text-xl md:text-2xl font-black text-white mb-2 flex items-center gap-2">
+                                        <Sparkles className="w-6 h-6 text-purple-400" />
+                                        Your EPK is ready for the world
+                                    </h3>
+                                    <p className="text-slate-300 text-sm md:text-base">
+                                        Publish your profile to unlock your public link, get discovered by promoters, and start accepting direct booking requests.
+                                    </p>
+                                </div>
+                                <div className="flex-shrink-0 w-full md:w-auto relative z-10">
+                                    <CheckoutButton text="Publish Profile" className="w-full md:w-auto inline-flex items-center justify-center px-8 py-4 rounded-xl bg-purple-600 text-white font-bold hover:bg-purple-500 transition-all hover-glow shadow-lg shadow-purple-900/50" />
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    )}
                 </>
             )}
 
@@ -427,6 +430,21 @@ export default function EPKContent({ profile, isDraftMode = false }: { profile: 
                 djName={name}
                 djUsername={profile.username}
             />
+
+            {/* Bottom Publish CTA for mobile flow */}
+            {isDraftMode && !profile.isPublished && (
+                <div className="max-w-4xl mx-auto px-4 mt-8 mb-20 relative z-10">
+                    <div className="glass-panel border border-purple-500/30 bg-purple-900/10 rounded-3xl p-8 text-center animate-fade-in relative overflow-hidden">
+                        <div className="absolute inset-0 bg-gradient-to-r from-purple-600/10 via-transparent to-cyan-500/10 opacity-50 blur-xl"></div>
+                        <Sparkles className="w-8 h-8 text-purple-400 mx-auto mb-4 relative z-10" />
+                        <h2 className="text-2xl font-black text-white mb-4 relative z-10">Ready to go live?</h2>
+                        <p className="text-slate-300 mb-8 max-w-xl mx-auto relative z-10">Publish your EPK today to get your custom link and start booking more gigs.</p>
+                        <div className="relative z-10">
+                            <CheckoutButton text="Publish EPK to Public" className="inline-flex items-center justify-center px-8 py-4 rounded-xl bg-purple-600 text-white font-bold hover:bg-purple-500 transition-all hover-glow shadow-[0_0_30px_-5px_#8b5cf6]" />
+                        </div>
+                    </div>
+                </div>
+            )}
 
             {/* Footer / Branding */}
             <div className="flex items-center justify-center pt-8 border-t border-white/5 pb-8 relative z-10 w-full animate-fade-in" style={{ animationDelay: '500ms' }}>

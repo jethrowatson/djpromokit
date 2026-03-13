@@ -29,13 +29,17 @@ export async function saveStep2Mix(formData: FormData) {
             .single();
 
         if (profile) {
-            // Upsert the featured mix into the media table.
+            // Since there's no unique constraint on (profile_id, type) allowing multiple press_shots, we can't use upsert.
+            // Let's delete existing featured mixes for this profile and insert the new one to ensure only 1 exists at a time.
+            await supabase
+                .from('media')
+                .delete()
+                .eq('profile_id', profile.id)
+                .eq('type', 'featured_mix');
+
             const { error } = await supabase
                 .from('media')
-                .upsert(
-                    { profile_id: profile.id, type: 'featured_mix', url: mixUrl },
-                    { onConflict: 'profile_id,type' }
-                );
+                .insert({ profile_id: profile.id, type: 'featured_mix', url: mixUrl });
 
             if (error) {
                 console.error('Failed to save Step 2 mix:', error);
