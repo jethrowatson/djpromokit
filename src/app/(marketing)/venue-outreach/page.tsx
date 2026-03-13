@@ -101,7 +101,7 @@ Let me know what date you have in mind!`
                 <div className="mt-20 max-w-3xl mx-auto text-center glass-panel p-10 rounded-3xl border-cyan-500/20 bg-slate-900">
                     <h2 className="text-2xl font-bold text-white mb-4">Pro Tip: Track your link</h2>
                     <p className="text-slate-400 mb-6">
-                        If you subscribe to the £10.99 published plan, your dashboard shows exactly how many people have viewed your EPK and clicked your booking button. Send 10 DMs, and see how many promoters actually open the link.
+                        If you subscribe to the £5.99 published plan, your dashboard shows exactly how many people have viewed your EPK and clicked your booking button. Send 10 DMs, and see how many promoters actually open the link.
                     </p>
                 </div>
             </div>

@@ -45,7 +45,7 @@ export async function POST(req: Request) {
                             name: 'DJpromokit Publishing Fee',
                             description: 'One-time fee to permanently publish your EPK.',
                         },
-                        unit_amount: 1099, // £10.99
+                        unit_amount: 599, // £5.99
                     },
                     quantity: 1,
                 },

@@ -89,7 +89,7 @@ export default function SignupForm() {
             </form>
             
             <div className="mt-6 text-center text-xs text-slate-500">
-                You can optionally publish your interactive EPK later for £10.99.
+                You can optionally publish your interactive EPK later for £5.99.
             </div>
         </div>
     );

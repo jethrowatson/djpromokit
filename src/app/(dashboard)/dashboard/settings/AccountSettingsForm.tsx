@@ -115,7 +115,7 @@ export default function AccountSettingsForm({ user, profile }: { user: any, prof
                         ) : (
                             <p className="font-bold text-slate-300">Free Draft Mode</p>
                         )}
-                        <p className="text-sm text-slate-400">Pay £10.99 once to unlock lifetime publishing and PDF downloads.</p>
+                        <p className="text-sm text-slate-400">Pay <del className="text-red-400/50 decoration-red-500 mr-1">£10.99</del><strong className="text-white">£5.99</strong> once to unlock lifetime publishing and PDF downloads.</p>
                     </div>
 
                     {!profile.is_published && (

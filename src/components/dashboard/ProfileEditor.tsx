@@ -142,8 +142,8 @@ export default function ProfileEditor({ profile, pressShots, featuredMixes, soci
     return (
         <div className="grid lg:grid-cols-12 gap-6 lg:gap-8 items-start animate-fade-in relative">
             {/* Desktop Sidebar / Mobile Horizontal Scroll */}
-            <div className="lg:col-span-3 glass-panel rounded-2xl p-2 border-white/5 relative">
-                <div className="overflow-x-auto lg:overflow-x-visible hide-scrollbar relative z-10">
+            <div className="lg:col-span-3 glass-panel rounded-2xl p-2 border-white/5 relative min-w-0">
+                <div className="overflow-x-auto lg:overflow-x-visible hide-scrollbar relative z-10 w-full">
                     <nav className="flex lg:flex-col gap-1 min-w-max lg:min-w-0 pb-1 lg:pb-0 px-1">
                         {tabs.map((tab) => {
                             const Icon = tab.icon;

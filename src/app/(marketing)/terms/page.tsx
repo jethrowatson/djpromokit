@@ -29,7 +29,7 @@ export default function TermsOfServicePage() {
                         <p>You retain all rights to the audio, images, biography text, and other content ("User Content") you upload to your EPK. By uploading User Content, you grant DJ Promo Kit a worldwide, non-exclusive license to host, display, and distribute this content solely for the purpose of rendering your public EPK.</p>
 
                         <h2 className="text-2xl font-bold text-white mt-8 mb-4">5. Payments and Publishing Fees</h2>
-                        <p>Core profile creation is free. Publishing an EPK, exporting PDFs, and accessing advanced analytics require a one-time publishing fee (currently £10.99). This fee is non-refundable once an EPK has been published and rendered public.</p>
+                        <p>Core profile creation is free. Publishing an EPK, exporting PDFs, and accessing advanced analytics require a one-time publishing fee (currently £5.99). This fee is non-refundable once an EPK has been published and rendered public.</p>
 
                         <h2 className="text-2xl font-bold text-white mt-8 mb-4">6. Acceptable Use</h2>
                         <p>You agree not to use DJ Promo Kit to:</p>

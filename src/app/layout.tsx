@@ -42,7 +42,7 @@ const jsonLd = {
       operatingSystem: 'Any',
       offers: {
         '@type': 'Offer',
-        price: '10.99',
+        price: '5.99',
         priceCurrency: 'GBP',
       },
     },

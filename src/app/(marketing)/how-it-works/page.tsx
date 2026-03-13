@@ -93,7 +93,7 @@ export default function HowItWorks() {
                         Start building your EPK
                         <ChevronRight className="ml-2 w-5 h-5" />
                     </Link>
-                    <p className="mt-4 text-slate-400 text-sm">Totally free to build. Only £10.99 to publish.</p>
+                    <p className="mt-4 text-slate-400 text-sm">Totally free to build. Only £5.99 to publish.</p>
                 </div>
             </div>
         </div>

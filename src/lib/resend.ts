@@ -157,7 +157,7 @@ export async function sendAdminPurchaseAlert({
 
   try {
     const adminEmail = process.env.ADMIN_EMAIL || 'admin@djpromokit.com';
-    const formattedAmount = amount ? new Intl.NumberFormat('en-GB', { style: 'currency', currency }).format(amount / 100) : '£10.99';
+    const formattedAmount = amount ? new Intl.NumberFormat('en-GB', { style: 'currency', currency }).format(amount / 100) : '£5.99';
 
     const { data, error } = await resend.emails.send({
       from: 'DJpromokit Sales <sales@updates.djpromokit.com>',

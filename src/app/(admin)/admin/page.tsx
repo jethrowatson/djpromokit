@@ -42,7 +42,7 @@ export default function AdminPanel() {
                             <CreditCard className="w-6 h-6 text-cyan-400" />
                         </div>
                         <div>
-                            <h3 className="text-slate-400 text-sm font-bold uppercase tracking-wider">Published (£10.99)</h3>
+                            <h3 className="text-slate-400 text-sm font-bold uppercase tracking-wider">Published (£5.99)</h3>
                             <p className="text-3xl font-black text-white">482</p>
                         </div>
                     </div>

@@ -100,9 +100,10 @@ export default function Pricing() {
                         </div>
 
                         <h3 className="text-2xl font-bold text-white mb-2">Published EPK</h3>
-                        <div className="flex items-baseline gap-2 mb-6">
-                            <span className="text-4xl font-extrabold text-white">£10.99</span>
-                            <span className="text-slate-400">one-time fee</span>
+                        <div className="flex items-baseline gap-2 mb-6 flex-wrap">
+                            <span className="text-2xl font-bold text-slate-500 line-through decoration-red-500/50 mr-1">£10.99</span>
+                            <span className="text-4xl font-extrabold text-white">£5.99</span>
+                            <span className="text-purple-400 text-sm font-bold bg-purple-900/30 px-2 py-0.5 rounded-md ml-1 border border-purple-500/20">Intro Offer</span>
                         </div>
                         <p className="text-slate-300 mb-8 flex-1 text-center sm:text-left">
                             Pay once, keep the page live. Get your personal link and start getting booked.
