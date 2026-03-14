@@ -58,7 +58,7 @@ export default function SyncGigsWidget({ initialState = false }: { initialState?
 
                 <h3 className="text-lg font-bold text-white mb-1 relative z-10">SYNCgigs Integration</h3>
                 <p className="text-sm text-slate-400 mb-2 relative z-10">
-                    {enabled ? "Your profile is actively linked and pushing updates to SYNCgigs." : "Connect to SYNCgigs to push your EPK updates straight to bookers."}
+                    {enabled ? "Your profile is actively linked and pushing updates to SYNCgigs." : "SYNCgigs is a free network used by UK promoters to discover and book DJs directly. Link your profile to automatically push your EPK updates straight to bookers."}
                 </p>
 
                 <div className="relative z-10 flex items-center justify-between mt-4">

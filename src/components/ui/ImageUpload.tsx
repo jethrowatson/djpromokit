@@ -68,15 +68,26 @@ export default function ImageUpload({ type, bucket, currentImageUrl, onUploadCom
             <div className={`relative group ${type === 'avatar' ? 'w-24 h-24 rounded-full' : 'aspect-[4/3] rounded-xl'} overflow-hidden bg-slate-800 border border-slate-700`}>
                 <img src={displayUrl} alt={type} className="w-full h-full object-cover" />
 
-                <div className="absolute inset-0 bg-slate-900/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center backdrop-blur-sm">
-                    {onDelete && (
+                <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleFileUpload}
+                    disabled={isUploading}
+                    className="absolute inset-0 w-full h-full opacity-0 cursor-pointer disabled:cursor-not-allowed z-20"
+                />
+
+                <div className="absolute inset-0 bg-slate-900/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center backdrop-blur-sm pointer-events-none">
+                    {isUploading && <Loader2 className="w-6 h-6 text-white animate-spin absolute" />}
+                    {onDelete && !isUploading && (
                         <button
-                            onClick={() => {
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                e.preventDefault();
                                 setLocalPreview(null);
                                 if (onDelete) onDelete();
                             }}
                             type="button"
-                            className="bg-red-500/20 text-red-500 hover:bg-red-500 hover:text-white p-2 rounded-full transition-colors"
+                            className="bg-red-500/20 text-red-500 hover:bg-red-500 hover:text-white p-2 rounded-full transition-colors pointer-events-auto z-30"
                         >
                             <X className="w-4 h-4" />
                         </button>

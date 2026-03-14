@@ -91,20 +91,20 @@ const styles = StyleSheet.create({
         textTransform: 'uppercase',
     },
     mainLayout: {
-        flexDirection: 'row',
+        flexDirection: 'column',
         paddingHorizontal: 40,
         paddingTop: 30,
-        paddingBottom: 40,
-        gap: 30,
+        paddingBottom: 60,
+        gap: 25,
     },
     col1: {
-        flex: 1.3,
+        width: '100%',
     },
     col2: {
-        flex: 1.1,
+        width: '100%',
     },
     col3: {
-        flex: 0.85,
+        width: '100%',
     },
     section: {
         marginBottom: 16,
@@ -296,7 +296,7 @@ export const EPKDocument = ({ profile }: { profile: EPKProfileData }) => {
 
     return (
         <Document title={`${profile.name} - Electronic Press Kit`} author={profile.name}>
-            <Page size="A4" orientation="landscape" style={styles.page}>
+            <Page size="A4" style={styles.page}>
 
                 {/* HERO BLOCK WITH PRESS IMAGE BACKGROUND */}
                 <View style={styles.hero}>
