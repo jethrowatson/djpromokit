@@ -88,6 +88,15 @@ export default function ProfileEditor({ profile, pressShots, featuredMixes, soci
                                 </div>
                             </div>
                         </div>
+                        <div className="pt-6 flex justify-end gap-3 border-t border-white/5">
+                            <button
+                                onClick={() => setActiveTab(4)}
+                                className="inline-flex items-center justify-center rounded-xl bg-purple-600 px-6 py-3 text-sm font-bold text-white shadow-sm hover:bg-purple-500 transition-all hover-glow"
+                            >
+                                Continue
+                                <ArrowRight className="ml-2 w-4 h-4" />
+                            </button>
+                        </div>
                     </div>
                 );
             case 4:
