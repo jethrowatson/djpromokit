@@ -244,3 +244,89 @@ export async function sendGeneralContactEmail({
     return { success: false, error };
   }
 }
+
+export async function sendAbandonedCart1HourEmail(email: string, username: string, djName: string) {
+  if (!resend) return { success: false, error: 'Resend API Key missing' };
+  try {
+    const { data, error } = await resend.emails.send({
+      from: 'DJpromokit <team@updates.djpromokit.com>',
+      to: email,
+      subject: `Your EPK is ready to go live! 🚀`,
+      html: `
+        <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; background-color: #f8fafc; padding: 40px; border-radius: 12px; text-align: center;">
+          <h2 style="color: #0f172a; margin-top: 0;">Hey ${djName}!</h2>
+          <p style="color: #334155; font-size: 16px; line-height: 1.6;">Your DJ Promo Kit is set up and looking great, but it's currently still in <strong>Draft Mode</strong>.</p>
+          <p style="color: #334155; font-size: 16px; line-height: 1.6;">To start sending it to promoters and attaching your custom <code>djpromokit.com/${username}</code> URL to your Instagram bio, you'll need to publish your profile.</p>
+          
+          <div style="background-color: white; padding: 24px; border-radius: 8px; border: 1px solid #e2e8f0; margin: 24px 0;">
+            <p style="margin: 0; color: #64748b; font-size: 14px; text-transform: uppercase; font-weight: bold; letter-spacing: 0.05em;">Lifetime Access</p>
+            <p style="margin: 8px 0 0 0; color: #8b5cf6; font-size: 32px; font-weight: 800;">£5.99 <span style="font-size: 14px; font-weight: 400; color: #64748b; text-decoration: line-through;">£10.99</span></p>
+            <p style="margin: 8px 0 0 0; color: #64748b; font-size: 14px;">One-time payment. No subscriptions ever.</p>
+          </div>
+
+          <div style="margin-top: 32px;">
+            <a href="https://djpromokit.com/dashboard/pdf-export" style="background-color: #8b5cf6; color: white; padding: 16px 32px; text-decoration: none; border-radius: 12px; font-weight: bold; display: inline-block; font-size: 16px;">Publish Profile Now</a>
+          </div>
+        </div>
+      `
+    });
+    return error ? { success: false, error } : { success: true, data };
+  } catch (error) { return { success: false, error }; }
+}
+
+export async function sendAbandonedCart1DayEmail(email: string, username: string, djName: string) {
+  if (!resend) return { success: false, error: 'Resend API Key missing' };
+  try {
+    const { data, error } = await resend.emails.send({
+      from: 'DJpromokit <team@updates.djpromokit.com>',
+      to: email,
+      subject: `Why top DJs use DJ Promo Kit 🎧`,
+      html: `
+        <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; background-color: #ffffff; padding: 40px; border-radius: 12px; border: 1px solid #e2e8f0;">
+          <h2 style="color: #0f172a; margin-top: 0;">Get your name out there, ${djName}</h2>
+          <p style="color: #334155; font-size: 16px; line-height: 1.6;">Still thinking about taking your profile live? When you publish your DJ Promo Kit today, here's what you instantly unlock:</p>
+          
+          <ul style="color: #334155; font-size: 16px; line-height: 1.6; margin: 24px 0;">
+            <li style="margin-bottom: 12px;"><strong>A beautifully formatted A4 PDF press kit</strong> that updates automatically as you change your photos or bio.</li>
+            <li style="margin-bottom: 12px;"><strong>A blazing-fast custom URL</strong> to attach to your Instagram, Linktree, or Soundcloud.</li>
+            <li style="margin-bottom: 12px;"><strong>A central hub</strong> for all your music, mixes, and booking inquiries.</li>
+          </ul>
+
+          <div style="background-color: #f8fafc; padding: 20px; border-radius: 8px; margin: 24px 0; text-align: center;">
+            <p style="margin: 0; color: #0f172a; font-size: 16px; font-weight: 600;">Pay £5.99 once, use it forever.</p>
+          </div>
+
+          <div style="margin-top: 32px; text-align: center;">
+            <a href="https://djpromokit.com/dashboard/pdf-export" style="background-color: #0f172a; color: white; padding: 14px 28px; text-decoration: none; border-radius: 8px; font-weight: bold; display: inline-block; font-size: 16px;">Unlock Your EPK</a>
+          </div>
+        </div>
+      `
+    });
+    return error ? { success: false, error } : { success: true, data };
+  } catch (error) { return { success: false, error }; }
+}
+
+export async function sendAbandonedCart3DayEmail(email: string, username: string, djName: string) {
+  if (!resend) return { success: false, error: 'Resend API Key missing' };
+  try {
+    const { data, error } = await resend.emails.send({
+      from: 'DJpromokit <team@updates.djpromokit.com>',
+      to: email,
+      subject: `Don't leave your profile in draft mode 📥`,
+      html: `
+        <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; background-color: #fffbeb; padding: 40px; border-radius: 12px; border: 1px solid #fde68a;">
+          <h2 style="color: #92400e; margin-top: 0; text-align: center;">Final Reminder: Your Draft EPK ⚠️</h2>
+          <p style="color: #92400e; font-size: 16px; line-height: 1.6; text-align: center;">Hey ${djName}, it looks like your EPK is still in draft mode.</p>
+          
+          <p style="color: #92400e; font-size: 16px; line-height: 1.6; text-align: center;">For less than the price of a fancy coffee, you can secure your custom URL forever and immediately unlock A4 PDF exports to send to booking agents. Stop struggling with 15 different links and get a professional kit.</p>
+
+          <div style="margin-top: 32px; text-align: center;">
+            <a href="https://djpromokit.com/dashboard/pdf-export" style="background-color: #d97706; color: white; padding: 16px 32px; text-decoration: none; border-radius: 12px; font-weight: bold; display: inline-block; font-size: 16px; box-shadow: 0 4px 6px -1px rgba(217, 119, 6, 0.2);">Publish for £5.99 Today</a>
+          </div>
+        </div>
+      `
+    });
+    return error ? { success: false, error } : { success: true, data };
+  } catch (error) { return { success: false, error }; }
+}
+
