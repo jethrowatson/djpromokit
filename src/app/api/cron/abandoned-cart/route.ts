@@ -38,16 +38,19 @@ export async function GET(req: Request) {
 
     try {
         let sentCount = 0;
+        let debugInfo: any = {};
 
         // --- 1 HOUR EMAILS (Wave 1) ---
         // Backfills all historic missing accounts safely
-        const { data: hr1Profiles } = await supabase
+        const { data: hr1Profiles, error: err1 } = await supabase
             .from('profiles')
-            .select('id, name, username')
-            .eq('is_published', false)
+            .select('id, name, username, is_published, created_at, email_1hr_sent')
+            .or('is_published.eq.false,is_published.is.null')
             .or('email_1hr_sent.eq.false,email_1hr_sent.is.null')
             .lt('created_at', oneHourAgo)
-            .limit(40); // Batch limit to prevent Vercel 60s timeout
+            .limit(40);
+
+        debugInfo.hr1 = { found: hr1Profiles?.length || 0, error: err1?.message };
 
         if (hr1Profiles) {
             for (const p of hr1Profiles) {
@@ -60,21 +63,27 @@ export async function GET(req: Request) {
                             last_abandoned_email_at: new Date().toISOString()
                         }).eq('id', p.id);
                         sentCount++;
+                    } else {
+                        debugInfo.emailError = res.error;
                     }
+                } else {
+                    debugInfo.missingUserEmail = (debugInfo.missingUserEmail || 0) + 1;
                 }
             }
         }
 
         // --- 1 DAY EMAILS (Wave 2) ---
-        const { data: day1Profiles } = await supabase
+        const { data: day1Profiles, error: err2 } = await supabase
             .from('profiles')
             .select('id, name, username')
-            .eq('is_published', false)
+            .or('is_published.eq.false,is_published.is.null')
             .eq('email_1hr_sent', true)
             .or('email_1day_sent.eq.false,email_1day_sent.is.null')
             .not('last_abandoned_email_at', 'is', null)
             .lt('last_abandoned_email_at', twentyThreeHoursAgo)
             .limit(40);
+
+        debugInfo.day1 = { found: day1Profiles?.length || 0, error: err2?.message };
 
         if (day1Profiles) {
             for (const p of day1Profiles) {
@@ -93,15 +102,17 @@ export async function GET(req: Request) {
         }
 
         // --- 3 DAY EMAILS (Wave 3) ---
-        const { data: day3Profiles } = await supabase
+        const { data: day3Profiles, error: err3 } = await supabase
             .from('profiles')
             .select('id, name, username')
-            .eq('is_published', false)
+            .or('is_published.eq.false,is_published.is.null')
             .eq('email_1day_sent', true)
             .or('email_3day_sent.eq.false,email_3day_sent.is.null')
             .not('last_abandoned_email_at', 'is', null)
             .lt('last_abandoned_email_at', fortyEightHoursAgo)
             .limit(40);
+
+        debugInfo.day3 = { found: day3Profiles?.length || 0, error: err3?.message };
 
         if (day3Profiles) {
             for (const p of day3Profiles) {
@@ -119,7 +130,7 @@ export async function GET(req: Request) {
             }
         }
 
-        return NextResponse.json({ success: true, emailsDispatched: sentCount });
+        return NextResponse.json({ success: true, emailsDispatched: sentCount, debugInfo });
     } catch (e: any) {
         console.error("Cron execution error", e);
         return NextResponse.json({ error: "Failed to process abandoned cart cron", details: e.message }, { status: 500 });
