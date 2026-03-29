@@ -24,30 +24,27 @@ export async function GET(req: Request) {
 
     const now = new Date();
     
-    // Calculate time windows exactly
-    // 1 Hour Cohort (between 1 and 2 hours ago)
+    // We send Email 1 if account is older than 1 HOUR.
     const oneHourAgo = new Date(now.getTime() - 60 * 60 * 1000).toISOString();
-    const twoHoursAgo = new Date(now.getTime() - 2 * 60 * 60 * 1000).toISOString();
+    
+    // We send Email 2 if the previous email was sent at least 23 HOURS ago.
+    const twentyThreeHoursAgo = new Date(now.getTime() - 23 * 60 * 60 * 1000).toISOString();
 
-    // 1 Day Cohort (between 24 and 48 hours ago)
-    const oneDayAgo = new Date(now.getTime() - 24 * 60 * 60 * 1000).toISOString();
-    const twoDaysAgo = new Date(now.getTime() - 48 * 60 * 60 * 1000).toISOString();
-
-    // 3 Day Cohort (between 72 and 96 hours ago)
-    const threeDaysAgo = new Date(now.getTime() - 72 * 60 * 60 * 1000).toISOString();
-    const fourDaysAgo = new Date(now.getTime() - 96 * 60 * 60 * 1000).toISOString();
+    // We send Email 3 if the previous email was sent at least 48 HOURS ago (72 hours relative to signup).
+    const fortyEightHoursAgo = new Date(now.getTime() - 48 * 60 * 60 * 1000).toISOString();
 
     try {
         let sentCount = 0;
 
-        // --- 1 HOUR EMAILS ---
+        // --- 1 HOUR EMAILS (Wave 1) ---
+        // Backfills all historic missing accounts safely
         const { data: hr1Profiles } = await supabase
             .from('profiles')
             .select('id, name, username')
             .eq('is_published', false)
             .eq('email_1hr_sent', false)
             .lt('created_at', oneHourAgo)
-            .gt('created_at', twoHoursAgo);
+            .limit(40); // Batch limit to prevent Vercel 60s timeout
 
         if (hr1Profiles) {
             for (const p of hr1Profiles) {
@@ -55,21 +52,26 @@ export async function GET(req: Request) {
                 if (user?.email) {
                     const res = await sendAbandonedCart1HourEmail(user.email, p.username, p.name || 'DJ');
                     if (res.success) {
-                        await supabase.from('profiles').update({ email_1hr_sent: true }).eq('id', p.id);
+                        await supabase.from('profiles').update({ 
+                            email_1hr_sent: true,
+                            last_abandoned_email_at: new Date().toISOString()
+                        }).eq('id', p.id);
                         sentCount++;
                     }
                 }
             }
         }
 
-        // --- 1 DAY EMAILS ---
+        // --- 1 DAY EMAILS (Wave 2) ---
         const { data: day1Profiles } = await supabase
             .from('profiles')
             .select('id, name, username')
             .eq('is_published', false)
+            .eq('email_1hr_sent', true)
             .eq('email_1day_sent', false)
-            .lt('created_at', oneDayAgo)
-            .gt('created_at', twoDaysAgo);
+            .not('last_abandoned_email_at', 'is', null)
+            .lt('last_abandoned_email_at', twentyThreeHoursAgo)
+            .limit(40);
 
         if (day1Profiles) {
             for (const p of day1Profiles) {
@@ -77,21 +79,26 @@ export async function GET(req: Request) {
                 if (user?.email) {
                     const res = await sendAbandonedCart1DayEmail(user.email, p.username, p.name || 'DJ');
                     if (res.success) {
-                        await supabase.from('profiles').update({ email_1day_sent: true }).eq('id', p.id);
+                        await supabase.from('profiles').update({ 
+                            email_1day_sent: true,
+                            last_abandoned_email_at: new Date().toISOString()
+                        }).eq('id', p.id);
                         sentCount++;
                     }
                 }
             }
         }
 
-        // --- 3 DAY EMAILS ---
+        // --- 3 DAY EMAILS (Wave 3) ---
         const { data: day3Profiles } = await supabase
             .from('profiles')
             .select('id, name, username')
             .eq('is_published', false)
+            .eq('email_1day_sent', true)
             .eq('email_3day_sent', false)
-            .lt('created_at', threeDaysAgo)
-            .gt('created_at', fourDaysAgo);
+            .not('last_abandoned_email_at', 'is', null)
+            .lt('last_abandoned_email_at', fortyEightHoursAgo)
+            .limit(40);
 
         if (day3Profiles) {
             for (const p of day3Profiles) {
@@ -99,7 +106,10 @@ export async function GET(req: Request) {
                 if (user?.email) {
                     const res = await sendAbandonedCart3DayEmail(user.email, p.username, p.name || 'DJ');
                     if (res.success) {
-                        await supabase.from('profiles').update({ email_3day_sent: true }).eq('id', p.id);
+                        await supabase.from('profiles').update({ 
+                            email_3day_sent: true,
+                            last_abandoned_email_at: new Date().toISOString() 
+                        }).eq('id', p.id);
                         sentCount++;
                     }
                 }
