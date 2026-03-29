@@ -45,7 +45,7 @@ export async function GET(req: Request) {
             .from('profiles')
             .select('id, name, username')
             .eq('is_published', false)
-            .eq('email_1hr_sent', false)
+            .or('email_1hr_sent.eq.false,email_1hr_sent.is.null')
             .lt('created_at', oneHourAgo)
             .limit(40); // Batch limit to prevent Vercel 60s timeout
 
@@ -71,7 +71,7 @@ export async function GET(req: Request) {
             .select('id, name, username')
             .eq('is_published', false)
             .eq('email_1hr_sent', true)
-            .eq('email_1day_sent', false)
+            .or('email_1day_sent.eq.false,email_1day_sent.is.null')
             .not('last_abandoned_email_at', 'is', null)
             .lt('last_abandoned_email_at', twentyThreeHoursAgo)
             .limit(40);
@@ -98,7 +98,7 @@ export async function GET(req: Request) {
             .select('id, name, username')
             .eq('is_published', false)
             .eq('email_1day_sent', true)
-            .eq('email_3day_sent', false)
+            .or('email_3day_sent.eq.false,email_3day_sent.is.null')
             .not('last_abandoned_email_at', 'is', null)
             .lt('last_abandoned_email_at', fortyEightHoursAgo)
             .limit(40);
