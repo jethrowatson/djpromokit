@@ -47,6 +47,8 @@ export async function generateMetadata(
     };
 }
 
+import { createClient as createSupabaseClient } from '@supabase/supabase-js';
+
 export const dynamic = 'force-dynamic';
 
 export default async function EPKProfilePage(props: { params: Promise<{ username: string }>, searchParams: Promise<{ preview?: string, ref?: string }> }) {
@@ -55,12 +57,17 @@ export default async function EPKProfilePage(props: { params: Promise<{ username
     const isPreview = searchParams.preview === 'true';
     const decodedUsername = decodeURIComponent(params.username);
 
+    // Client for standard auth checks
     const supabase = await createClient();
+    const { data: { user } } = await supabase.auth.getUser();
 
-    // In a production app you'd want a big consolidated query/RPC, but we can do a few fetches here.
-    // Notice that if preview is NOT true, RLS blocks us from viewing if is_published is false.
-    // If preview IS true, RLS allows the owner to view it.
-    const { data: profile, error } = await supabase
+    // Admin Client to bypass RLS for draft previews via email links
+    const supabaseAdmin = createSupabaseClient(
+        process.env.NEXT_PUBLIC_SUPABASE_URL!,
+        process.env.SUPABASE_SERVICE_ROLE_KEY!
+    );
+
+    const { data: profile, error } = await supabaseAdmin
         .from('profiles')
         .select('*')
         .eq('username', decodedUsername)
@@ -70,12 +77,15 @@ export default async function EPKProfilePage(props: { params: Promise<{ username
         return notFound();
     }
 
-    const { data: mediaItems } = await supabase
+    const isOwner = user?.id === profile.id;
+    const isLocked = !profile.is_published && !isOwner;
+
+    const { data: mediaItems } = await supabaseAdmin
         .from('media')
         .select('*')
         .eq('profile_id', profile.id);
 
-    const { data: socialLink } = await supabase
+    const { data: socialLink } = await supabaseAdmin
         .from('social_links')
         .select('*')
         .eq('profile_id', profile.id)
@@ -152,6 +162,23 @@ export default async function EPKProfilePage(props: { params: Promise<{ username
     }
 
     return (
-        <EPKContent profile={profileData} isDraftMode={isPreview} />
+        <div className="relative">
+            <EPKContent profile={profileData} isDraftMode={isPreview || isLocked} />
+            {isLocked && (
+                <div className="fixed inset-0 z-[100] bg-slate-900/60 backdrop-blur-md flex flex-col items-center justify-center p-4">
+                    <div className="bg-slate-800 border border-purple-500/20 shadow-2xl rounded-2xl p-8 max-w-md w-full text-center animate-fade-in-up md:translate-y-[-10%]">
+                        <div className="w-16 h-16 bg-purple-900/40 border border-purple-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <span className="text-2xl">🔒</span>
+                        </div>
+                        <h2 className="text-2xl font-bold text-white mb-2">Profile Draft Mode</h2>
+                        <p className="text-slate-300 mb-8 text-sm leading-relaxed">You are viewing an unpublished profile link. If you are the owner, simply unlock your custom URL right now to share it with promoters.</p>
+                        <a href={`/api/checkout/direct?username=${profile.username}`} className="w-full flex items-center justify-center py-4 px-6 rounded-xl bg-purple-600 hover:bg-purple-500 transition-colors text-white font-bold shadow-[0_0_20px_-5px_#8b5cf6] text-lg">
+                            Publish & Unlock (£5.99)
+                        </a>
+                        <p className="text-slate-500 text-xs mt-4">One-time transparent fee. No subscriptions ever.</p>
+                    </div>
+                </div>
+            )}
+        </div>
     );
 }

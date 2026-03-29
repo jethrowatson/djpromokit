@@ -265,7 +265,7 @@ export async function sendAbandonedCart1HourEmail(email: string, username: strin
           </div>
 
           <div style="margin-top: 32px;">
-            <a href="https://djpromokit.com/dashboard/pdf-export" style="background-color: #8b5cf6; color: white; padding: 16px 32px; text-decoration: none; border-radius: 12px; font-weight: bold; display: inline-block; font-size: 16px;">Publish Profile Now</a>
+            <a href="https://djpromokit.com/api/checkout/direct?username=${username}" style="background-color: #8b5cf6; color: white; padding: 16px 32px; text-decoration: none; border-radius: 12px; font-weight: bold; display: inline-block; font-size: 16px;">Publish Profile Now</a>
           </div>
         </div>
       `
@@ -297,7 +297,7 @@ export async function sendAbandonedCart1DayEmail(email: string, username: string
           </div>
 
           <div style="margin-top: 32px; text-align: center;">
-            <a href="https://djpromokit.com/dashboard/pdf-export" style="background-color: #0f172a; color: white; padding: 14px 28px; text-decoration: none; border-radius: 8px; font-weight: bold; display: inline-block; font-size: 16px;">Unlock Your EPK</a>
+            <a href="https://djpromokit.com/api/checkout/direct?username=${username}" style="background-color: #0f172a; color: white; padding: 14px 28px; text-decoration: none; border-radius: 8px; font-weight: bold; display: inline-block; font-size: 16px;">Unlock Your EPK</a>
           </div>
         </div>
       `
@@ -321,7 +321,7 @@ export async function sendAbandonedCart3DayEmail(email: string, username: string
           <p style="color: #92400e; font-size: 16px; line-height: 1.6; text-align: center;">For less than the price of a fancy coffee, you can secure your custom URL forever and immediately unlock A4 PDF exports to send to booking agents. Stop struggling with 15 different links and get a professional kit.</p>
 
           <div style="margin-top: 32px; text-align: center;">
-            <a href="https://djpromokit.com/dashboard/pdf-export" style="background-color: #d97706; color: white; padding: 16px 32px; text-decoration: none; border-radius: 12px; font-weight: bold; display: inline-block; font-size: 16px; box-shadow: 0 4px 6px -1px rgba(217, 119, 6, 0.2);">Publish for £5.99 Today</a>
+            <a href="https://djpromokit.com/api/checkout/direct?username=${username}" style="background-color: #d97706; color: white; padding: 16px 32px; text-decoration: none; border-radius: 12px; font-weight: bold; display: inline-block; font-size: 16px; box-shadow: 0 4px 6px -1px rgba(217, 119, 6, 0.2);">Publish for £5.99 Today</a>
           </div>
         </div>
       `
