@@ -165,8 +165,8 @@ export default async function EPKProfilePage(props: { params: Promise<{ username
         <div className="relative">
             <EPKContent profile={profileData} isDraftMode={isPreview || isLocked} />
             {isLocked && (
-                <div className="fixed inset-0 z-[100] bg-slate-900/60 backdrop-blur-md flex flex-col items-center justify-center p-4">
-                    <div className="bg-slate-800 border border-purple-500/20 shadow-2xl rounded-2xl p-8 max-w-md w-full text-center animate-fade-in-up md:translate-y-[-10%]">
+                <div className="fixed inset-0 z-[9999] bg-slate-950/85 flex flex-col items-center justify-center p-4">
+                    <div className="bg-slate-800 border border-purple-500/20 shadow-2xl rounded-2xl p-8 max-w-md w-full text-center animate-slide-up md:-translate-y-8">
                         <div className="w-16 h-16 bg-purple-900/40 border border-purple-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
                             <span className="text-2xl">🔒</span>
                         </div>
