@@ -29,8 +29,8 @@ export async function POST(req: Request) {
     if (event.type === 'checkout.session.completed') {
         const session = event.data.object as Stripe.Checkout.Session;
 
-        // Using the client reference id as the DJ's profile ID
-        const profileId = session.client_reference_id;
+        // Using the client reference id as the DJ's profile ID, with a fallback to metadata
+        const profileId = session.client_reference_id || session.metadata?.userId;
 
         if (profileId) {
             // Initialize a Supabase client with the service role key to bypass RLS
@@ -38,39 +38,58 @@ export async function POST(req: Request) {
             const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
             const supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey);
 
-            // 1. Mark profile as published and onboarded
-            const { error: profileError } = await supabaseAdmin
-                .from('profiles')
-                .update({ is_published: true, is_onboarded: true })
-                .eq('id', profileId);
+            try {
+                // 1. Mark profile as published and onboarded
+                const { error: profileError } = await supabaseAdmin
+                    .from('profiles')
+                    .update({ is_published: true, is_onboarded: true })
+                    .eq('id', profileId);
 
-            if (profileError) {
-                console.error('Error updating profile:', profileError);
-                return new NextResponse('Database error', { status: 500 });
+                if (profileError) {
+                    console.error('Error updating profile with is_onboarded:', profileError);
+                    
+                    // Fallback: try updating just is_published in case is_onboarded column is missing in production
+                    console.log('Attempting fallback update (is_published only)...');
+                    const { error: fallbackError } = await supabaseAdmin
+                        .from('profiles')
+                        .update({ is_published: true })
+                        .eq('id', profileId);
+
+                    if (fallbackError) {
+                        console.error('Fallback error updating profile:', fallbackError);
+                        return new NextResponse('Database error', { status: 500 });
+                    }
+                }
+
+                // 2. Record payment
+                const { error: paymentError } = await supabaseAdmin
+                    .from('payments')
+                    .insert({
+                        profile_id: profileId,
+                        stripe_session_id: session.id,
+                        stripe_payment_intent_id: session.payment_intent as string || null,
+                        amount: session.amount_total,
+                        status: 'completed'
+                    });
+
+                if (paymentError) {
+                    console.error('Error logging payment:', paymentError);
+                    // We don't return 500 here since the profile is already published we don't want Stripe retrying
+                } else {
+                    // Fire non-blocking email alert to admin
+                    sendAdminPurchaseAlert({
+                        profileId,
+                        amount: session.amount_total,
+                        currency: session.currency || 'GBP'
+                    }).catch(console.error);
+                }
+            } catch (err) {
+                console.error('Unexpected error during webhook database operations:', err);
+                return new NextResponse('Internal server error', { status: 500 });
             }
-
-            // 2. Record payment
-            const { error: paymentError } = await supabaseAdmin
-                .from('payments')
-                .insert({
-                    profile_id: profileId,
-                    stripe_session_id: session.id,
-                    stripe_payment_intent_id: session.payment_intent as string,
-                    amount: session.amount_total,
-                    status: 'completed'
-                });
-
-            if (paymentError) {
-                console.error('Error logging payment:', paymentError);
-                // We don't return 500 here since the profile is already published we don't want Stripe retrying
-            } else {
-                // Fire non-blocking email alert to admin
-                sendAdminPurchaseAlert({
-                    profileId,
-                    amount: session.amount_total,
-                    currency: session.currency || 'GBP'
-                }).catch(console.error);
-            }
+        } else {
+            console.error('Webhook received checkout.session.completed but no profileId could be extracted');
+            // Return 200 so Stripe doesn't continually retry a malformed session we can't process
         }
     }
 

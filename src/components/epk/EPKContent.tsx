@@ -54,7 +54,7 @@ function getDynamicHighlights(profile: EPKProfileData) {
     }
 
     // 3. International / Labels / Radio
-    const labels = ["defected", "toolroom", "hospital", "bbc radio", "rinse fm", "nts", "anjunadeep", "anjunabeats", "drumcode", "glitterbox"];
+    const labels = ["defected", "toolroom", "hospital", "bbc radio", "rinse fm", "anjunadeep", "anjunabeats", "drumcode", "glitterbox"];
     const locations = ["ibiza", "london", "berlin", "amsterdam", "miami", "tulum", "dubai"];
 
     const foundLabels = labels.filter(l => bio.includes(l));
@@ -162,9 +162,16 @@ export default function EPKContent({ profile, isDraftMode = false }: { profile: 
             )}
 
             {/* 1. Hero Section */}
-            <section className="relative w-full h-[500px] md:h-[600px] flex items-end pb-12 overflow-hidden border-b border-white/10">
-                {/* Background Image (Press Asset or Avatar) */}
-                <div className="absolute inset-0 bg-[#020617] z-0 overflow-hidden">
+            <section className="relative w-full flex flex-col md:block md:h-[600px] overflow-hidden border-b border-white/10 bg-[#020617] pb-8 md:pb-0">
+                
+                {/* Mobile Full Width Image (Only visible on small screens) */}
+                <div className="w-full aspect-[4/5] relative block md:hidden z-0">
+                    <img src={heroBgUrl} alt={name} className="w-full h-full object-cover" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#020617] via-[#020617]/40 to-transparent"></div>
+                </div>
+
+                {/* Desktop Background Image (Hidden on mobile) */}
+                <div className="absolute inset-0 bg-[#020617] z-0 overflow-hidden hidden md:block">
                     <div
                         className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-30 mix-blend-luminosity scale-105 blur-[2px]"
                         style={{ backgroundImage: `url(${heroBgUrl})` }}
@@ -174,41 +181,41 @@ export default function EPKContent({ profile, isDraftMode = false }: { profile: 
                     <div className="absolute inset-0 bg-gradient-to-r from-[#020617] via-transparent to-[#020617]/50 mix-blend-overlay"></div>
                 </div>
 
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full relative z-10 flex flex-col md:flex-row md:items-end md:justify-between gap-8 animate-slide-up">
-                    <div className="flex flex-col md:flex-row md:items-end gap-6 md:gap-8">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full relative z-10 flex flex-col md:flex-row md:items-end md:justify-between gap-6 md:gap-8 -mt-24 md:mt-0 md:absolute md:bottom-12 md:left-0 md:right-0 animate-slide-up">
+                    <div className="flex flex-col md:flex-row md:items-end gap-4 md:gap-8 items-center md:items-start text-center md:text-left">
                         {/* Profile Photo */}
-                        <div className="w-32 h-32 md:w-48 md:h-48 rounded-[2rem] bg-slate-800 border-[6px] border-[#020617] shadow-xl overflow-hidden shrink-0 relative">
-                            <div className="absolute inset-0 bg-gradient-to-br from-purple-500 to-cyan-500 opacity-20"></div>
-                            <img src={avatarUrl} alt={name} className="w-full h-full object-cover" />
+                        <div className="w-32 h-32 md:w-48 md:h-48 rounded-full md:rounded-[2rem] bg-slate-800 border-4 md:border-[6px] border-[#020617] shadow-xl overflow-hidden shrink-0 relative">
+                            <div className="absolute inset-0 bg-gradient-to-br from-purple-500 to-cyan-500 opacity-20 z-10"></div>
+                            <img src={avatarUrl} alt={name} className="w-full h-full object-cover relative z-0" />
                         </div>
 
-                        <div className="pb-2">
-                            <div className="flex flex-wrap items-center gap-3 mb-3">
-                                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-800 border border-white/10 text-xs font-bold text-slate-300">
+                        <div className="pb-2 flex flex-col items-center md:items-start">
+                            <div className="flex flex-wrap items-center justify-center md:justify-start gap-2 mb-3">
+                                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-800/80 backdrop-blur-md border border-white/10 text-xs font-bold text-slate-300">
                                     <MapPin className="w-3.5 h-3.5 text-cyan-400" /> {profile.location || "Unknown Location"}
                                 </span>
                                 {profile.genres && profile.genres.length > 0 && (
-                                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-800 border border-white/10 text-xs font-bold text-slate-300">
+                                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-800/80 backdrop-blur-md border border-white/10 text-xs font-bold text-slate-300">
                                         <Music className="w-3.5 h-3.5 text-purple-400" /> {profile.genres.join(" / ")}
                                     </span>
                                 )}
                             </div>
-                            <h1 className="text-5xl md:text-7xl font-black tracking-tight text-white mb-2">{name}</h1>
+                            <h1 className="text-4xl md:text-7xl font-black tracking-tight text-white mb-2">{name}</h1>
                             {profile.tagline && (
-                                <p className="text-xl text-slate-400 font-medium max-w-lg">{profile.tagline}</p>
+                                <p className="text-base md:text-xl text-slate-300 font-medium max-w-lg">{profile.tagline}</p>
                             )}
                         </div>
                     </div>
 
-                    <div className="flex flex-col gap-3 pb-2 z-20">
+                    <div className="flex flex-col gap-3 pb-2 z-20 w-full md:w-auto mt-4 md:mt-0">
                         {profile.bookingType === 'email' && profile.publicEmail ? (
                             <a
                                 href={`mailto:${profile.publicEmail}`}
                                 onClick={() => { if (!isDraftMode) trackEvent(profile.id, 'booking_click', 'email_button') }}
-                                className="inline-flex flex-shrink-0 items-center justify-center px-8 py-4 rounded-2xl bg-white text-black font-bold text-lg hover:bg-slate-200 transition-colors shadow-xl"
+                                className="inline-flex flex-shrink-0 items-center justify-center px-8 py-4 rounded-2xl bg-white text-black font-bold text-lg hover:bg-slate-200 transition-colors shadow-xl w-full md:w-auto"
                             >
                                 <Mail className="w-5 h-5 mr-2" />
-                                Book {name}
+                                Message {name}
                             </a>
                         ) : (
                             <button
@@ -216,10 +223,10 @@ export default function EPKContent({ profile, isDraftMode = false }: { profile: 
                                     setIsBookingModalOpen(true);
                                     if (!isDraftMode) trackEvent(profile.id, 'booking_click', 'form_modal_button');
                                 }}
-                                className="inline-flex flex-shrink-0 items-center justify-center px-8 py-4 rounded-2xl bg-white text-black font-bold text-lg hover:bg-slate-200 transition-colors shadow-xl"
+                                className="inline-flex flex-shrink-0 items-center justify-center px-8 py-4 rounded-2xl bg-white text-black font-bold text-lg hover:bg-slate-200 transition-colors shadow-xl w-full md:w-auto"
                             >
                                 <Mail className="w-5 h-5 mr-2" />
-                                Book {name}
+                                Message {name}
                             </button>
                         )}
                     </div>
