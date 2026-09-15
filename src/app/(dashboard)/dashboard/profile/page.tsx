@@ -15,20 +15,26 @@ export default async function EditProfilePage() {
 
     if (!profile) redirect('/dashboard');
 
-    const { data: media } = await supabase
-        .from('media')
-        .select('*')
-        .eq('profile_id', user.id)
-        .order('created_at', { ascending: true });
+    const [{ data: media }, { data: socialLink }, { data: gigs }] = await Promise.all([
+        supabase
+            .from('media')
+            .select('*')
+            .eq('profile_id', user.id)
+            .order('created_at', { ascending: true }),
+        supabase
+            .from('social_links')
+            .select('*')
+            .eq('profile_id', user.id)
+            .maybeSingle(),
+        supabase
+            .from('gig_history')
+            .select('*')
+            .eq('profile_id', user.id)
+            .order('date', { ascending: true })
+    ]);
 
     const pressShots = media ? media.filter(m => m.type === 'press_shot') : [];
     const featuredMixes = media ? media.filter(m => m.type === 'featured_mix') : [];
-
-    const { data: socialLink } = await supabase
-        .from('social_links')
-        .select('*')
-        .eq('profile_id', user.id)
-        .maybeSingle();
 
     return (
         <div className="max-w-6xl mx-auto animate-fade-in relative">
@@ -42,6 +48,7 @@ export default async function EditProfilePage() {
                 pressShots={pressShots} 
                 featuredMixes={featuredMixes} 
                 socialLink={socialLink || {}} 
+                gigs={gigs || []}
             />
         </div>
     );

@@ -83,8 +83,8 @@ export default async function EPKProfilePage(props: { params: Promise<{ username
     const isOwner = user?.id === profile.id;
     const isLocked = !profile.is_published && !isOwner;
 
-    // Fetch media and socials in parallel
-    const [{ data: mediaItems }, { data: socialLink }] = await Promise.all([
+    // Fetch media, socials, and upcoming gigs in parallel
+    const [{ data: mediaItems }, { data: socialLink }, { data: gigItems }] = await Promise.all([
         supabaseAdmin
             .from('media')
             .select('*')
@@ -93,7 +93,13 @@ export default async function EPKProfilePage(props: { params: Promise<{ username
             .from('social_links')
             .select('*')
             .eq('profile_id', profile.id)
-            .maybeSingle()
+            .maybeSingle(),
+        supabaseAdmin
+            .from('gig_history')
+            .select('*')
+            .eq('profile_id', profile.id)
+            .eq('is_upcoming', true)
+            .order('date', { ascending: true })
     ]);
 
     let pressShots: string[] = [];
@@ -136,6 +142,13 @@ export default async function EPKProfilePage(props: { params: Promise<{ username
         pressShots,
         mixes,
         socials,
+        events: (gigItems || []).map(g => ({
+            id: g.id,
+            venue: g.venue,
+            date: g.date,
+            details: g.details,
+            ticketUrl: g.ticket_url || null
+        })),
         isPublished: profile.is_published
     };
 

@@ -8,11 +8,12 @@ import { saveProfileAvatar, addPressShot, removePressShot } from "@/app/(dashboa
 import Step4Client from "@/app/(dashboard)/onboarding/step-4/Step4Client";
 import Step5Form from "@/app/(dashboard)/onboarding/step-5/Step5Form";
 import BookingForm from "@/app/(dashboard)/onboarding/step-6/BookingForm";
-import { User, Music, Camera, BookText, Link as LinkIcon, Calendar, ArrowRight } from "lucide-react";
+import EventsManager from "./EventsManager";
+import { User, Music, Camera, BookText, Link as LinkIcon, Calendar, CalendarDays, ArrowRight } from "lucide-react";
 import { useSearchParams } from "next/navigation";
 import { useEffect } from "react";
 
-export default function ProfileEditor({ profile, pressShots, featuredMixes, socialLink }: { profile: any, pressShots: any[], featuredMixes: any[], socialLink: any }) {
+export default function ProfileEditor({ profile, pressShots, featuredMixes, socialLink, gigs = [] }: { profile: any, pressShots: any[], featuredMixes: any[], socialLink: any, gigs?: any[] }) {
     const searchParams = useSearchParams();
     const [activeTab, setActiveTab] = useState(1);
 
@@ -23,6 +24,7 @@ export default function ProfileEditor({ profile, pressShots, featuredMixes, soci
         { id: 4, label: "Biography", icon: BookText, key: 'bio' },
         { id: 5, label: "Socials", icon: LinkIcon, key: 'socials' },
         { id: 6, label: "Booking", icon: Calendar, key: 'booking' },
+        { id: 7, label: "Upcoming Events", icon: CalendarDays, key: 'events' },
     ];
 
     useEffect(() => {
@@ -142,6 +144,10 @@ export default function ProfileEditor({ profile, pressShots, featuredMixes, soci
                             availNotes: profile.availability_notes || ''
                         }} />
                     </div>
+                );
+            case 7:
+                return (
+                    <EventsManager initialGigs={gigs} />
                 );
             default:
                 return null;

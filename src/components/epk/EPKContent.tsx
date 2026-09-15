@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { AudioWaveform, MapPin, Music, Mail, Download, Instagram, Youtube, ExternalLink, Headphones, Users, Play, Sparkles, X, ChevronDown, ChevronUp } from "lucide-react";
+import { AudioWaveform, MapPin, Music, Mail, Download, Instagram, Youtube, ExternalLink, Headphones, Users, Play, Sparkles, X, ChevronDown, ChevronUp, Calendar, Ticket } from "lucide-react";
 import MixEmbed from "@/components/ui/MixEmbed";
 import BookingModal from "./BookingModal";
 import CheckoutButton from "@/components/ui/CheckoutButton";
@@ -29,6 +29,13 @@ export interface EPKProfileData {
         youtube?: string;
         ra?: string;
     };
+    events?: {
+        id: string;
+        venue: string;
+        date: string;
+        details?: string | null;
+        ticketUrl?: string | null;
+    }[];
     isPublished: boolean;
 }
 
@@ -228,6 +235,79 @@ export default function EPKContent({ profile, isDraftMode = false }: { profile: 
                             </section>
                         );
                     })()}
+
+                    {/* Upcoming Events & Tour Dates */}
+                    {profile.events && profile.events.length > 0 && (
+                        <section className="animate-fade-in" style={{ animationDelay: '200ms' }}>
+                            <div className="flex items-center justify-between mb-4 md:mb-6">
+                                <h2 className="text-xl md:text-2xl font-bold text-white flex items-center gap-2.5">
+                                    <Calendar className="w-5 h-5 text-purple-400" /> Upcoming Events
+                                </h2>
+                            </div>
+                            <div className="space-y-3">
+                                {profile.events.map((evt) => {
+                                    let day = '';
+                                    let month = '';
+                                    let weekday = '';
+                                    try {
+                                        const d = new Date(evt.date + 'T00:00:00');
+                                        day = d.toLocaleDateString('en-GB', { day: 'numeric' });
+                                        month = d.toLocaleDateString('en-GB', { month: 'short' }).toUpperCase();
+                                        weekday = d.toLocaleDateString('en-GB', { weekday: 'short' });
+                                    } catch (e) {
+                                        day = evt.date;
+                                    }
+
+                                    return (
+                                        <div
+                                            key={evt.id}
+                                            className="p-4 sm:p-5 rounded-2xl md:rounded-3xl bg-slate-900/60 md:glass-panel border border-white/5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:border-white/15 transition-all group"
+                                        >
+                                            <div className="flex items-center gap-4">
+                                                {/* Date Badge */}
+                                                <div className="w-14 h-14 rounded-2xl bg-purple-600/15 border border-purple-500/25 flex flex-col items-center justify-center shrink-0 text-center">
+                                                    <span className="text-[10px] font-extrabold uppercase tracking-wider text-purple-400 leading-none">{month}</span>
+                                                    <span className="text-xl font-black text-white leading-none mt-1">{day}</span>
+                                                </div>
+
+                                                <div>
+                                                    <h3 className="text-lg font-extrabold text-white group-hover:text-purple-300 transition-colors leading-snug">
+                                                        {evt.venue}
+                                                    </h3>
+                                                    <div className="flex flex-wrap items-center gap-x-3 gap-y-0.5 text-xs text-slate-400 mt-1">
+                                                        {weekday && <span className="font-semibold text-slate-300">{weekday}</span>}
+                                                        {evt.details && (
+                                                            <span className="flex items-center gap-1">
+                                                                <MapPin className="w-3 h-3 text-cyan-400 shrink-0" /> {evt.details}
+                                                            </span>
+                                                        )}
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            {/* Ticket / Info Button */}
+                                            <div className="flex items-center self-end sm:self-center shrink-0 w-full sm:w-auto pt-1 sm:pt-0">
+                                                {evt.ticketUrl ? (
+                                                    <a
+                                                        href={evt.ticketUrl}
+                                                        target="_blank"
+                                                        rel="noopener noreferrer"
+                                                        className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-purple-600 hover:bg-purple-500 text-white text-sm font-bold transition-all shadow-md shadow-purple-900/30 w-full sm:w-auto"
+                                                    >
+                                                        <Ticket className="w-4 h-4" /> Get Tickets <ExternalLink className="w-3.5 h-3.5 opacity-70" />
+                                                    </a>
+                                                ) : (
+                                                    <span className="text-xs font-semibold uppercase tracking-wider text-slate-500 px-3 py-1.5 rounded-lg bg-slate-800/60 border border-white/5">
+                                                        Free / Info
+                                                    </span>
+                                                )}
+                                            </div>
+                                        </div>
+                                    );
+                                })}
+                            </div>
+                        </section>
+                    )}
 
                     {/* Featured Mixes */}
                     {profile.mixes && profile.mixes.length > 0 && (
