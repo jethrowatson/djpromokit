@@ -57,39 +57,44 @@ export default async function EPKProfilePage(props: { params: Promise<{ username
     const isPreview = searchParams.preview === 'true';
     const decodedUsername = decodeURIComponent(params.username);
 
-    // Client for standard auth checks
+    // Parallelize auth check and profile lookup
     const supabase = await createClient();
-    const { data: { user } } = await supabase.auth.getUser();
-
-    // Admin Client to bypass RLS for draft previews via email links
     const supabaseAdmin = createSupabaseClient(
         process.env.NEXT_PUBLIC_SUPABASE_URL!,
         process.env.SUPABASE_SERVICE_ROLE_KEY!
     );
 
-    const { data: profile, error } = await supabaseAdmin
-        .from('profiles')
-        .select('*')
-        .eq('username', decodedUsername)
-        .single();
+    const [authResult, profileResult] = await Promise.all([
+        supabase.auth.getUser(),
+        supabaseAdmin
+            .from('profiles')
+            .select('*')
+            .eq('username', decodedUsername)
+            .single()
+    ]);
 
-    if (error || !profile) {
+    const user = authResult.data?.user;
+    const profile = profileResult.data;
+
+    if (profileResult.error || !profile) {
         return notFound();
     }
 
     const isOwner = user?.id === profile.id;
     const isLocked = !profile.is_published && !isOwner;
 
-    const { data: mediaItems } = await supabaseAdmin
-        .from('media')
-        .select('*')
-        .eq('profile_id', profile.id);
-
-    const { data: socialLink } = await supabaseAdmin
-        .from('social_links')
-        .select('*')
-        .eq('profile_id', profile.id)
-        .maybeSingle();
+    // Fetch media and socials in parallel
+    const [{ data: mediaItems }, { data: socialLink }] = await Promise.all([
+        supabaseAdmin
+            .from('media')
+            .select('*')
+            .eq('profile_id', profile.id),
+        supabaseAdmin
+            .from('social_links')
+            .select('*')
+            .eq('profile_id', profile.id)
+            .maybeSingle()
+    ]);
 
     let pressShots: string[] = [];
     let mixes: { title: string; url: string }[] = [];
@@ -158,7 +163,7 @@ export default async function EPKProfilePage(props: { params: Promise<{ username
             }
         }
 
-        await trackEvent(profile.id, 'page_view', domainSource);
+        trackEvent(profile.id, 'page_view', domainSource).catch(() => {});
     }
 
     return (

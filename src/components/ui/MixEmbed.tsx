@@ -11,6 +11,7 @@ export default function MixEmbed({ url }: { url: string }) {
             const embedUrl = `https://w.soundcloud.com/player/?url=${encodeURIComponent(urlString)}&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true`;
             return (
                 <iframe
+                    loading="lazy"
                     width="100%"
                     height="166"
                     scrolling="no"
@@ -35,6 +36,7 @@ export default function MixEmbed({ url }: { url: string }) {
                 return (
                     <div className="relative w-full aspect-video">
                         <iframe
+                            loading="lazy"
                             className="absolute top-0 left-0 w-full h-full"
                             src={`https://www.youtube.com/embed/${videoId}`}
                             title="YouTube video player"
@@ -53,6 +55,7 @@ export default function MixEmbed({ url }: { url: string }) {
             const embedUrl = `https://www.mixcloud.com/widget/iframe/?hide_cover=1&light=0&feed=${encodeURIComponent(mxPath)}`;
             return (
                 <iframe
+                    loading="lazy"
                     width="100%"
                     height="120"
                     src={embedUrl}

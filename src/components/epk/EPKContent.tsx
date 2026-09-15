@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { AudioWaveform, MapPin, Music, Mail, Download, Instagram, Youtube, ExternalLink, CalendarDays, Zap, Radio, Headphones, Users, Play, Sparkles, X } from "lucide-react";
+import { AudioWaveform, MapPin, Music, Mail, Download, Instagram, Youtube, ExternalLink, Headphones, Users, Play, Sparkles, X, ChevronDown, ChevronUp } from "lucide-react";
 import MixEmbed from "@/components/ui/MixEmbed";
 import BookingModal from "./BookingModal";
 import CheckoutButton from "@/components/ui/CheckoutButton";
@@ -32,67 +32,12 @@ export interface EPKProfileData {
     isPublished: boolean;
 }
 
-// Helper to pull dynamic stats from bio text
-function getDynamicHighlights(profile: EPKProfileData) {
-    const bio = ((profile.shortBio || '') + ' ' + (profile.longBio || '')).toLowerCase();
-
-    let highlights = [];
-
-    // 1. Years DJing
-    const yearsMatch = bio.match(/(\d+)\+?\s*years?/);
-    if (yearsMatch) {
-        highlights.push({ icon: CalendarDays, value: `${yearsMatch[1]}+`, label: "Years DJing", color: "purple" });
-    }
-
-    // 2. Notable Venues/Clubs (Past Support)
-    const venues = ["fabric", "printworks", "ministry of sound", "amnesia", "pacha", "space", "warehouse project", "watergate", "berghain", "hï ibiza", "dc10", "eden", "o2 academy"];
-    const foundVenues = venues.filter(v => bio.includes(v));
-    if (foundVenues.length > 0) {
-        const topVenue = foundVenues.sort((a, b) => b.length - a.length)[0];
-        const displayVenue = topVenue.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
-        highlights.push({ icon: AudioWaveform, value: displayVenue, label: "Past Support", color: "cyan" });
-    }
-
-    // 3. International / Labels / Radio
-    const labels = ["defected", "toolroom", "hospital", "bbc radio", "rinse fm", "anjunadeep", "anjunabeats", "drumcode", "glitterbox"];
-    const locations = ["ibiza", "london", "berlin", "amsterdam", "miami", "tulum", "dubai"];
-
-    const foundLabels = labels.filter(l => bio.includes(l));
-    const foundLocs = locations.filter(l => bio.includes(l) && (!profile.location || !profile.location.toLowerCase().includes(l)));
-
-    if (foundLabels.length > 0) {
-        const displayLabel = foundLabels[0].split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
-        highlights.push({ icon: Radio, value: displayLabel, label: "Featured On", color: "emerald" });
-    } else if (foundLocs.length > 0) {
-        const loc = foundLocs[0].charAt(0).toUpperCase() + foundLocs[0].slice(1);
-        highlights.push({ icon: MapPin, value: loc, label: "International", color: "emerald" });
-    }
-
-    // Fallbacks
-    if (highlights.length < 3 && profile.genres && profile.genres.length > 0) {
-        highlights.push({ icon: Headphones, value: profile.genres[0], label: "Signature Sound", color: "pink" });
-    }
-
-    if (highlights.length < 3 && profile.location) {
-        const city = profile.location.split(',')[0].trim();
-        if (!highlights.some(h => h.value.toLowerCase() === city.toLowerCase())) {
-            highlights.push({ icon: MapPin, value: city, label: "Base", color: highlights.length === 1 ? "cyan" : "emerald" });
-        }
-    }
-
-    if (highlights.length < 3) {
-        highlights.push({ icon: Zap, value: "Active", label: "Touring Status", color: "emerald" });
-    }
-
-    return highlights.slice(0, 3);
-}
-
-
 
 export default function EPKContent({ profile, isDraftMode = false }: { profile: EPKProfileData, isDraftMode?: boolean }) {
     const [isBookingModalOpen, setIsBookingModalOpen] = useState(false);
     const [downloadingIndex, setDownloadingIndex] = useState<number | null>(null);
     const [showBanner, setShowBanner] = useState(true);
+    const [isBioExpanded, setIsBioExpanded] = useState(false);
 
     const handleDownload = async (url: string, index: number) => {
         if (downloadingIndex !== null) return; // Prevent concurrent spam
@@ -166,7 +111,7 @@ export default function EPKContent({ profile, isDraftMode = false }: { profile: 
                 
                 {/* Mobile Full Width Image (Only visible on small screens) */}
                 <div className="w-full aspect-[4/5] relative block md:hidden z-0">
-                    <img src={heroBgUrl} alt={name} className="w-full h-full object-cover" />
+                    <img src={heroBgUrl} alt={name} className="w-full h-full object-cover" fetchPriority="high" decoding="async" />
                     <div className="absolute inset-0 bg-gradient-to-t from-[#020617] via-[#020617]/40 to-transparent"></div>
                 </div>
 
@@ -234,69 +179,70 @@ export default function EPKContent({ profile, isDraftMode = false }: { profile: 
             </section>
 
             {/* Main Content Grid */}
-            <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 grid md:grid-cols-12 gap-12 relative z-10">
+            <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-16 grid md:grid-cols-12 gap-8 md:gap-12 relative z-10">
 
-                <div className="md:col-span-8 flex flex-col gap-16">
-
-                    {/* Dynamic Highlights */}
-                    <section className="animate-fade-in" style={{ animationDelay: '100ms' }}>
-                        <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                            {getDynamicHighlights(profile).map((stat, i) => {
-                                const Icon = stat.icon;
-                                const colorClass = stat.color === 'purple' ? 'text-purple-400 bg-purple-500/10' :
-                                    stat.color === 'cyan' ? 'text-cyan-400 bg-cyan-500/10' :
-                                        stat.color === 'pink' ? 'text-pink-400 bg-pink-500/10' :
-                                            'text-emerald-400 bg-emerald-500/10';
-
-                                return (
-                                    <div key={i} className={`glass-panel p-5 rounded-3xl border-white/5 bg-slate-900 flex flex-col items-center text-center ${i === 2 ? 'col-span-2 md:col-span-1' : ''}`}>
-                                        <div className={`w-12 h-12 rounded-2xl flex items-center justify-center mb-3 ${colorClass}`}>
-                                            <Icon className="w-6 h-6" />
-                                        </div>
-                                        <span className="text-2xl font-black text-white">{stat.value}</span>
-                                        <span className="text-xs text-slate-400 font-bold uppercase tracking-wider mt-1">{stat.label}</span>
-                                    </div>
-                                );
-                            })}
-                        </div>
-                    </section>
+                <div className="md:col-span-8 flex flex-col gap-8 md:gap-12">
 
                     {/* Bio */}
-                    {(profile.shortBio || profile.longBio) && (
-                        <section className="animate-fade-in" style={{ animationDelay: '200ms' }}>
-                            <h2 className="text-2xl font-bold text-white mb-6">Biography</h2>
-                            <div className="glass-panel p-8 md:p-10 rounded-3xl border-white/5 space-y-6">
-                                {profile.shortBio && (
-                                    <p className="text-lg md:text-xl font-medium text-slate-300 leading-relaxed border-l-4 border-purple-500 pl-6">
-                                        {profile.shortBio}
-                                    </p>
-                                )}
-                                {profile.shortBio && profile.longBio && (
-                                    <div className="w-16 h-px bg-slate-700"></div>
-                                )}
-                                {profile.longBio && (
-                                    <p className="text-slate-400 leading-relaxed whitespace-pre-wrap">
-                                        {profile.longBio}
-                                    </p>
-                                )}
-                            </div>
-                        </section>
-                    )}
+                    {(profile.shortBio || profile.longBio) && (() => {
+                        const hasMore = Boolean(profile.shortBio && profile.longBio) || Boolean(!profile.shortBio && profile.longBio && profile.longBio.length > 220);
+
+                        return (
+                            <section className="animate-fade-in" style={{ animationDelay: '150ms' }}>
+                                <h2 className="text-xl md:text-2xl font-bold text-white mb-3 md:mb-6">Biography</h2>
+                                <div className="md:glass-panel md:p-10 md:rounded-3xl md:border md:border-white/5 space-y-4 md:space-y-6">
+                                    {profile.shortBio ? (
+                                        <p className="text-base md:text-xl font-medium text-slate-300 leading-relaxed border-l-4 border-purple-500 pl-4 md:pl-6">
+                                            {profile.shortBio}
+                                        </p>
+                                    ) : (
+                                        <p className="text-base md:text-lg text-slate-300 leading-relaxed whitespace-pre-wrap">
+                                            {isBioExpanded || !hasMore
+                                                ? profile.longBio
+                                                : `${profile.longBio?.slice(0, 220).trim()}...`}
+                                        </p>
+                                    )}
+
+                                    {profile.shortBio && profile.longBio && isBioExpanded && (
+                                        <>
+                                            <div className="w-16 h-px bg-slate-700"></div>
+                                            <p className="text-slate-400 leading-relaxed whitespace-pre-wrap text-sm md:text-base">
+                                                {profile.longBio}
+                                            </p>
+                                        </>
+                                    )}
+
+                                    {hasMore && (
+                                        <div>
+                                            <button
+                                                type="button"
+                                                onClick={() => setIsBioExpanded(!isBioExpanded)}
+                                                className="inline-flex items-center gap-1.5 text-sm font-semibold text-purple-400 hover:text-purple-300 transition-colors pt-1"
+                                            >
+                                                {isBioExpanded ? 'Show less' : 'Read more'}
+                                                {isBioExpanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+                                            </button>
+                                        </div>
+                                    )}
+                                </div>
+                            </section>
+                        );
+                    })()}
 
                     {/* Featured Mixes */}
                     {profile.mixes && profile.mixes.length > 0 && (
-                        <section className="animate-fade-in" style={{ animationDelay: '300ms' }}>
-                            <div className="flex items-center justify-between mb-6">
-                                <h2 className="text-2xl font-bold text-white">
+                        <section className="animate-fade-in" style={{ animationDelay: '250ms' }}>
+                            <div className="flex items-center justify-between mb-4 md:mb-6">
+                                <h2 className="text-xl md:text-2xl font-bold text-white">
                                     {profile.mixes.length > 1 ? 'Featured Mixes' : 'Featured Mix'}
                                 </h2>
                             </div>
-                            <div className="grid gap-6">
+                            <div className="grid gap-4 md:gap-6">
                                 {profile.mixes.map((mix, idx) => mix.url && (
-                                    <div key={idx} className="w-full glass-panel rounded-3xl p-6 border-white/10 relative overflow-hidden group">
-                                        <div className="absolute -top-32 -right-32 w-64 h-64 bg-purple-600/20 blur-[100px] pointer-events-none"></div>
+                                    <div key={idx} className="w-full md:glass-panel md:rounded-3xl md:p-6 md:border md:border-white/10 relative overflow-hidden group">
+                                        <div className="hidden md:block absolute -top-32 -right-32 w-64 h-64 bg-purple-600/20 blur-[100px] pointer-events-none"></div>
                                         <div
-                                            className="relative z-10 shadow-2xl rounded-2xl overflow-hidden ring-1 ring-white/10"
+                                            className="relative z-10 shadow-xl rounded-2xl overflow-hidden ring-1 ring-white/10"
                                             onClickCapture={() => {
                                                 if (!isDraftMode) trackEvent(profile.id, 'mix_play', mix.title || 'mix');
                                             }}
@@ -312,7 +258,7 @@ export default function EPKContent({ profile, isDraftMode = false }: { profile: 
                 </div>
 
                 {/* Sidebar */}
-                <div className="md:col-span-4 flex flex-col gap-8 animate-fade-in" style={{ animationDelay: '400ms' }}>
+                <div className="md:col-span-4 flex flex-col gap-6 md:gap-8 animate-fade-in" style={{ animationDelay: '350ms' }}>
 
                     {/* Press Photos */}
                     {profile.pressShots && (profile.pressShots.length > 0 || profile.avatar) && (() => {
@@ -323,9 +269,9 @@ export default function EPKContent({ profile, isDraftMode = false }: { profile: 
                         if (displayAssets.length === 0) return null;
 
                         return (
-                            <div className="glass-panel p-6 rounded-3xl border-white/5">
-                                <h3 className="text-lg font-bold text-white mb-4">Press Assets</h3>
-                                <div className="grid grid-cols-2 gap-3 mb-4">
+                            <div className="md:glass-panel md:p-6 md:rounded-3xl md:border md:border-white/5">
+                                <h3 className="text-lg font-bold text-white mb-3 md:mb-4">Press Assets</h3>
+                                <div className="grid grid-cols-2 gap-3 mb-2 md:mb-4">
                                     {displayAssets.map((url, i) => (
                                         <div
                                             key={i}
@@ -333,7 +279,7 @@ export default function EPKContent({ profile, isDraftMode = false }: { profile: 
                                                 }`}
                                             onClick={() => handleDownload(url, i)}
                                         >
-                                            <img src={url} className="w-full h-full object-cover opacity-80 group-hover:opacity-40 transition-opacity duration-300" alt={`Press Asset ${i + 1}`} />
+                                            <img src={url} loading="lazy" decoding="async" className="w-full h-full object-cover opacity-80 group-hover:opacity-40 transition-opacity duration-300" alt={`Press Asset ${i + 1}`} />
 
                                             <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col items-center justify-center backdrop-blur-sm z-10">
                                                 {downloadingIndex === i ? (
@@ -354,8 +300,8 @@ export default function EPKContent({ profile, isDraftMode = false }: { profile: 
 
                     {/* Expanded Social Links with Mock Stats */}
                     {Object.keys(profile.socials || {}).length > 0 && (
-                        <div className="glass-panel p-6 rounded-3xl border-white/5">
-                            <h3 className="text-lg font-bold text-white mb-4">Socials & Media</h3>
+                        <div className="md:glass-panel md:p-6 md:rounded-3xl md:border md:border-white/5">
+                            <h3 className="text-lg font-bold text-white mb-3 md:mb-4">Socials & Media</h3>
                             <div className="space-y-3">
                                 {profile.socials.instagram && (
                                     <a href={profile.socials.instagram} target="_blank" rel="noopener noreferrer" onClick={() => { if (!isDraftMode) trackEvent(profile.id, 'link_click', 'instagram') }} className="flex items-center justify-between p-4 rounded-xl bg-slate-900/50 hover:bg-slate-800 border border-slate-800 hover:border-slate-700 transition-colors group">
