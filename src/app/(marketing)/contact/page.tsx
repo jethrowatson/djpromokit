@@ -21,6 +21,13 @@ export default function ContactPage() {
                 <div className="max-w-xl mx-auto glass-panel p-6 md:p-10 rounded-3xl relative overflow-hidden border-purple-500/20">
                     <div className="absolute top-0 right-0 -mr-32 -mt-32 w-96 h-96 rounded-full bg-purple-600/10 blur-[100px] pointer-events-none"></div>
                     <ContactForm />
+                    <div className="mt-8 pt-6 border-t border-white/5 text-center text-xs text-slate-400">
+                        Prefer direct email? Reach us at{" "}
+                        <a href="mailto:support@djpromokit.com" className="text-purple-400 font-semibold underline">
+                            support@djpromokit.com
+                        </a>
+                        . We aim to respond within 1–2 business days.
+                    </div>
                 </div>
 
             </div>

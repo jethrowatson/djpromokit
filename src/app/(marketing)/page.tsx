@@ -34,7 +34,7 @@ export default function Home() {
                     </h1>
 
                     <p className="mt-6 text-xl text-slate-300 max-w-2xl mx-auto mb-10">
-                        Give promoters a single link that gets you booked faster. Mixes, videos, photos, and contact info in one clean EPK.
+                        Your DJ press kit in one link. Bring your mixes, photos, bio and booking contact together so promoters can review your material easily.
                     </p>
 
                     <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
@@ -93,8 +93,8 @@ export default function Home() {
                             <div className="w-16 h-16 rounded-2xl bg-slate-800 flex items-center justify-center mb-6 shadow-lg border border-white/5">
                                 <CalendarCheck className="w-8 h-8 text-purple-400" />
                             </div>
-                            <h3 className="text-xl font-bold text-white mb-2">3. Get booked</h3>
-                            <p className="text-slate-400">Promoters can hear your mix, download your photos, and contact you in seconds. Zero friction.</p>
+                            <h3 className="text-xl font-bold text-white mb-2">3. Connect with promoters</h3>
+                            <p className="text-slate-400">Promoters can listen to your mixes, view your press shots, and contact you directly in seconds.</p>
                         </div>
                     </div>
                 </div>
@@ -185,7 +185,7 @@ export default function Home() {
             <section className="w-full py-24 bg-gradient-to-b from-transparent to-purple-900/20 relative z-10 border-t border-white/5">
                 <div className="max-w-4xl mx-auto px-4 text-center">
                     <h2 className="text-4xl font-bold text-white mb-6">Stop sending messy links.</h2>
-                    <p className="text-xl text-slate-300 mb-10">Join thousands of DJs using DJ Promo Kit to look professional and get more gigs.</p>
+                    <p className="text-xl text-slate-300 mb-10">Join DJs using DJ Promo Kit to showcase their sound and build a professional press kit.</p>
                     <Link href="/signup" className="inline-flex items-center justify-center rounded-xl bg-purple-600 px-8 py-4 text-lg font-bold text-white shadow-[0_0_30px_-5px_#8b5cf6] hover:bg-purple-500 hover:shadow-[0_0_40px_-5px_#8b5cf6] transition-all hover:-translate-y-1">
                         Build your EPK for free
                     </Link>

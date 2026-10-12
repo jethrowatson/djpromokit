@@ -40,7 +40,20 @@ export interface EPKProfileData {
 }
 
 
+const DEMO_USERNAMES = ['alexrivera', 'djsarah', 'djmarcus', 'elenadub', 'djflow', 'thetwins'];
+
+function isValidSocialUrl(url?: string): boolean {
+    if (!url) return false;
+    try {
+        const u = new URL(url.startsWith('http') ? url : `https://${url}`);
+        return u.pathname.trim().length > 1;
+    } catch {
+        return false;
+    }
+}
+
 export default function EPKContent({ profile, isDraftMode = false }: { profile: EPKProfileData, isDraftMode?: boolean }) {
+    const isDemo = DEMO_USERNAMES.includes(profile.username?.toLowerCase());
     const [isBookingModalOpen, setIsBookingModalOpen] = useState(false);
     const [downloadingIndex, setDownloadingIndex] = useState<number | null>(null);
     const [showBanner, setShowBanner] = useState(true);
@@ -111,6 +124,18 @@ export default function EPKContent({ profile, isDraftMode = false }: { profile: 
                         </div>
                     )}
                 </>
+            )}
+
+            {isDemo && (
+                <aside aria-label="Demo profile notice" className="w-full bg-purple-950/90 border-b border-purple-500/30 px-4 py-2.5 text-center text-xs text-purple-200 flex flex-wrap items-center justify-center gap-2 backdrop-blur-md relative z-50">
+                    <span className="font-extrabold uppercase tracking-wider bg-purple-600 text-white text-[10px] px-2.5 py-0.5 rounded-full shadow-sm">
+                        Illustrative Demo
+                    </span>
+                    <span>This is a sample DJ press kit created for preview purposes.</span>
+                    <a href="/signup" className="underline font-bold text-white hover:text-purple-300 ml-1">
+                        Build your own EPK free &rarr;
+                    </a>
+                </aside>
             )}
 
             {/* 1. Hero Section */}
@@ -379,11 +404,11 @@ export default function EPKContent({ profile, isDraftMode = false }: { profile: 
                     })()}
 
                     {/* Expanded Social Links with Mock Stats */}
-                    {Object.keys(profile.socials || {}).length > 0 && (
+                    {Object.keys(profile.socials || {}).some(k => isValidSocialUrl((profile.socials as any)[k])) && (
                         <div className="md:glass-panel md:p-6 md:rounded-3xl md:border md:border-white/5">
                             <h3 className="text-lg font-bold text-white mb-3 md:mb-4">Socials & Media</h3>
                             <div className="space-y-3">
-                                {profile.socials.instagram && (
+                                {isValidSocialUrl(profile.socials.instagram) && (
                                     <a href={profile.socials.instagram} target="_blank" rel="noopener noreferrer" onClick={() => { if (!isDraftMode) trackEvent(profile.id, 'link_click', 'instagram') }} className="flex items-center justify-between p-4 rounded-xl bg-slate-900/50 hover:bg-slate-800 border border-slate-800 hover:border-slate-700 transition-colors group">
                                         <div className="flex items-center gap-4">
                                             <div className="w-10 h-10 rounded-full bg-pink-500/10 flex items-center justify-center group-hover:bg-pink-500/20 transition-colors">
@@ -394,7 +419,7 @@ export default function EPKContent({ profile, isDraftMode = false }: { profile: 
                                         <ExternalLink className="w-4 h-4 text-slate-600 group-hover:text-slate-400" />
                                     </a>
                                 )}
-                                {profile.socials.soundcloud && (
+                                {isValidSocialUrl(profile.socials.soundcloud) && (
                                     <a href={profile.socials.soundcloud} target="_blank" rel="noopener noreferrer" onClick={() => { if (!isDraftMode) trackEvent(profile.id, 'link_click', 'soundcloud') }} className="flex items-center justify-between p-4 rounded-xl bg-slate-900/50 hover:bg-slate-800 border border-slate-800 hover:border-slate-700 transition-colors group">
                                         <div className="flex items-center gap-4">
                                             <div className="w-10 h-10 rounded-full bg-orange-500/10 flex items-center justify-center group-hover:bg-orange-500/20 transition-colors">
@@ -405,7 +430,7 @@ export default function EPKContent({ profile, isDraftMode = false }: { profile: 
                                         <ExternalLink className="w-4 h-4 text-slate-600 group-hover:text-slate-400" />
                                     </a>
                                 )}
-                                {profile.socials.mixcloud && (
+                                {isValidSocialUrl(profile.socials.mixcloud) && (
                                     <a href={profile.socials.mixcloud} target="_blank" rel="noopener noreferrer" onClick={() => { if (!isDraftMode) trackEvent(profile.id, 'link_click', 'mixcloud') }} className="flex items-center justify-between p-4 rounded-xl bg-slate-900/50 hover:bg-slate-800 border border-slate-800 hover:border-slate-700 transition-colors group">
                                         <div className="flex items-center gap-4">
                                             <div className="w-10 h-10 rounded-full bg-indigo-500/10 flex items-center justify-center group-hover:bg-indigo-500/20 transition-colors">
@@ -416,7 +441,7 @@ export default function EPKContent({ profile, isDraftMode = false }: { profile: 
                                         <ExternalLink className="w-4 h-4 text-slate-600 group-hover:text-slate-400" />
                                     </a>
                                 )}
-                                {profile.socials.youtube && (
+                                {isValidSocialUrl(profile.socials.youtube) && (
                                     <a href={profile.socials.youtube} target="_blank" rel="noopener noreferrer" onClick={() => { if (!isDraftMode) trackEvent(profile.id, 'link_click', 'youtube') }} className="flex items-center justify-between p-4 rounded-xl bg-slate-900/50 hover:bg-slate-800 border border-slate-800 hover:border-slate-700 transition-colors group">
                                         <div className="flex items-center gap-4">
                                             <div className="w-10 h-10 rounded-full bg-red-500/10 flex items-center justify-center group-hover:bg-red-500/20 transition-colors">
@@ -427,7 +452,7 @@ export default function EPKContent({ profile, isDraftMode = false }: { profile: 
                                         <ExternalLink className="w-4 h-4 text-slate-600 group-hover:text-slate-400" />
                                     </a>
                                 )}
-                                {profile.socials.spotify && (
+                                {isValidSocialUrl(profile.socials.spotify) && (
                                     <a href={profile.socials.spotify} target="_blank" rel="noopener noreferrer" onClick={() => { if (!isDraftMode) trackEvent(profile.id, 'link_click', 'spotify') }} className="flex items-center justify-between p-4 rounded-xl bg-slate-900/50 hover:bg-slate-800 border border-slate-800 hover:border-slate-700 transition-colors group">
                                         <div className="flex items-center gap-4">
                                             <div className="w-10 h-10 rounded-full bg-green-500/10 flex items-center justify-center group-hover:bg-green-500/20 transition-colors">
@@ -438,7 +463,7 @@ export default function EPKContent({ profile, isDraftMode = false }: { profile: 
                                         <ExternalLink className="w-4 h-4 text-slate-600 group-hover:text-slate-400" />
                                     </a>
                                 )}
-                                {profile.socials.ra && (
+                                {isValidSocialUrl(profile.socials.ra) && (
                                     <a href={profile.socials.ra} target="_blank" rel="noopener noreferrer" onClick={() => { if (!isDraftMode) trackEvent(profile.id, 'link_click', 'ra') }} className="flex items-center justify-between p-4 rounded-xl bg-slate-900/50 hover:bg-slate-800 border border-slate-800 hover:border-slate-700 transition-colors group">
                                         <div className="flex items-center gap-4">
                                             <div className="w-10 h-10 rounded-full bg-slate-500/10 flex items-center justify-center group-hover:bg-slate-500/20 transition-colors">

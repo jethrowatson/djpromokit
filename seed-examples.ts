@@ -24,8 +24,8 @@ const examples = [
             { title: "Warehouse Vibes", url: "https://soundcloud.com/alexrivera/warehouse", platform: "soundcloud" }
         ],
         gigs: [
-            { venue: "Printworks", date: "2024-11-15", details: "Main Room Closing Set", is_upcoming: true },
-            { venue: "Amnesia Ibiza", date: "2024-08-20", details: "Terrace Sunrise Set", is_upcoming: false }
+            { venue: "Printworks", date: "2026-11-20", details: "Main Room Closing Set", is_upcoming: true },
+            { venue: "Amnesia Ibiza", date: "2026-08-20", details: "Terrace Sunrise Set", is_upcoming: false }
         ]
     },
     {
@@ -37,11 +37,11 @@ const examples = [
         bio: "With over 500 successful weddings and corporate events under her belt, Sarah is Manchester's premier luxury event DJ. She seamlessly blends decades of hits to keep dancefloors packed from dusk till dawn.",
         tagline: "Soundtracking your perfect moments.",
         tracks: [
-            { title: "Peak Time Wedding Mix 2024", url: "https://mixcloud.com/djsarah/wedding-mix", platform: "mixcloud" }
+            { title: "Peak Time Wedding Mix", url: "https://mixcloud.com/djsarah/wedding-mix", platform: "mixcloud" }
         ],
         gigs: [
-            { venue: "The Midland Hotel", date: "2024-12-05", details: "Corporate Gala", is_upcoming: true },
-            { venue: "Peckforton Castle", date: "2024-09-12", details: "Luxury Wedding", is_upcoming: false }
+            { venue: "The Midland Hotel", date: "2026-12-05", details: "Corporate Gala", is_upcoming: true },
+            { venue: "Peckforton Castle", date: "2026-09-12", details: "Luxury Wedding", is_upcoming: false }
         ]
     },
     {
@@ -56,8 +56,8 @@ const examples = [
             { title: "Summer Vibes Mix", url: "https://soundcloud.com/djmarcus/summer", platform: "soundcloud" }
         ],
         gigs: [
-            { venue: "O2 Academy", date: "2024-11-20", details: "Supporting Act", is_upcoming: true },
-            { venue: "Lab11", date: "2024-10-05", details: "Headline Set", is_upcoming: false }
+            { venue: "O2 Academy", date: "2026-11-28", details: "Supporting Act", is_upcoming: true },
+            { venue: "Lab11", date: "2026-10-05", details: "Headline Set", is_upcoming: false }
         ]
     },
     {
@@ -72,8 +72,8 @@ const examples = [
             { title: "Lost In The Bass", url: "https://soundcloud.com/elenadub/lost", platform: "soundcloud" }
         ],
         gigs: [
-            { venue: "Motion Bristol", date: "2024-12-31", details: "NYE Bass Fest", is_upcoming: true },
-            { venue: "Lakota", date: "2024-09-30", details: "Jungle Room", is_upcoming: false }
+            { venue: "Motion Bristol", date: "2026-12-31", details: "NYE Bass Fest", is_upcoming: true },
+            { venue: "Lakota", date: "2026-09-30", details: "Jungle Room", is_upcoming: false }
         ]
     },
     {
@@ -88,8 +88,8 @@ const examples = [
             { title: "Sunset Sessions Vol. 1", url: "https://soundcloud.com/djflow/sunset", platform: "soundcloud" }
         ],
         gigs: [
-            { venue: "Shooshh Brighton", date: "2024-11-01", details: "Terrace Party", is_upcoming: true },
-            { venue: "Cafe Mambo Ibiza", date: "2024-07-15", details: "Sunset Set", is_upcoming: false }
+            { venue: "Shooshh Brighton", date: "2026-11-14", details: "Terrace Party", is_upcoming: true },
+            { venue: "Cafe Mambo Ibiza", date: "2026-07-15", details: "Sunset Set", is_upcoming: false }
         ]
     },
     {
@@ -104,8 +104,8 @@ const examples = [
             { title: "Festival Anthem Live", url: "https://soundcloud.com/thetwins/anthem", platform: "soundcloud" }
         ],
         gigs: [
-            { venue: "Creamfields", date: "2025-08-25", details: "Mainstage", is_upcoming: true },
-            { venue: "O2 Ritz", date: "2024-10-10", details: "Headline Tour", is_upcoming: false }
+            { venue: "Creamfields", date: "2027-08-25", details: "Mainstage", is_upcoming: true },
+            { venue: "O2 Ritz", date: "2026-10-10", details: "Headline Tour", is_upcoming: false }
         ]
     }
 ];
@@ -216,8 +216,8 @@ async function seed() {
         console.log('Upserting social links...');
         const { error: socialError } = await supabaseAdmin.from('social_links').upsert({
             profile_id: userId,
-            instagram: "https://instagram.com",
-            soundcloud: "https://soundcloud.com"
+            instagram: `https://instagram.com/${ex.username}`,
+            soundcloud: `https://soundcloud.com/${ex.username}`
         }, { onConflict: 'profile_id' });
 
         if (socialError) { console.error("Social Error:", socialError); }

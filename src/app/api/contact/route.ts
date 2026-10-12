@@ -8,16 +8,24 @@ const contactSchema = z.object({
     djUsername: z.string(),
     senderName: z.string().min(2),
     senderEmail: z.string().email(),
-    date: z.string(),
-    location: z.string(),
+    date: z.string().nullable().optional().or(z.literal('')),
+    location: z.string().nullable().optional().or(z.literal('')),
     eventType: z.string().nullable().optional().or(z.literal('')),
     offer: z.string().nullable().optional(),
-    message: z.string().min(2)
+    message: z.string().min(2),
+    honeypot: z.string().nullable().optional()
 });
 
 export async function POST(req: Request) {
     try {
         const body = await req.json();
+
+        // Anti-spam honeypot check
+        if (body.honeypot) {
+            console.warn('[Contact] Honeypot triggered, discarding spam submission.');
+            return NextResponse.json({ success: true, message: 'Message sent successfully' });
+        }
+
         const data = contactSchema.parse(body);
 
         // 1. Insert into Supabase `booking_requests` table using the Service Role Key
@@ -51,17 +59,28 @@ export async function POST(req: Request) {
             }
         }
 
+        const rawDate = data.date?.trim() || '';
+        const isStandardDate = /^\d{4}-\d{2}-\d{2}$/.test(rawDate);
+        const dbDate = isStandardDate ? rawDate : new Date().toISOString().split('T')[0];
+        const displayDate = isStandardDate ? rawDate : (rawDate || 'Flexible / TBD');
+        const displayLocation = data.location?.trim() || 'Flexible / TBD';
+
+        let finalMessage = data.message;
+        if (!isStandardDate) {
+            finalMessage = `[Event Date: ${displayDate}]\n[Location: ${displayLocation}]\n\n${data.message}`;
+        }
+
         const { error: insertError } = await supabaseAdmin
             .from('booking_requests')
             .insert({
                 profile_id: profileId,
                 sender_name: data.senderName,
                 sender_email: data.senderEmail,
-                event_date: data.date,
-                location: data.location,
+                event_date: dbDate,
+                location: displayLocation,
                 event_type: data.eventType || 'Other',
                 offer: data.offer || null,
-                message: data.message
+                message: finalMessage
             });
 
         if (insertError) {
@@ -77,9 +96,12 @@ export async function POST(req: Request) {
         // 2. Send email via Resend
         const result = await sendBookingInquiryEmail({
             ...data,
+            date: displayDate,
+            location: displayLocation,
             to: targetEmail,
             eventType: data.eventType || 'Other',
-            offer: data.offer || ''
+            offer: data.offer || '',
+            message: data.message
         });
 
         if (!result.success) {

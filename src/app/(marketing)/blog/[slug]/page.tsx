@@ -239,7 +239,7 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
                     <div className="absolute top-0 right-0 -mr-16 -mt-16 w-64 h-64 rounded-full bg-purple-600/20 blur-[80px]"></div>
                     <h3 className="text-2xl font-bold text-white mb-4">Ready to build your EPK?</h3>
                     <p className="text-slate-300 mb-8 max-w-lg mx-auto">
-                        Join hundreds of DJs using DJ Promo Kit to get booked faster. Build your beautiful profile for free in under 10 minutes.
+                        Build your professional DJ press kit for free in under 10 minutes.
                     </p>
                     <Link href="/signup" className="inline-flex py-4 px-8 rounded-xl bg-purple-600 hover:bg-purple-500 transition-colors text-white font-bold shadow-[0_0_20px_-5px_#8b5cf6] relative z-10 w-full sm:w-auto items-center justify-center">
                         Start Building for Free

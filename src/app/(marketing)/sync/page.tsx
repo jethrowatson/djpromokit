@@ -69,10 +69,18 @@ export default function SyncPage() {
                 </div>
 
                 <div className="max-w-3xl mx-auto glass-panel p-10 rounded-3xl border-white/10 text-center bg-gradient-to-br from-slate-900 to-slate-800">
-                    <h2 className="text-2xl font-bold text-white mb-4">How to enable the sync</h2>
-                    <p className="text-slate-300 mb-8">
-                        It's automatic! As long as you use the same email address, your profiles are securely linked in the background. Note: SYNC integration is only active for published DJpromokit (paid) accounts.
-                    </p>
+                    <h2 className="text-2xl font-bold text-white mb-4">How the integration works</h2>
+                    <div className="text-left text-slate-300 text-sm space-y-4 mb-8">
+                        <p>
+                            <strong>Explicit Opt-in:</strong> Sync is voluntary and turned off by default. Matching email addresses alone is never treated as consent.
+                        </p>
+                        <p>
+                            <strong>What is shared:</strong> When you enable sync, your public stage name, location, genres, biography, press shots, and mix embed links are shared with SYNCgigs.co.uk to display on your artist listing.
+                        </p>
+                        <p>
+                            <strong>You stay in control:</strong> You can enable or revoke sync at any time directly in your DJ Promo Kit <strong>Dashboard &gt; Settings</strong>. When disabled, no further updates are sent.
+                        </p>
+                    </div>
                     <Link href="/signup" className="inline-flex items-center justify-center px-6 py-3 rounded-xl bg-white text-black font-bold hover:bg-slate-200 transition-colors">
                         Create your profile now
                     </Link>

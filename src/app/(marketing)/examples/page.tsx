@@ -4,7 +4,7 @@ import { Metadata } from "next";
 
 export const metadata: Metadata = {
     title: 'Example DJ Press Kits | DJ Promo Kit',
-    description: 'See how hundreds of DJs use DJpromokit to send professional EPKs to promoters. View real examples.',
+    description: 'Explore example DJ press kits built with DJ Promo Kit. View illustrative demo profiles across different genres.',
 };
 
 export default function Examples() {
@@ -75,9 +75,9 @@ export default function Examples() {
             />
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="text-center max-w-3xl mx-auto mb-16">
-                    <h1 className="text-4xl md:text-5xl font-extrabold text-white mb-6">See it in action</h1>
+                    <h1 className="text-4xl md:text-5xl font-extrabold text-white mb-6">Example DJ Press Kits</h1>
                     <p className="text-xl text-slate-400 mb-10">
-                        Hundreds of DJs use DJpromokit to send professional EPKs to promoters. Check out a few examples.
+                        Explore illustrative demo press kits created with DJ Promo Kit to see how different styles of DJs structure their media, bio, and booking details.
                     </p>
                     <div className="inline-flex glass-panel p-1 rounded-2xl items-center mb-16">
                         <span className="px-6 py-2 rounded-xl bg-purple-600 font-bold text-white shadow-lg">Good links</span>
@@ -91,6 +91,9 @@ export default function Examples() {
                             <div className="w-full aspect-video rounded-2xl mb-4 bg-slate-800 flex items-center justify-center opacity-80 group-hover:opacity-100 transition-opacity overflow-hidden relative">
                                 <img src={ex.image} alt={ex.name} className="w-full h-full object-cover" />
                                 <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors"></div>
+                                <span className="absolute top-3 left-3 text-[10px] font-extrabold uppercase tracking-wider text-purple-300 bg-slate-950/80 border border-purple-500/30 px-2.5 py-1 rounded-full backdrop-blur-md">
+                                    Demo EPK
+                                </span>
                             </div>
                             <div className="px-4 pb-4">
                                 <h3 className="text-2xl font-bold text-white group-hover:text-purple-400 transition-colors">{ex.name}</h3>

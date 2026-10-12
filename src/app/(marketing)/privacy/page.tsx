@@ -53,8 +53,16 @@ export default function PrivacyPolicyPage() {
                         <h2 className="text-2xl font-bold text-white mt-8 mb-4">6. Changes to This Privacy Policy</h2>
                         <p>We may update our Privacy Policy from time to time. We will notify you of any changes by posting the new Privacy Policy on this page. You are advised to review this Privacy Policy periodically for any changes.</p>
 
-                        <h2 className="text-2xl font-bold text-white mt-8 mb-4">7. Contact Us</h2>
-                        <p>If you have any questions about this Privacy Policy, please contact us at privacy@djpromokit.com.</p>
+                        <h2 className="text-2xl font-bold text-white mt-8 mb-4">7. Partner Integration (SYNCgigs.co.uk)</h2>
+                        <p>DJ Promo Kit offers an optional integration with our partner platform, SYNCgigs.co.uk, to help event organizers discover your profile. This integration is strictly voluntary and governed by explicit opt-in:</p>
+                        <ul className="list-disc pl-6 space-y-2 mt-4 text-slate-300">
+                            <li><strong>Explicit Consent Required:</strong> Data is only transmitted if you explicitly enable the SYNCgigs toggle within your DJ Promo Kit Account Settings. Having the same email address on both platforms is never treated as automatic consent.</li>
+                            <li><strong>Transferred Information:</strong> When enabled, your public artist profile data (DJ stage name, location, genres, biography, press shots, and mix embed links) is shared with SYNCgigs.co.uk to populate your artist profile on their platform.</li>
+                            <li><strong>Revocation:</strong> You can revoke this integration at any time with a single click in your Account Settings. Upon revocation, DJ Promo Kit will cease transmitting any further updates to SYNCgigs.</li>
+                        </ul>
+
+                        <h2 className="text-2xl font-bold text-white mt-8 mb-4">8. Contact Us</h2>
+                        <p>If you have any questions about this Privacy Policy or your data rights, please contact us at privacy@djpromokit.com.</p>
                     </div>
                 </div>
             </main>

@@ -19,13 +19,13 @@ export default function HowItWorks() {
         },
         {
             title: "Publish and copy your unique link",
-            description: "Once your EPK looks perfect, publish it for a one-time £10.99 fee. No subscriptions, ever.",
+            description: "Once your EPK looks perfect, publish it for an introductory one-time £5.99 fee (standard £10.99). No subscriptions, ever.",
             icon: <Copy className="w-8 h-8 text-cyan-400" />,
             features: [
                 "Get a clean djpromokit.com/dj/yourname URL",
                 "The preview watermark is removed",
                 "Unlock the PDF export generator",
-                "Your profile syncs to SYNCgigs.co.uk automatically"
+                "Optionally sync your profile to SYNCgigs.co.uk"
             ],
             color: "from-cyan-600/20 to-cyan-900/5",
             borderColor: "border-cyan-500/30"

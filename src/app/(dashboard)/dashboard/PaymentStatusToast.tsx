@@ -15,9 +15,9 @@ export default function PaymentStatusToast() {
             setStatus(paymentParam);
 
             if (paymentParam === 'success') {
-                // Fire Meta Pixel tracking event for a successful £10.99 upgrade
+                // Fire Meta Pixel tracking event for a successful £5.99 upgrade
                 if (typeof window !== 'undefined' && (window as any).fbq) {
-                    (window as any).fbq('track', 'Purchase', { currency: 'GBP', value: 10.99 });
+                    (window as any).fbq('track', 'Purchase', { currency: 'GBP', value: 5.99 });
                 }
             }
 

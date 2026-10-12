@@ -12,6 +12,7 @@ interface BookingModalProps {
 
 export default function BookingModal({ isOpen, onClose, djName, djUsername }: BookingModalProps) {
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [isDateFlexible, setIsDateFlexible] = useState(false);
     const [status, setStatus] = useState<'idle' | 'success' | 'error'>('idle');
     const [errorMessage, setErrorMessage] = useState('');
 
@@ -29,11 +30,12 @@ export default function BookingModal({ isOpen, onClose, djName, djUsername }: Bo
             djUsername,
             senderName: formData.get('senderName'),
             senderEmail: formData.get('senderEmail'),
-            date: formData.get('date'),
-            location: formData.get('location'),
+            date: isDateFlexible ? 'TBD / Flexible' : (formData.get('date') || 'TBD / Flexible'),
+            location: formData.get('location') || 'TBD / Flexible',
             eventType: formData.get('eventType'),
             offer: formData.get('offer'),
             message: formData.get('message'),
+            honeypot: formData.get('website'),
         };
 
         try {
@@ -119,14 +121,41 @@ export default function BookingModal({ isOpen, onClose, djName, djUsername }: Bo
                                 </div>
                             </div>
 
+                            {/* Anti-spam honeypot */}
+                            <input type="text" name="website" tabIndex={-1} autoComplete="off" className="hidden" aria-hidden="true" />
+
                             <div className="grid grid-cols-2 gap-4">
                                 <div>
-                                    <label className="block text-sm font-medium text-slate-300 mb-1.5">Event Date <span className="text-red-400">*</span></label>
-                                    <input required type="date" name="date" className="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-white focus:border-purple-500 focus:ring-1 focus:ring-purple-500 outline-none transition-all [color-scheme:dark]" />
+                                    <label className="block text-sm font-medium text-slate-300 mb-1.5">
+                                        Event Date {!isDateFlexible && <span className="text-red-400">*</span>}
+                                    </label>
+                                    <input
+                                        disabled={isDateFlexible}
+                                        required={!isDateFlexible}
+                                        type="date"
+                                        name="date"
+                                        className="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-white focus:border-purple-500 focus:ring-1 focus:ring-purple-500 outline-none transition-all [color-scheme:dark] disabled:opacity-40 disabled:cursor-not-allowed"
+                                    />
+                                    <label className="flex items-center gap-2 mt-2 cursor-pointer text-xs text-slate-400 select-none">
+                                        <input
+                                            type="checkbox"
+                                            checked={isDateFlexible}
+                                            onChange={(e) => setIsDateFlexible(e.target.checked)}
+                                            className="rounded border-slate-700 bg-slate-950 text-purple-600 focus:ring-purple-500"
+                                        />
+                                        Date is flexible / TBD
+                                    </label>
                                 </div>
                                 <div>
-                                    <label className="block text-sm font-medium text-slate-300 mb-1.5">Location / Venue <span className="text-red-400">*</span></label>
-                                    <input required type="text" name="location" className="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-white focus:border-purple-500 focus:ring-1 focus:ring-purple-500 outline-none transition-all" placeholder="City or Venue Name" />
+                                    <label className="block text-sm font-medium text-slate-300 mb-1.5">
+                                        Location / Venue <span className="text-slate-500 text-xs font-normal">(Optional)</span>
+                                    </label>
+                                    <input
+                                        type="text"
+                                        name="location"
+                                        className="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-white focus:border-purple-500 focus:ring-1 focus:ring-purple-500 outline-none transition-all"
+                                        placeholder="City or Venue (or TBD)"
+                                    />
                                 </div>
                             </div>
 

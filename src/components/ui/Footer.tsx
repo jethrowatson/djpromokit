@@ -43,6 +43,7 @@ export function Footer() {
                                 <ul role="list" className="mt-4 space-y-4">
                                     <li><Link href="/pricing#faq" className="text-sm text-slate-400 hover:text-white transition-colors">FAQ</Link></li>
                                     <li><Link href="/contact" className="text-sm text-slate-400 hover:text-white transition-colors">Contact</Link></li>
+                                    <li><a href="mailto:support@djpromokit.com" className="text-sm text-slate-400 hover:text-white transition-colors">support@djpromokit.com</a></li>
                                 </ul>
                             </div>
                             <div className="mt-12 md:mt-0">
