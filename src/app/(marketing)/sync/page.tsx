@@ -13,7 +13,7 @@ export default function SyncPage() {
                         Two platforms. <span className="text-cyan-400">One profile.</span>
                     </h1>
                     <p className="text-xl text-slate-400">
-                        DJpromokit is officially integrated with SYNCgigs.co.uk. Build your EPK here, and your SYNC profile updates automatically.
+                        DJpromokit is officially integrated with SYNCgigs.co.uk. Build your EPK here, and when you choose to enable sync, your SYNC profile updates automatically.
                     </p>
                 </div>
 
@@ -55,7 +55,7 @@ export default function SyncPage() {
                                 <div className="w-8 h-8 rounded-full bg-purple-500/20 flex items-center justify-center"><Zap className="w-4 h-4 text-purple-400" /></div>
                                 Zero Duplicate Admin
                             </h3>
-                            <p className="text-slate-400">You already have enough admin. With our integration, when you upload a new press photo or embed a new mix on DJpromokit, it is immediately pushed to your SYNCgigs profile.</p>
+                            <p className="text-slate-400">You already have enough admin. When sync is enabled, uploading a new press photo or embedding a new mix on DJpromokit pushes updates directly to your SYNCgigs profile.</p>
                         </div>
 
                         <div>
@@ -63,7 +63,7 @@ export default function SyncPage() {
                                 <div className="w-8 h-8 rounded-full bg-cyan-500/20 flex items-center justify-center"><ArrowLeftRight className="w-4 h-4 text-cyan-400" /></div>
                                 Shared Profile Data
                             </h3>
-                            <p className="text-slate-400">Everything syncs instantly: your DJ name, location, genres, short and long bio, mixes, press photos, and social links.</p>
+                            <p className="text-slate-400">When enabled, your profile data syncs seamlessly: your DJ name, location, genres, short and long bio, mixes, press photos, and social links.</p>
                         </div>
                     </div>
                 </div>

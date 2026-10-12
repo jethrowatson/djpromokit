@@ -58,7 +58,7 @@ export default function SyncGigsWidget({ initialState = false }: { initialState?
 
                 <h3 className="text-lg font-bold text-white mb-1 relative z-10">SYNCgigs Integration</h3>
                 <p className="text-sm text-slate-400 mb-2 relative z-10">
-                    {enabled ? "Your profile is actively linked and pushing updates to SYNCgigs." : "SYNCgigs is a free network used by UK promoters to discover and book DJs directly. Link your profile to automatically push your EPK updates straight to bookers."}
+                    {enabled ? "Your profile is actively linked and pushing updates to SYNCgigs." : "SYNCgigs is an optional partner network for UK promoters. When enabled, your EPK updates sync directly to bookers."}
                 </p>
 
                 <div className="relative z-10 flex items-center justify-between mt-4">
@@ -96,7 +96,7 @@ export default function SyncGigsWidget({ initialState = false }: { initialState?
 
                         <h2 className="text-2xl font-bold text-white mb-2">Create SYNC account</h2>
                         <p className="text-slate-300 mb-6">
-                            By enabling this integration, we will dynamically provision a DJ profile for you on the SYNCgigs platform using your current email and details.
+                            By enabling this integration, we will dynamically provision a DJ profile for you on the SYNCgigs platform using your current email and details. Syncing only occurs while this integration remains enabled.
                         </p>
 
                         <div className="bg-slate-900 rounded-xl p-4 border border-white/5 mb-6">

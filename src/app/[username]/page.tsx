@@ -3,13 +3,38 @@ import { notFound } from "next/navigation";
 import EPKContent, { EPKProfileData } from "@/components/epk/EPKContent";
 import { Metadata, ResolvingMetadata } from "next";
 import { trackEvent } from "@/app/actions/analytics";
+import { DEMO_EPKS } from "@/config/demo-epk";
 
 export async function generateMetadata(
     props: { params: Promise<{ username: string }> },
     parent: ResolvingMetadata
 ): Promise<Metadata> {
     const params = await props.params;
-    const decodedUsername = decodeURIComponent(params.username);
+    const decodedUsername = decodeURIComponent(params.username).toLowerCase();
+
+    // Check if this is a finished demo EPK
+    if (DEMO_EPKS[decodedUsername]) {
+        const demo = DEMO_EPKS[decodedUsername];
+        const title = `${demo.name} | DJ Promo Kit Demo EPK`;
+        const description = demo.shortBio || demo.tagline || `Check out ${demo.name}'s official DJ Promo Kit.`;
+        return {
+            title,
+            description,
+            openGraph: {
+                title,
+                description,
+                url: `https://djpromokit.com/${decodedUsername}`,
+                type: 'profile',
+                images: demo.avatar ? [{ url: demo.avatar, width: 800, height: 600, alt: demo.name }] : [],
+            },
+            twitter: {
+                card: 'summary_large_image',
+                title,
+                description,
+                images: demo.avatar ? [demo.avatar] : [],
+            }
+        };
+    }
 
     const supabase = await createClient();
     const { data: profile } = await supabase
@@ -56,6 +81,16 @@ export default async function EPKProfilePage(props: { params: Promise<{ username
     const searchParams = await props.searchParams;
     const isPreview = searchParams.preview === 'true';
     const decodedUsername = decodeURIComponent(params.username);
+    const normalizedUsername = decodedUsername.toLowerCase();
+
+    // If this is a finished demo EPK, render it directly
+    if (DEMO_EPKS[normalizedUsername]) {
+        return (
+            <div className="relative">
+                <EPKContent profile={DEMO_EPKS[normalizedUsername]} isDraftMode={false} />
+            </div>
+        );
+    }
 
     // Parallelize auth check and profile lookup
     const supabase = await createClient();

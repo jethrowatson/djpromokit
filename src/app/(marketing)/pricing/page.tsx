@@ -24,7 +24,7 @@ const jsonLd = {
             "name": "Can I edit my profile after publishing?",
             "acceptedAnswer": {
                 "@type": "Answer",
-                "text": "Yes! You can log in and update your photos, mixes, and bio at any time. Changes are reflected on your live DJpromokit page instantly, and will also sync to your SYNCgigs.co.uk profile."
+                "text": "Yes! You can log in and update your photos, mixes, and bio at any time. Changes are reflected on your live DJpromokit page instantly, and will also sync to your SYNCgigs.co.uk profile if you choose to enable the optional SYNCgigs integration."
             }
         },
         {
@@ -37,10 +37,10 @@ const jsonLd = {
         },
         {
             "@type": "Question",
-            "name": "Is there a refund if I unpublish my page?",
+            "name": "What is your refund policy?",
             "acceptedAnswer": {
                 "@type": "Answer",
-                "text": "No. You can choose to unpublish your page at any time to hide it from the public, but the one-time publish fee is non-refundable."
+                "text": "We want you to be completely satisfied with your press kit. Under UK consumer regulations, you have a 14-day cancellation period from the date of purchase. If you experience any technical fault or the service does not meet expectations within 14 days, email support@djpromokit.com for a prompt refund. You can also unpublish or update your page at any time."
             }
         }
     ]
@@ -114,7 +114,7 @@ export default function Pricing() {
                                 "Public EPK URL (e.g., /dj/yourname)",
                                 "PDF Press Kit download generator",
                                 "Removal of preview watermark",
-                                "Automatic SYNCgigs.co.uk integration",
+                                "Optional SYNCgigs.co.uk integration (when enabled)",
                                 "Basic analytics & stats"
                             ].map((feature, i) => (
                                 <li key={i} className="flex items-start gap-3 text-left w-full">
@@ -144,7 +144,7 @@ export default function Pricing() {
                         <div className="glass-panel p-6 rounded-2xl">
                             <h4 className="text-lg font-bold text-white mb-2">Can I edit my profile after publishing?</h4>
                             <p className="text-slate-300">
-                                Yes! You can log in and update your photos, mixes, and bio at any time. Changes are reflected on your live DJpromokit page instantly, and will also sync to your SYNCgigs.co.uk profile.
+                                Yes! You can log in and update your photos, mixes, and bio at any time. Changes are reflected on your live DJpromokit page instantly, and will also sync to your SYNCgigs.co.uk profile if you choose to enable the optional SYNCgigs integration.
                             </p>
                         </div>
 
@@ -156,9 +156,9 @@ export default function Pricing() {
                         </div>
 
                         <div className="glass-panel p-6 rounded-2xl">
-                            <h4 className="text-lg font-bold text-white mb-2">Is there a refund if I unpublish my page?</h4>
+                            <h4 className="text-lg font-bold text-white mb-2">What is your refund policy?</h4>
                             <p className="text-slate-300">
-                                No. You can choose to unpublish your page at any time to hide it from the public, but the one-time publish fee is non-refundable.
+                                We want you to be completely satisfied with your press kit. Under UK consumer regulations, you have a 14-day cancellation period from the date of purchase. If you experience any technical fault or the service does not meet expectations within 14 days, email support@djpromokit.com for a prompt refund. You can also unpublish or update your page at any time.
                             </p>
                         </div>
                     </div>
